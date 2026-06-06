@@ -32,7 +32,7 @@ export default function Header() {
           ))}
           <a href="http://pf.kakao.com/_XGxbMG/chat" target="_blank" rel="noopener noreferrer"
             className="bg-[#7B2D8B] text-white text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-[#9B4DAB] transition-colors">
-            무료 상담 신청
+            무료상담
           </a>
         </nav>
 
@@ -57,7 +57,7 @@ export default function Header() {
           ))}
           <a href="http://pf.kakao.com/_XGxbMG/chat" target="_blank" rel="noopener noreferrer"
             className="bg-[#7B2D8B] text-white text-sm font-semibold px-5 py-3 rounded-full text-center">
-            무료 상담 신청
+            무료상담
           </a>
         </div>
       )}

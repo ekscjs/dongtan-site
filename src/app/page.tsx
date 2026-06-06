@@ -53,14 +53,10 @@ export default function Home() {
               허리, 무릎, 어깨 — 불편함을 느끼고 있다면 원인부터 함께 찾아드립니다.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="https://pf.kakao.com/" target="_blank" rel="noopener noreferrer"
+              <a href="http://pf.kakao.com/_XGxbMG/chat" target="_blank" rel="noopener noreferrer"
                 className="bg-[#7B2D8B] text-white font-bold px-8 py-4 rounded-full text-lg hover:bg-[#9B4DAB] transition-colors">
                 카카오로 무료 상담 신청
               </a>
-              <Link href="/programs"
-                className="border-2 border-[#7B2D8B] text-[#7B2D8B] font-bold px-8 py-4 rounded-full text-lg hover:bg-[#FAF5FB] transition-colors">
-                프로그램 보기
-              </Link>
             </div>
             <p className="text-sm text-gray-400 mt-4">경기도 화성시 동탄 지성로 134 5층</p>
           </div>
@@ -128,9 +124,9 @@ export default function Home() {
           <div className="max-w-2xl mx-auto text-center">
             <h2 className="text-3xl font-bold text-white mb-4">어디가 불편하신지 말씀해 주세요</h2>
             <p className="text-green-100 mb-8 text-lg">무료 상담으로 시작합니다. 부담 없이 연락 주세요.</p>
-            <a href="https://pf.kakao.com/" target="_blank" rel="noopener noreferrer"
+            <a href="http://pf.kakao.com/_XGxbMG/chat" target="_blank" rel="noopener noreferrer"
               className="bg-white text-[#7B2D8B] font-bold px-10 py-4 rounded-full text-lg hover:bg-gray-100 transition-colors inline-block">
-              카카오로 무료 상담 신청
+              문의하기
             </a>
           </div>
         </section>
