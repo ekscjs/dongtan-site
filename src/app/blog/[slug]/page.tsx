@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { supabase, type Post } from "@/lib/supabase";
+import { markdownToHtml } from "@/lib/markdown";
 
 export const revalidate = 60;
 
@@ -48,6 +49,8 @@ export default async function BlogPostPage({
 
   if (!post) notFound();
 
+  const html = markdownToHtml(post.content ?? "");
+
   return (
     <>
       <Header />
@@ -77,11 +80,9 @@ export default async function BlogPostPage({
             </p>
           )}
 
-          <div
-            className="prose prose-gray max-w-none text-gray-700 leading-relaxed whitespace-pre-wrap"
-          >
-            {post.content}
-          </div>
+          <article
+            dangerouslySetInnerHTML={{ __html: html }}
+          />
 
           <div className="mt-16 pt-8 border-t border-gray-100">
             <Link

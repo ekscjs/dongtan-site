@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import type { Post } from "@/lib/supabase";
+import MarkdownEditor from "@/components/MarkdownEditor";
 
 type View = "login" | "list" | "form";
 
@@ -241,13 +242,10 @@ export default function AdminPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-500 mb-1">본문</label>
-              <textarea
+              <label className="block text-xs font-semibold text-gray-500 mb-1">본문 (마크다운)</label>
+              <MarkdownEditor
                 value={form.content}
-                onChange={(e) => setForm((f) => ({ ...f, content: e.target.value }))}
-                rows={16}
-                placeholder="글 내용을 입력하세요..."
-                className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#7B2D8B] resize-y font-mono"
+                onChange={(v) => setForm((f) => ({ ...f, content: v }))}
               />
             </div>
 
