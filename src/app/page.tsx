@@ -3,18 +3,18 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 
 const symptoms = [
-  { icon: "🦴", text: "허리가 자꾸 찌릿하고 뻐근한 분" },
-  { icon: "🦵", text: "무릎이 시려서 계단이 무서운 분" },
-  { icon: "💪", text: "팔이 잘 안 올라가거나 어깨가 굳은 분" },
-  { icon: "🧍", text: "자세가 나쁜 건 아는데 어떻게 고쳐야 할지 모르는 분" },
-  { icon: "🏥", text: "병원 치료는 끝났는데 몸이 예전 같지 않은 분" },
-  { icon: "👴", text: "부모님 체력과 거동이 걱정되시는 분" },
+  { icon: "🔍", text: '허리·무릎·어깨가 아픈데 검사하면 "이상 없다"는 분' },
+  { icon: "🔁", text: "치료받으면 잠깐 낫다가 다시 재발하는 분" },
+  { icon: "🏃", text: '의사에게 "운동 하세요" 들었는데 어떤 운동인지 모르는 분' },
+  { icon: "🧍", text: "거북목·굽은 등·골반 틀어짐이 신경 쓰이는 분" },
+  { icon: "👴", text: "나이 들면서 몸이 예전 같지 않다고 느끼는 분" },
+  { icon: "💡", text: "운동을 시작하고 싶은데 내 몸에 맞는 방법을 모르는 분" },
 ];
 
 const programs = [
   {
-    title: "기능개선",
-    desc: "일상에서 불편한 동작을 회복합니다. 팔이 잘 안 올라가거나 무릎이 뻐근한 것도 원인이 있습니다.",
+    title: "통증 완화 운동",
+    desc: "팔이 잘 안 올라가거나 무릎이 뻐근한 것도 원인이 있습니다. 일상의 불편함을 회복합니다.",
     color: "border-[#7B2D8B]",
   },
   {
@@ -30,7 +30,7 @@ const programs = [
 ];
 
 const steps = [
-  { step: "01", title: "무료 상담", desc: "어디가 불편한지 먼저 말씀해 주세요. 정확한 병명이 없어도 괜찮습니다." },
+  { step: "01", title: "무료 상담", desc: "카카오톡으로 편하게 말씀해 주세요. 바로 연결됩니다." },
   { step: "02", title: "1회 체험", desc: "직접 움직임을 확인하고 문제 원인을 파악합니다." },
   { step: "03", title: "맞춤 프로그램", desc: "원인에 맞는 운동 방법으로 실질적인 변화를 만들어 드립니다." },
 ];
@@ -44,20 +44,22 @@ export default function Home() {
         <section className="bg-[#FAF5FB] py-20 px-4">
           <div className="max-w-3xl mx-auto text-center">
             <p className="text-[#9B4DAB] font-semibold text-sm mb-4 tracking-widest uppercase">동탄 기능개선 · 재활 · 체형교정 전문</p>
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-6">
-              몸이 불편한데<br />
-              <span className="text-[#7B2D8B]">어디 가야 할지 모르겠다면</span>
+            <h1 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight mb-6">
+              여기저기 다녀봤는데,<br />
+              <span className="text-[#7B2D8B]">왜 계속 아프고 불편할까요?</span>
             </h1>
-            <p className="text-lg text-gray-600 mb-10 leading-relaxed">
-              정확한 병명이 없어도 괜찮습니다.<br />
-              허리, 무릎, 어깨 — 불편함을 느끼고 있다면 원인부터 함께 찾아드립니다.
+            <p className="text-base md:text-lg text-gray-600 mb-10 leading-relaxed">
+              허리, 무릎, 어깨 — 통증의 원인은 대부분 움직임에 있습니다.<br className="hidden sm:block" />
+              내몸에미소가 원인부터 찾아드립니다.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="http://pf.kakao.com/_XGxbMG/chat" target="_blank" rel="noopener noreferrer"
-                className="bg-[#7B2D8B] text-white font-bold px-8 py-4 rounded-full text-lg hover:bg-[#9B4DAB] transition-colors">
-                카카오로 무료 상담 신청
-              </a>
-            </div>
+            <a
+              href="http://pf.kakao.com/_XGxbMG/chat"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block bg-[#7B2D8B] text-white font-bold px-8 py-4 rounded-full text-base md:text-lg hover:bg-[#9B4DAB] transition-colors"
+            >
+              카카오로 무료 상담 신청
+            </a>
             <p className="text-sm text-gray-400 mt-4">경기도 화성시 동탄 지성로 134 5층</p>
           </div>
         </section>
@@ -65,13 +67,13 @@ export default function Home() {
         {/* 이런 분들 */}
         <section className="py-20 px-4">
           <div className="max-w-5xl mx-auto">
-            <h2 className="text-3xl font-bold text-center text-gray-900 mb-4">이런 분들이 오십니다</h2>
-            <p className="text-center text-gray-500 mb-12">아주 아프지 않아도, 불편함을 느끼고 있다면 충분합니다</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-4">이런 분들이 찾아오십니다</h2>
+            <p className="text-center text-gray-500 mb-12 text-sm md:text-base">아주 아프지 않아도, 불편함을 느끼고 있다면 충분합니다</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {symptoms.map((s, i) => (
-                <div key={i} className="bg-gray-50 rounded-2xl p-6 flex items-start gap-4">
-                  <span className="text-3xl">{s.icon}</span>
-                  <p className="text-gray-700 font-medium leading-snug">{s.text}</p>
+                <div key={i} className="bg-gray-50 rounded-2xl p-5 flex items-start gap-4">
+                  <span className="text-2xl shrink-0">{s.icon}</span>
+                  <p className="text-gray-700 font-medium leading-snug text-sm md:text-base">{s.text}</p>
                 </div>
               ))}
             </div>
@@ -81,18 +83,18 @@ export default function Home() {
         {/* 프로그램 */}
         <section className="bg-[#FAF5FB] py-20 px-4">
           <div className="max-w-5xl mx-auto">
-            <h2 className="text-3xl font-bold text-center text-gray-900 mb-4">전문 프로그램</h2>
-            <p className="text-center text-gray-500 mb-12">문제의 원인을 먼저 파악하고, 그에 맞는 방법으로 해결합니다</p>
+            <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-4">전문 프로그램</h2>
+            <p className="text-center text-gray-500 mb-12 text-sm md:text-base">문제의 원인을 먼저 파악하고, 그에 맞는 방법으로 해결합니다</p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {programs.map((p, i) => (
                 <div key={i} className={`bg-white rounded-2xl p-8 border-t-4 ${p.color} shadow-sm`}>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">{p.title}</h3>
-                  <p className="text-gray-600 leading-relaxed">{p.desc}</p>
+                  <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-3">{p.title}</h3>
+                  <p className="text-gray-600 leading-relaxed text-sm md:text-base">{p.desc}</p>
                 </div>
               ))}
             </div>
             <div className="text-center mt-10">
-              <Link href="/programs" className="text-[#7B2D8B] font-semibold hover:underline">
+              <Link href="/programs" className="text-[#7B2D8B] font-semibold hover:underline text-sm md:text-base">
                 자세한 프로그램 및 가격 보기 →
               </Link>
             </div>
@@ -102,16 +104,16 @@ export default function Home() {
         {/* 진행 방식 */}
         <section className="py-20 px-4">
           <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">이렇게 시작합니다</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-12">이렇게 시작합니다</h2>
             <div className="space-y-8">
               {steps.map((s, i) => (
-                <div key={i} className="flex gap-6 items-start">
-                  <div className="w-12 h-12 rounded-full bg-[#7B2D8B] text-white flex items-center justify-center font-bold text-sm shrink-0">
+                <div key={i} className="flex gap-5 items-start">
+                  <div className="w-11 h-11 rounded-full bg-[#7B2D8B] text-white flex items-center justify-center font-bold text-sm shrink-0">
                     {s.step}
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-gray-900 mb-1">{s.title}</h3>
-                    <p className="text-gray-600">{s.desc}</p>
+                    <h3 className="text-base md:text-lg font-bold text-gray-900 mb-1">{s.title}</h3>
+                    <p className="text-gray-600 text-sm md:text-base">{s.desc}</p>
                   </div>
                 </div>
               ))}
@@ -122,11 +124,15 @@ export default function Home() {
         {/* CTA */}
         <section className="bg-[#7B2D8B] py-20 px-4">
           <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-3xl font-bold text-white mb-4">어디가 불편하신지 말씀해 주세요</h2>
-            <p className="text-green-100 mb-8 text-lg">무료 상담으로 시작합니다. 부담 없이 연락 주세요.</p>
-            <a href="http://pf.kakao.com/_XGxbMG/chat" target="_blank" rel="noopener noreferrer"
-              className="bg-white text-[#7B2D8B] font-bold px-10 py-4 rounded-full text-lg hover:bg-gray-100 transition-colors inline-block">
-              문의하기
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">몸이 달라지는 걸 직접 느껴보세요</h2>
+            <p className="text-purple-200 mb-8 text-base md:text-lg">무료 상담으로 시작합니다.</p>
+            <a
+              href="http://pf.kakao.com/_XGxbMG/chat"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block bg-white text-[#7B2D8B] font-bold px-10 py-4 rounded-full text-base md:text-lg hover:bg-gray-100 transition-colors"
+            >
+              지금 문의하기
             </a>
           </div>
         </section>
