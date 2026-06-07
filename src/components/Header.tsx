@@ -6,7 +6,6 @@ import { useState } from "react";
 const navLinks = [
   { href: "/about", label: "센터 소개" },
   { href: "/programs", label: "프로그램" },
-  { href: "/reviews", label: "후기" },
   { href: "/blog", label: "칼럼" },
 ];
 
