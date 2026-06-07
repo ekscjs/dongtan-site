@@ -7,7 +7,7 @@ const navLinks = [
   { href: "/about", label: "센터 소개" },
   { href: "/programs", label: "프로그램" },
   { href: "/reviews", label: "후기" },
-  { href: "/blog", label: "블로그" },
+  { href: "/blog", label: "칼럼" },
 ];
 
 export default function Header() {

@@ -20,12 +20,12 @@ const programs = [
   {
     title: "재활",
     desc: "수술 후 또는 부상 후 몸을 회복하고 싶을 때. 병원과 일상 사이, 그 중간을 채워드립니다.",
-    color: "border-[#9B4DAB]",
+    color: "border-[#7B2D8B]",
   },
   {
     title: "체형교정",
     desc: "굽은 등, 거북목, 골반 틀어짐. 자세 문제를 근본 원인부터 잡아드립니다.",
-    color: "border-[#F4A261]",
+    color: "border-[#7B2D8B]",
   },
 ];
 
@@ -58,7 +58,7 @@ export default function Home() {
               rel="noopener noreferrer"
               className="inline-block bg-[#7B2D8B] text-white font-bold px-8 py-4 rounded-full text-base md:text-lg hover:bg-[#9B4DAB] transition-colors"
             >
-              카카오로 무료 상담 신청
+              카카오로 상담하기
             </a>
             <p className="text-sm text-gray-400 mt-4">경기도 화성시 동탄 지성로 134 5층</p>
           </div>

@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(git pull *)",
+      "Bash(npm install *)",
+      "Bash(npm --version)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(d.get\\('lockfileVersion','?'\\)\\)\")",
+      "Bash(yarn --version)",
+      "Bash(pnpm --version)",
+      "Bash(node -e ' *)",
+      "Bash(npm cache *)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(d.get\\('version','MISSING'\\)\\)\")",
+      "Bash(bun --version)",
+      "Bash(grep -v \"^$\")",
+      "Bash(npm run *)",
+      "Bash(git add *)",
+      "Bash(git rm *)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\('version:', d.get\\('version'\\)\\); print\\('deps:', list\\(d.get\\('dependencies',{}\\).keys\\(\\)\\)\\)\")",
+      "Bash(node *)"
+    ]
+  }
+}

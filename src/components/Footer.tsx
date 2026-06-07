@@ -13,7 +13,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="border-t border-gray-800 mt-8 pt-6 text-xs text-center">
-          © 2025 내몸에미소. All rights reserved.
+          © 내몸에미소. All rights reserved.
         </div>
       </div>
     </footer>
