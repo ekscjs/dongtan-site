@@ -168,7 +168,16 @@ export default function Home() {
                 <Image src="/gallery/training-5.jpg" alt="1:1 운동 지도" width={400} height={400} className="w-full h-full object-cover" />
               </div>
               <div className="rounded-2xl overflow-hidden aspect-square">
+                <Image src="/gallery/training-6.jpg" alt="1:1 운동 지도" width={400} height={400} className="w-full h-full object-cover" />
+              </div>
+              <div className="rounded-2xl overflow-hidden aspect-square">
                 <Image src="/gallery/training-7.jpg" alt="1:1 운동 지도" width={400} height={400} className="w-full h-full object-cover" />
+              </div>
+              <div className="rounded-2xl overflow-hidden aspect-square">
+                <Image src="/gallery/training-8.jpg" alt="1:1 운동 지도" width={400} height={400} className="w-full h-full object-cover" />
+              </div>
+              <div className="rounded-2xl overflow-hidden aspect-square">
+                <Image src="/gallery/training-9.jpg" alt="1:1 운동 지도" width={400} height={400} className="w-full h-full object-cover" />
               </div>
             </div>
           </div>
