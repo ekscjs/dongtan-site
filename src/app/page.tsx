@@ -172,7 +172,8 @@ export default function Home() {
                 </div>
                 <div>
                   <p className="text-xs font-semibold text-[#7B2D8B] uppercase tracking-widest mb-1">운영 시간</p>
-                  <p className="text-gray-800 font-medium">평일 · 주말 운영 (상담 후 예약)</p>
+                  <p className="text-gray-800 font-medium">평일 10:00 – 22:00</p>
+                  <p className="text-gray-600 text-sm">주말 · 공휴일 휴무</p>
                 </div>
               </div>
               <a
