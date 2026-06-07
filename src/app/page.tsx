@@ -58,22 +58,14 @@ export default function Home() {
               허리, 무릎, 어깨 — 통증의 원인은 대부분 움직임에 있습니다.<br className="hidden sm:block" />
               내몸에미소가 원인부터 찾아드립니다.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <a
-                href="http://pf.kakao.com/_XGxbMG/chat"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block bg-[#7B2D8B] text-white font-bold px-8 py-4 rounded-full text-base md:text-lg hover:bg-[#9B4DAB] transition-colors"
-              >
-                카카오로 상담하기
-              </a>
-              <Link
-                href="/check"
-                className="inline-block border-2 border-[#7B2D8B] text-[#7B2D8B] font-bold px-8 py-4 rounded-full text-base md:text-lg hover:bg-[#7B2D8B] hover:text-white transition-colors"
-              >
-                내 몸 상태 체크하기
-              </Link>
-            </div>
+            <a
+              href="http://pf.kakao.com/_XGxbMG/chat"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block bg-[#7B2D8B] text-white font-bold px-8 py-4 rounded-full text-base md:text-lg hover:bg-[#9B4DAB] transition-colors"
+            >
+              카카오로 상담하기
+            </a>
             <p className="text-sm text-gray-400 mt-4">경기도 화성시 동탄 지성로 134 5층</p>
           </div>
         </section>
@@ -199,15 +191,23 @@ export default function Home() {
         <section className="bg-[#7B2D8B] py-20 px-4">
           <div className="max-w-2xl mx-auto text-center">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">몸이 달라지는 걸 직접 느껴보세요</h2>
-            <p className="text-purple-200 mb-8 text-base md:text-lg">무료 상담으로 시작합니다.</p>
-            <a
-              href="http://pf.kakao.com/_XGxbMG/chat"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block bg-white text-[#7B2D8B] font-bold px-10 py-4 rounded-full text-base md:text-lg hover:bg-gray-100 transition-colors"
-            >
-              지금 문의하기
-            </a>
+            <p className="text-purple-200 mb-8 text-base md:text-lg">어떤 프로그램이 맞는지 모르겠다면 체크부터 해보세요.</p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <a
+                href="http://pf.kakao.com/_XGxbMG/chat"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block bg-white text-[#7B2D8B] font-bold px-10 py-4 rounded-full text-base md:text-lg hover:bg-gray-100 transition-colors"
+              >
+                무료 상담하기
+              </a>
+              <Link
+                href="/check"
+                className="inline-block border-2 border-white text-white font-bold px-10 py-4 rounded-full text-base md:text-lg hover:bg-white hover:text-[#7B2D8B] transition-colors"
+              >
+                내 몸 상태 체크하기
+              </Link>
+            </div>
           </div>
         </section>
       </main>
