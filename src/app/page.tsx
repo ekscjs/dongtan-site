@@ -193,22 +193,12 @@ export default function Home() {
           <div className="max-w-2xl mx-auto text-center">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">몸이 달라지는 걸 직접 느껴보세요</h2>
             <p className="text-purple-200 mb-8 text-base md:text-lg">어떤 프로그램이 맞는지 모르겠다면 체크부터 해보세요.</p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <a
-                href="http://pf.kakao.com/_XGxbMG/chat"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block bg-white text-[#7B2D8B] font-bold px-10 py-4 rounded-full text-base md:text-lg hover:bg-gray-100 transition-colors"
-              >
-                무료 상담하기
-              </a>
-              <Link
-                href="/check"
-                className="inline-block border-2 border-white text-white font-bold px-10 py-4 rounded-full text-base md:text-lg hover:bg-white hover:text-[#7B2D8B] transition-colors"
-              >
-                내 몸 상태 체크하기
-              </Link>
-            </div>
+            <Link
+              href="/check"
+              className="inline-block bg-white text-[#7B2D8B] font-bold px-10 py-4 rounded-full text-base md:text-lg hover:bg-gray-100 transition-colors"
+            >
+              내 몸 상태 체크하기
+            </Link>
           </div>
         </section>
       </main>
