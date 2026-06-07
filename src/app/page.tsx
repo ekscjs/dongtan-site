@@ -143,8 +143,8 @@ export default function Home() {
         {/* 갤러리 */}
         <section className="py-20 px-4">
           <div className="max-w-5xl mx-auto">
-            <p className="text-center text-xs font-semibold text-[#9B4DAB] uppercase tracking-widest mb-3">센터 & 수업 현장</p>
-            <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-10">내몸에미소 현장입니다</h2>
+            <p className="text-center text-xs font-semibold text-[#9B4DAB] uppercase tracking-widest mb-3">센터 & 수업 시간</p>
+            <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-10">이렇게 운동합니다</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               <div className="col-span-2 row-span-2 rounded-2xl overflow-hidden aspect-square">
                 <Image src="/gallery/center-2.jpg" alt="내몸에미소 센터 내부" width={800} height={800} className="w-full h-full object-cover" />

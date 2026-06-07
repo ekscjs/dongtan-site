@@ -39,7 +39,7 @@ export default async function BlogPage() {
       <main className="py-20 px-4">
         <div className="max-w-3xl mx-auto">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">임상 노트</h1>
-          <p className="text-gray-500 mb-12">현장에서 만난 케이스와 경험을 바탕으로, 몸에 대해 솔직하게 씁니다</p>
+          <p className="text-gray-500 mb-12">실제 케이스와 경험을 바탕으로, 몸에 대한 이야기를 기록합니다</p>
 
           {posts.length === 0 ? (
             <p className="text-gray-400 text-center py-20">아직 게시된 글이 없습니다.</p>
