@@ -10,15 +10,16 @@ export const metadata: Metadata = {
 };
 
 const stats = [
-  { value: "4년", label: "운영 경력" },
+  { value: "4년+", label: "동탄 센터 오픈" },
   { value: "166명+", label: "누적 회원" },
   { value: "80%", label: "재등록률" },
 ];
 
 const certs = [
   { year: "2023.12", title: "국민체육진흥공단", desc: "스포츠·장애인 바우처 가맹 시설" },
-  { year: "2025.01", title: "국민체육진흥공단", desc: "국민체력 100 간소화 측정 협력 센터" },
+  { year: "2025.01", title: "국민체육진흥공단", desc: "국민체력 100 협력 센터" },
   { year: "2025.07", title: "특허청", desc: "스포츠 교육 기관 특허 등록" },
+  { year: "2006", title: "문화체육관광부", desc: "지도자 전원 스포츠 지도사 자격 보유" },
 ];
 
 const programs = [
@@ -99,7 +100,7 @@ export default function ProgramsPage() {
           <div className="max-w-3xl mx-auto text-center">
             <p className="text-[#9B4DAB] font-semibold text-sm mb-4 tracking-widest uppercase">프로그램 안내</p>
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              문제의 원인을 먼저 파악하고,
+              문제의 원인을 먼저 파악하고,<br />
               <span className="text-[#7B2D8B]">그에 맞는 방법으로 해결합니다</span>
             </h1>
           </div>
@@ -180,10 +181,10 @@ export default function ProgramsPage() {
                   className="flex-1 text-center bg-[#7B2D8B] text-white font-semibold py-4 px-6 rounded-full hover:bg-[#6a2578] transition-colors">
                   이 프로그램 상담하기
                 </a>
-                <Link href="/reviews"
+                <a href="https://map.naver.com/p/entry/place/1101035370" target="_blank" rel="noopener noreferrer"
                   className="flex-1 text-center border border-gray-200 text-gray-500 font-semibold py-4 px-6 rounded-full hover:border-[#7B2D8B] hover:text-[#7B2D8B] transition-colors">
-                  후기 더 보기
-                </Link>
+                  네이버 후기 보기
+                </a>
               </div>
             </div>
           </section>
