@@ -185,6 +185,9 @@ export default function Home() {
               <div className="rounded-2xl overflow-hidden aspect-square">
                 <Image src="/gallery/추가3.png" alt="1:1 운동 지도" width={400} height={400} className="w-full h-full object-cover" />
               </div>
+              <div className="rounded-2xl overflow-hidden aspect-square">
+                <Image src="/gallery/추가4.jpg" alt="1:1 운동 지도" width={400} height={400} className="w-full h-full object-cover" />
+              </div>
             </div>
           </div>
         </section>
