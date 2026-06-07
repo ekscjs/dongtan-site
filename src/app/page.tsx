@@ -58,14 +58,22 @@ export default function Home() {
               허리, 무릎, 어깨 — 통증의 원인은 대부분 움직임에 있습니다.<br className="hidden sm:block" />
               내몸에미소가 원인부터 찾아드립니다.
             </p>
-            <a
-              href="http://pf.kakao.com/_XGxbMG/chat"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block bg-[#7B2D8B] text-white font-bold px-8 py-4 rounded-full text-base md:text-lg hover:bg-[#9B4DAB] transition-colors"
-            >
-              카카오로 상담하기
-            </a>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <a
+                href="http://pf.kakao.com/_XGxbMG/chat"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block bg-[#7B2D8B] text-white font-bold px-8 py-4 rounded-full text-base md:text-lg hover:bg-[#9B4DAB] transition-colors"
+              >
+                카카오로 상담하기
+              </a>
+              <Link
+                href="/check"
+                className="inline-block border-2 border-[#7B2D8B] text-[#7B2D8B] font-bold px-8 py-4 rounded-full text-base md:text-lg hover:bg-[#7B2D8B] hover:text-white transition-colors"
+              >
+                내 몸 상태 체크하기
+              </Link>
+            </div>
             <p className="text-sm text-gray-400 mt-4">경기도 화성시 동탄 지성로 134 5층</p>
           </div>
         </section>
