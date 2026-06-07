@@ -2,6 +2,12 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 
+const stats = [
+  { value: "4년+", label: "동탄 센터 오픈" },
+  { value: "166명+", label: "누적 회원" },
+  { value: "80%", label: "재등록률" },
+];
+
 const symptoms = [
   { icon: "🔍", text: '허리·무릎·어깨가 아픈데 검사하면 "이상 없다"는 분' },
   { icon: "🔁", text: "치료받으면 잠깐 낫다가 다시 재발하는 분" },
@@ -64,6 +70,18 @@ export default function Home() {
           </div>
         </section>
 
+        {/* 신뢰 지표 */}
+        <section className="py-10 px-4 border-b border-gray-100">
+          <div className="max-w-3xl mx-auto grid grid-cols-3 gap-4 text-center">
+            {stats.map((s, i) => (
+              <div key={i}>
+                <p className="text-2xl md:text-3xl font-bold text-[#7B2D8B]">{s.value}</p>
+                <p className="text-sm text-gray-500 mt-1">{s.label}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* 이런 분들 */}
         <section className="py-20 px-4">
           <div className="max-w-5xl mx-auto">
@@ -117,6 +135,54 @@ export default function Home() {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* 네이버 후기 */}
+        <section className="bg-[#FAF5FB] py-16 px-4">
+          <div className="max-w-2xl mx-auto text-center">
+            <p className="text-[#9B4DAB] font-semibold text-sm mb-3 tracking-widest uppercase">실제 회원 후기</p>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">직접 확인해보세요</h2>
+            <p className="text-gray-500 mb-8 text-sm md:text-base">네이버 플레이스에 실제 회원분들의 후기가 쌓여 있습니다</p>
+            <a
+              href="https://map.naver.com/p/entry/place/1101035370"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block border-2 border-[#7B2D8B] text-[#7B2D8B] font-bold px-8 py-4 rounded-full text-base hover:bg-[#7B2D8B] hover:text-white transition-colors"
+            >
+              네이버 후기 보러가기
+            </a>
+          </div>
+        </section>
+
+        {/* 오시는 길 */}
+        <section className="py-16 px-4">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-10">오시는 길</h2>
+            <div className="bg-gray-50 rounded-2xl p-8 flex flex-col sm:flex-row gap-8 items-center">
+              <div className="flex-1 space-y-4">
+                <div>
+                  <p className="text-xs font-semibold text-[#7B2D8B] uppercase tracking-widest mb-1">주소</p>
+                  <p className="text-gray-800 font-medium">경기도 화성시 동탄 지성로 134 5층</p>
+                </div>
+                <div>
+                  <p className="text-xs font-semibold text-[#7B2D8B] uppercase tracking-widest mb-1">주차</p>
+                  <p className="text-gray-800 font-medium">건물 내 주차 가능</p>
+                </div>
+                <div>
+                  <p className="text-xs font-semibold text-[#7B2D8B] uppercase tracking-widest mb-1">운영 시간</p>
+                  <p className="text-gray-800 font-medium">평일 · 주말 운영 (상담 후 예약)</p>
+                </div>
+              </div>
+              <a
+                href="https://map.naver.com/p/entry/place/1101035370"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="shrink-0 bg-[#7B2D8B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#6a2578] transition-colors"
+              >
+                네이버 지도로 보기
+              </a>
             </div>
           </div>
         </section>
