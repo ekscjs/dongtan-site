@@ -1,12 +1,25 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "프로그램 안내 | 내몸에미소 동탄",
   description: "기능개선, 재활, 체형교정 전문 프로그램. 1회 체험 3만원부터 시작하세요.",
 };
+
+const stats = [
+  { value: "4년", label: "운영 경력" },
+  { value: "166명+", label: "누적 회원" },
+  { value: "80%", label: "재등록률" },
+];
+
+const certs = [
+  { year: "2023.12", title: "국민체육진흥공단", desc: "스포츠·장애인 바우처 가맹 시설" },
+  { year: "2025.01", title: "국민체육진흥공단", desc: "국민체력 100 간소화 측정 협력 센터" },
+  { year: "2025.07", title: "특허청", desc: "스포츠 교육 기관 특허 등록" },
+];
 
 const programs = [
   {
@@ -69,6 +82,12 @@ const pricing = [
   { name: "개인 맞춤형 수업 10회권", price: "600,000원", desc: "장기적으로 내 몸을 관리하고 싶은 분" },
 ];
 
+const beforeAfterImages = [
+  { src: "/before-after/ba-1.jpg", alt: "체형교정 비포에프터 1" },
+  { src: "/before-after/ba-2.jpg", alt: "체형교정 비포에프터 2" },
+  { src: "/before-after/ba-3.jpg", alt: "체형교정 비포에프터 3" },
+];
+
 export default function ProgramsPage() {
   return (
     <>
@@ -83,6 +102,34 @@ export default function ProgramsPage() {
               문제의 원인을 먼저 파악하고,
               <span className="text-[#7B2D8B]">그에 맞는 방법으로 해결합니다</span>
             </h1>
+          </div>
+        </section>
+
+        {/* 신뢰 지표 */}
+        <section className="py-10 px-4 border-b border-gray-100">
+          <div className="max-w-3xl mx-auto grid grid-cols-3 gap-4 text-center">
+            {stats.map((s, i) => (
+              <div key={i}>
+                <p className="text-2xl md:text-3xl font-bold text-[#7B2D8B]">{s.value}</p>
+                <p className="text-sm text-gray-500 mt-1">{s.label}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* 공식 인증 */}
+        <section className="py-10 px-4 bg-[#FAF5FB] border-b border-gray-100">
+          <div className="max-w-3xl mx-auto">
+            <p className="text-center text-xs font-semibold text-[#9B4DAB] tracking-widest uppercase mb-6">공식 인증 현황</p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {certs.map((c, i) => (
+                <div key={i} className="bg-white rounded-xl px-5 py-4 border border-purple-100 flex flex-col gap-1">
+                  <p className="text-xs text-gray-400">{c.year}</p>
+                  <p className="text-xs font-semibold text-[#7B2D8B]">{c.title}</p>
+                  <p className="text-sm font-medium text-gray-800">{c.desc}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
@@ -141,6 +188,27 @@ export default function ProgramsPage() {
             </div>
           </section>
         ))}
+
+        {/* 비포에프터 */}
+        <section className="py-20 px-4">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4">실제 변화 사례</h2>
+            <p className="text-gray-500 text-center mb-12">내몸에미소 실제 회원분들의 변화입니다</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {beforeAfterImages.map((img, i) => (
+                <div key={i} className="rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+                  <Image
+                    src={img.src}
+                    alt={img.alt}
+                    width={400}
+                    height={400}
+                    className="w-full object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
 
         {/* 가격 */}
         <section className="bg-[#FAF5FB] py-20 px-4">
