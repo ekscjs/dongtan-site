@@ -20,6 +20,11 @@ const programs = [
       "걸을 때 한쪽 다리가 이상한 분",
       "앉았다 일어날 때 무릎이 아픈 분",
     ],
+    review: {
+      name: "40대 직장인",
+      issue: "어깨 통증",
+      content: "운동하다 다친 곳이 계속 재발해서 정형외과와 운동을 번갈아 다니다 더 나빠졌어요. 팔이 올라가지 않아 이곳에 왔는데, 처음부터 가동범위를 꼼꼼히 확인하고 상태에 맞게 진행해줘서 신기했어요. 20회 하고 너무 좋아져서 재등록해서 다니고 있어요.",
+    },
   },
   {
     id: "rehab",
@@ -32,6 +37,11 @@ const programs = [
       "디스크 치료 후 관리가 필요한 분",
       "스포츠 부상 후 복귀를 준비 중인 분",
     ],
+    review: {
+      name: "30대 주부",
+      issue: "허리 디스크",
+      content: "필라테스, 요가, PT 다 해봤는데 여기가 진짜 달라요. 허리디스크로 걷기도 힘든 상태로 왔는데, 이제 덤벨 들고 워킹런지도 가능하게 만들어주셨어요. 몸에 대해 제대로 공부한 분께 받는 느낌이에요.",
+    },
   },
   {
     id: "posture",
@@ -44,6 +54,11 @@ const programs = [
       "목·어깨가 항상 뭉쳐 있는 분",
       "한쪽 어깨가 올라가 있는 분",
     ],
+    review: {
+      name: "50대 여성",
+      issue: "체형·부상 예방",
+      content: "운동 전에 몸을 풀어주고 시작하는데 다치지 않도록 신경 써주시는 게 느껴져요. 급하게 하지 않고 천천히 관리해주셔서 운동을 겁내는 분들께 특히 추천드려요.",
+    },
   },
 ];
 
@@ -65,7 +80,7 @@ export default function ProgramsPage() {
           <div className="max-w-3xl mx-auto text-center">
             <p className="text-[#9B4DAB] font-semibold text-sm mb-4 tracking-widest uppercase">프로그램 안내</p>
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              문제의 원인을 먼저 파악하고,<br />
+              문제의 원인을 먼저 파악하고,
               <span className="text-[#7B2D8B]">그에 맞는 방법으로 해결합니다</span>
             </h1>
           </div>
@@ -92,13 +107,36 @@ export default function ProgramsPage() {
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">{p.title}</h2>
               <p className="text-[#7B2D8B] font-semibold mb-4">{p.short}</p>
               <p className="text-gray-600 mb-8 leading-relaxed">{p.desc}</p>
-              <div className="space-y-3">
+
+              {/* 대상자 */}
+              <div className="space-y-3 mb-10">
                 {p.targets.map((t, j) => (
                   <div key={j} className="flex items-center gap-3 bg-white rounded-xl px-5 py-4 shadow-sm border border-gray-100">
                     <span className="text-[#7B2D8B] font-bold">✓</span>
                     <p className="text-gray-700 text-sm md:text-base">{t}</p>
                   </div>
                 ))}
+              </div>
+
+              {/* 후기 */}
+              <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-8">
+                <span className="inline-block bg-[#FAF5FB] text-[#7B2D8B] text-xs font-semibold px-3 py-1 rounded-full mb-4">
+                  {p.review.issue}
+                </span>
+                <p className="text-gray-700 leading-relaxed mb-4">{p.review.content}</p>
+                <p className="text-sm text-gray-400">{p.review.name}</p>
+              </div>
+
+              {/* CTA */}
+              <div className="flex flex-col sm:flex-row gap-3">
+                <a href="http://pf.kakao.com/_XGxbMG/chat" target="_blank" rel="noopener noreferrer"
+                  className="flex-1 text-center bg-[#7B2D8B] text-white font-semibold py-4 px-6 rounded-full hover:bg-[#6a2578] transition-colors">
+                  이 프로그램 상담하기
+                </a>
+                <Link href="/reviews"
+                  className="flex-1 text-center border border-gray-200 text-gray-500 font-semibold py-4 px-6 rounded-full hover:border-[#7B2D8B] hover:text-[#7B2D8B] transition-colors">
+                  후기 더 보기
+                </Link>
               </div>
             </div>
           </section>
