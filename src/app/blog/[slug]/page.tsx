@@ -20,6 +20,32 @@ async function getPost(slug: string): Promise<Post | null> {
   return data;
 }
 
+async function getAdjacentPosts(createdAt: string): Promise<{
+  prev: Pick<Post, "title" | "slug"> | null;
+  next: Pick<Post, "title" | "slug"> | null;
+}> {
+  const [{ data: prevData }, { data: nextData }] = await Promise.all([
+    supabase
+      .from("posts")
+      .select("title, slug")
+      .eq("published", true)
+      .lt("created_at", createdAt)
+      .order("created_at", { ascending: false })
+      .limit(1),
+    supabase
+      .from("posts")
+      .select("title, slug")
+      .eq("published", true)
+      .gt("created_at", createdAt)
+      .order("created_at", { ascending: true })
+      .limit(1),
+  ]);
+  return {
+    prev: prevData?.[0] ?? null,
+    next: nextData?.[0] ?? null,
+  };
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -50,6 +76,7 @@ export default async function BlogPostPage({
   if (!post) notFound();
 
   const html = markdownToHtml(post.content ?? "");
+  const { prev, next } = await getAdjacentPosts(post.created_at);
 
   return (
     <>
@@ -84,13 +111,46 @@ export default async function BlogPostPage({
             dangerouslySetInnerHTML={{ __html: html }}
           />
 
+          {/* 이전/다음 글 네비게이션 */}
           <div className="mt-16 pt-8 border-t border-gray-100">
-            <Link
-              href="/blog"
-              className="text-sm text-gray-400 hover:text-[#7B2D8B]"
-            >
-              ← 건강 정보 목록
-            </Link>
+            <div className="flex justify-between items-stretch gap-4">
+              {prev ? (
+                <Link
+                  href={`/blog/${prev.slug}`}
+                  className="flex-1 group flex flex-col gap-1 p-4 rounded-xl border border-gray-100 hover:border-[#7B2D8B] hover:bg-[#FAF5FB] transition-colors"
+                >
+                  <span className="text-xs text-gray-400 group-hover:text-[#7B2D8B]">← 이전 글</span>
+                  <span className="text-sm font-medium text-gray-700 group-hover:text-[#7B2D8B] line-clamp-2">
+                    {prev.title}
+                  </span>
+                </Link>
+              ) : (
+                <div className="flex-1" />
+              )}
+
+              {next ? (
+                <Link
+                  href={`/blog/${next.slug}`}
+                  className="flex-1 group flex flex-col gap-1 p-4 rounded-xl border border-gray-100 hover:border-[#7B2D8B] hover:bg-[#FAF5FB] transition-colors text-right"
+                >
+                  <span className="text-xs text-gray-400 group-hover:text-[#7B2D8B]">다음 글 →</span>
+                  <span className="text-sm font-medium text-gray-700 group-hover:text-[#7B2D8B] line-clamp-2">
+                    {next.title}
+                  </span>
+                </Link>
+              ) : (
+                <div className="flex-1" />
+              )}
+            </div>
+
+            <div className="text-center mt-6">
+              <Link
+                href="/blog"
+                className="text-xs text-gray-400 hover:text-[#7B2D8B]"
+              >
+                목록으로 돌아가기
+              </Link>
+            </div>
           </div>
         </div>
       </main>

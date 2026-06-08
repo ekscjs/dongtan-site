@@ -3,8 +3,9 @@
 import { useState, useEffect, useCallback } from "react";
 import type { Post } from "@/lib/supabase";
 import MarkdownEditor from "@/components/MarkdownEditor";
+import ImageBlurTool from "@/components/ImageBlurTool";
 
-type View = "login" | "list" | "form";
+type View = "login" | "list" | "form" | "blur";
 
 const EMPTY_FORM = {
   title: "",
@@ -277,6 +278,31 @@ export default function AdminPage() {
     );
   }
 
+  // blur view
+  if (view === "blur") {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <div className="max-w-3xl mx-auto px-4 py-10">
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">이미지 블러 도구</h1>
+              <p className="text-sm text-gray-400 mt-1">얼굴 등 민감한 부위를 모자이크 처리합니다</p>
+            </div>
+            <button
+              onClick={() => setView("list")}
+              className="text-sm text-gray-400 hover:text-gray-700"
+            >
+              ← 목록
+            </button>
+          </div>
+          <div className="bg-white rounded-2xl shadow p-6">
+            <ImageBlurTool />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // list view
   return (
     <div className="min-h-screen bg-gray-50">
@@ -292,6 +318,12 @@ export default function AdminPage() {
               className="bg-[#7B2D8B] text-white rounded-lg px-5 py-2 text-sm font-semibold hover:bg-[#6a2678]"
             >
               + 새 글
+            </button>
+            <button
+              onClick={() => setView("blur")}
+              className="border border-[#7B2D8B] text-[#7B2D8B] rounded-lg px-5 py-2 text-sm font-semibold hover:bg-[#FAF5FB]"
+            >
+              🖼️ 이미지 블러
             </button>
             <button
               onClick={handleLogout}
