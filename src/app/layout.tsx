@@ -15,6 +15,9 @@ const notoSerifKR = Noto_Serif_KR({
 });
 
 export const metadata: Metadata = {
+  verification: {
+    google: "Rq1WFAvVjevRApPRg2EE2jB5l4Ht_J4JBxN9lck3DD4",
+  },
   title: "내몸에미소 - 기능개선·재활·체형교정 전문 | 동탄",
   description:
     "허리, 무릎, 어깨가 불편하신가요? 내몸에미소는 기능개선, 재활, 체형교정을 전문으로 하는 동탄 운동센터입니다. 몸의 불편함을 원인부터 해결합니다.",
