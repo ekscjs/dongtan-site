@@ -18,7 +18,9 @@
       "Bash(git add *)",
       "Bash(git rm *)",
       "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\('version:', d.get\\('version'\\)\\); print\\('deps:', list\\(d.get\\('dependencies',{}\\).keys\\(\\)\\)\\)\")",
-      "Bash(node *)"
+      "Bash(node *)",
+      "Bash(vercel env *)",
+      "PowerShell(cd \"C:\\\\Users\\\\송경천\\\\Documents\\\\Claude\\\\Projects\\\\naemiso-brand\\\\dongtan-site\"; $v = Get-Command vercel -ErrorAction SilentlyContinue; if \\($v\\) { $v.Source } else { \"not found\" }; npx vercel --version)"
     ]
   }
 }

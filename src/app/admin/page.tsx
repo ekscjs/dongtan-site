@@ -19,11 +19,27 @@ const EMPTY_FORM = {
 function slugify(text: string) {
   return text
     .toLowerCase()
-    .replace(/[가-힣]/g, "")
     .replace(/\s+/g, "-")
     .replace(/[^a-z0-9-]/g, "")
     .replace(/-+/g, "-")
     .replace(/^-|-$/g, "");
+}
+
+function hasKorean(text: string) {
+  return /[가-힣]/.test(text);
+}
+
+async function translateToSlug(text: string): Promise<string> {
+  try {
+    const res = await fetch(
+      `https://translate.googleapis.com/translate_a/single?client=gtx&sl=ko&tl=en&dt=t&q=${encodeURIComponent(text)}`
+    );
+    const data = await res.json();
+    const translated: string = data[0].map((item: [string]) => item[0]).join(" ");
+    return slugify(translated);
+  } catch {
+    return slugify(text);
+  }
 }
 
 export default function AdminPage() {
@@ -35,6 +51,7 @@ export default function AdminPage() {
   const [editId, setEditId] = useState<number | null>(null);
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState("");
+  const [slugGenerating, setSlugGenerating] = useState(false);
 
   const fetchPosts = useCallback(async () => {
     const res = await fetch("/api/admin/posts");
@@ -188,11 +205,28 @@ export default function AdminPage() {
                 value={form.title}
                 onChange={(e) => {
                   const title = e.target.value;
-                  setForm((f) => ({
-                    ...f,
-                    title,
-                    slug: f.slug === "" || f.slug === slugify(f.title) ? slugify(title) : f.slug,
-                  }));
+                  setForm((f) => ({ ...f, title }));
+                  // 슬러그 자동 생성 (수동 수정 중이면 건드리지 않음)
+                  setForm((f) => {
+                    if (f.slug !== "" && f.slug !== slugify(f.title) && f.slug !== "") return f;
+                    return f; // 아래 useEffect에서 처리
+                  });
+                  // 한글이면 번역, 영어면 바로 slugify
+                  if (hasKorean(title)) {
+                    setSlugGenerating(true);
+                    translateToSlug(title).then((slug) => {
+                      setSlugGenerating(false);
+                      setForm((f) => {
+                        // 사용자가 슬러그를 직접 수정하지 않은 경우에만 업데이트
+                        if (f.slug === "" || hasKorean(f.title)) {
+                          return { ...f, slug };
+                        }
+                        return f;
+                      });
+                    });
+                  } else {
+                    setForm((f) => ({ ...f, slug: slugify(title) }));
+                  }
                 }}
                 className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#7B2D8B]"
                 required
@@ -200,7 +234,9 @@ export default function AdminPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-500 mb-1">슬러그 (URL)</label>
+              <label className="block text-xs font-semibold text-gray-500 mb-1">
+                슬러그 (URL){slugGenerating && <span className="ml-2 text-[#7B2D8B] font-normal">번역 중...</span>}
+              </label>
               <input
                 value={form.slug}
                 onChange={(e) => setForm((f) => ({ ...f, slug: e.target.value }))}
