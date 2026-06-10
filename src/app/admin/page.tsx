@@ -61,7 +61,6 @@ export default function AdminPage() {
   }, []);
 
   useEffect(() => {
-    // 이미 로그인 상태인지 확인
     fetch("/api/admin/posts").then((res) => {
       if (res.ok) {
         res.json().then((data) => {
