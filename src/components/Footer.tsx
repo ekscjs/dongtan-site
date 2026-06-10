@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Footer() {
   return (
     <footer className="bg-gray-900 text-gray-400 py-12">
@@ -12,8 +14,13 @@ export default function Footer() {
             <p>카카오톡 채널: 내몸에미소</p>
           </div>
         </div>
-        <div className="border-t border-gray-800 mt-8 pt-6 text-xs text-center">
-          © 내몸에미소. All rights reserved.
+        <div className="border-t border-gray-800 mt-8 pt-6 text-xs text-center space-y-2">
+          <div>
+            <Link href="/privacy" className="text-gray-500 hover:text-gray-300 transition-colors">
+              개인정보처리방침
+            </Link>
+          </div>
+          <p>© 내몸에미소. All rights reserved.</p>
         </div>
       </div>
     </footer>
