@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { markdownToHtml } from "@/lib/markdown";
 import ImageUploader from "./ImageUploader";
 
@@ -13,6 +13,20 @@ export default function MarkdownEditor({ value, onChange }: Props) {
   const [tab, setTab] = useState<"write" | "preview">("write");
   const [showImageModal, setShowImageModal] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const cursorPosRef = useRef<number>(0);
+
+  // 모달 닫힐 때 textarea 포커스 + 커서 위치 복원
+  useEffect(() => {
+    if (!showImageModal) {
+      setTimeout(() => {
+        const el = textareaRef.current;
+        if (!el) return;
+        el.focus();
+        const pos = cursorPosRef.current;
+        el.setSelectionRange(pos, pos);
+      }, 50);
+    }
+  }, [showImageModal]);
 
   function insertAtCursor(text: string) {
     const el = textareaRef.current;
@@ -20,10 +34,12 @@ export default function MarkdownEditor({ value, onChange }: Props) {
     const start = el.selectionStart;
     const end = el.selectionEnd;
     const newVal = value.slice(0, start) + text + value.slice(end);
+    const newPos = start + text.length;
+    cursorPosRef.current = newPos;
     onChange(newVal);
     setTimeout(() => {
       el.focus();
-      el.setSelectionRange(start + text.length, start + text.length);
+      el.setSelectionRange(newPos, newPos);
     }, 0);
   }
 
@@ -131,22 +147,4 @@ export default function MarkdownEditor({ value, onChange }: Props) {
         ) : (
           <div
             className="min-h-[440px] px-6 py-4 bg-white"
-            dangerouslySetInnerHTML={{
-              __html: value
-                ? markdownToHtml(value)
-                : '<p class="text-gray-400 text-sm">미리볼 내용이 없습니다.</p>',
-            }}
-          />
-        )}
-      </div>
-
-      {/* 이미지 업로드 + 블러 모달 */}
-      {showImageModal && (
-        <ImageUploader
-          onInsert={(md) => insertAtCursor(md)}
-          onClose={() => setShowImageModal(false)}
-        />
-      )}
-    </>
-  );
-}
+            dangerouslySetInnerHTML
