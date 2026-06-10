@@ -147,4 +147,22 @@ export default function MarkdownEditor({ value, onChange }: Props) {
         ) : (
           <div
             className="min-h-[440px] px-6 py-4 bg-white"
-            dangerouslySetInnerHTML
+            dangerouslySetInnerHTML={{
+              __html: value
+                ? markdownToHtml(value)
+                : '<p class="text-gray-400 text-sm">미리볼 내용이 없습니다.</p>',
+            }}
+          />
+        )}
+      </div>
+
+      {/* 이미지 업로드 + 블러 모달 */}
+      {showImageModal && (
+        <ImageUploader
+          onInsert={(md) => insertAtCursor(md)}
+          onClose={() => setShowImageModal(false)}
+        />
+      )}
+    </>
+  );
+}

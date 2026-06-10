@@ -16,4 +16,13 @@ export default function Footer() {
         </div>
         <div className="border-t border-gray-800 mt-8 pt-6 text-xs text-center space-y-2">
           <div>
-            <Link href="/privacy" className
+            <Link href="/privacy" className="text-gray-500 hover:text-gray-300 transition-colors">
+              개인정보처리방침
+            </Link>
+          </div>
+          <p>© 내몸에미소. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+  );
+}

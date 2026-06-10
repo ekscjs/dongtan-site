@@ -313,6 +313,9 @@ export default function AdminPage() {
   }
 
   // list view
+  const publishedCount = posts.filter((p) => p.published).length;
+  const draftCount = posts.filter((p) => !p.published).length;
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-4xl mx-auto px-4 py-10">
@@ -328,13 +331,37 @@ export default function AdminPage() {
             >
               + 새 글
             </button>
-<button
+            <button
               onClick={handleLogout}
               className="border border-gray-200 text-gray-500 rounded-lg px-5 py-2 text-sm hover:bg-gray-100"
             >
               로그아웃
             </button>
           </div>
+        </div>
+
+        {/* 대시보드 카드 */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <div className="bg-white rounded-2xl shadow p-5">
+            <p className="text-xs text-gray-400 mb-1">공개 글</p>
+            <p className="text-3xl font-bold text-gray-900">{publishedCount}</p>
+          </div>
+          <div className="bg-white rounded-2xl shadow p-5">
+            <p className="text-xs text-gray-400 mb-1">비공개</p>
+            <p className="text-3xl font-bold text-gray-400">{draftCount}</p>
+          </div>
+          <a
+            href="https://vercel.com/ekscjs2s-projects/dongtan-site/analytics"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-white rounded-2xl shadow p-5 hover:shadow-md transition-shadow cursor-pointer group col-span-2"
+          >
+            <p className="text-xs text-gray-400 mb-1">트래픽 분석</p>
+            <p className="text-sm font-semibold text-[#7B2D8B] group-hover:underline">
+              Vercel Analytics 열기 →
+            </p>
+            <p className="text-xs text-gray-400 mt-1">방문자 · 페이지뷰 · 유입 경로</p>
+          </a>
         </div>
 
         <div className="bg-white rounded-2xl shadow overflow-hidden">
