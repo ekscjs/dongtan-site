@@ -351,7 +351,7 @@ export default function AdminPage() {
             <p className="text-3xl font-bold text-gray-400">{draftCount}</p>
           </div>
           <a
-            href="https://vercel.com/ekscjs2s-projects/dongtan-site/analytics"
+            href="https://vercel.com/ekscjs-projects/dongtan-site/analytics"
             target="_blank"
             rel="noopener noreferrer"
             className="bg-white rounded-2xl shadow p-5 hover:shadow-md transition-shadow cursor-pointer group col-span-2"
