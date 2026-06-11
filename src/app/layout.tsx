@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Noto_Sans_KR, Noto_Serif_KR } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import Script from "next/script";
 import "./globals.css";
 
 const notoSansKR = Noto_Sans_KR({
@@ -42,6 +43,19 @@ export default function RootLayout({
       <body className={`${notoSansKR.className} min-h-full flex flex-col`}>
         {children}
         <Analytics />
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-8K7R4OR4T1"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-8K7R4OR4T1');
+          `}
+        </Script>
       </body>
     </html>
   );
