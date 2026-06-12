@@ -2,6 +2,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import Image from "next/image";
+import KakaoButton from "@/components/KakaoButton";
 
 const stats = [
   { value: "4년+", label: "동탄 센터 오픈" },
@@ -59,14 +60,9 @@ export default function Home() {
               허리, 무릎, 어깨 — 통증의 원인은 대부분 움직임에 있습니다.<br className="hidden sm:block" />
               내몸에미소가 원인부터 찾아드립니다.
             </p>
-            <a
-              href="http://pf.kakao.com/_XGxbMG/chat"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block bg-[#7B2D8B] text-white font-bold px-8 py-4 rounded-full text-base md:text-lg hover:bg-[#9B4DAB] transition-colors"
-            >
+            <KakaoButton className="inline-block bg-[#7B2D8B] text-white font-bold px-8 py-4 rounded-full text-base md:text-lg hover:bg-[#9B4DAB] transition-colors">
               카카오로 상담하기
-            </a>
+            </KakaoButton>
             <p className="text-sm text-gray-400 mt-4">경기도 화성시 동탄 지성로 134 5층</p>
           </div>
         </section>

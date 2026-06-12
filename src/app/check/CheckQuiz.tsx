@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import KakaoButton from "@/components/KakaoButton";
 
 const questions = [
   {
@@ -127,14 +128,9 @@ export default function CheckQuiz() {
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">{result.title}</h2>
               <p className="text-gray-600 leading-relaxed mb-10">{result.desc}</p>
               <div className="flex flex-col sm:flex-row gap-3">
-                <a
-                  href="http://pf.kakao.com/_XGxbMG/chat"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 bg-[#7B2D8B] text-white font-bold py-4 px-6 rounded-full hover:bg-[#6a2578] transition-colors"
-                >
+                <KakaoButton className="flex-1 bg-[#7B2D8B] text-white font-bold py-4 px-6 rounded-full hover:bg-[#6a2578] transition-colors">
                   무료 상담하기
-                </a>
+                </KakaoButton>
                 <a
                   href={result.href}
                   className="flex-1 border border-gray-200 text-gray-500 font-semibold py-4 px-6 rounded-full hover:border-[#7B2D8B] hover:text-[#7B2D8B] transition-colors"

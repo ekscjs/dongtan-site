@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import type { Metadata } from "next";
+import KakaoButton from "@/components/KakaoButton";
 
 export const metadata: Metadata = {
   title: "후기 | 내몸에미소 동탄",
@@ -47,10 +48,9 @@ export default function ReviewsPage() {
           </div>
 
           <div className="text-center">
-            <a href="http://pf.kakao.com/_XGxbMG/chat" target="_blank" rel="noopener noreferrer"
-              className="bg-[#7B2D8B] text-white font-bold px-10 py-4 rounded-full text-lg hover:bg-[#9B4DAB] transition-colors inline-block">
+            <KakaoButton className="bg-[#7B2D8B] text-white font-bold px-10 py-4 rounded-full text-lg hover:bg-[#9B4DAB] transition-colors inline-block">
               카카오로 상담하기
-            </a>
+            </KakaoButton>
           </div>
         </div>
       </main>

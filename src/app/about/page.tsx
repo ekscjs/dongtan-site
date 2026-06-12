@@ -2,6 +2,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Image from "next/image";
 import type { Metadata } from "next";
+import KakaoButton from "@/components/KakaoButton";
 
 export const metadata: Metadata = {
   title: "센터 소개 | 내몸에미소 동탄",
@@ -130,14 +131,9 @@ export default function AboutPage() {
           <div className="max-w-2xl mx-auto text-center">
             <h2 className="text-xl md:text-2xl font-bold text-white mb-3">먼저 이야기를 들어드립니다</h2>
             <p className="text-purple-200 mb-8 text-sm md:text-base">무료 상담으로 시작합니다.</p>
-            <a
-              href="http://pf.kakao.com/_XGxbMG/chat"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block bg-white text-[#7B2D8B] font-bold px-10 py-4 rounded-full text-base hover:bg-gray-100 transition-colors"
-            >
+            <KakaoButton className="inline-block bg-white text-[#7B2D8B] font-bold px-10 py-4 rounded-full text-base hover:bg-gray-100 transition-colors">
               카카오로 상담하기
-            </a>
+            </KakaoButton>
           </div>
         </section>
 

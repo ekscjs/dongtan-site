@@ -2,6 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import KakaoButton from "@/components/KakaoButton";
 
 const navLinks = [
   { href: "/about", label: "센터 소개" },
@@ -30,10 +31,9 @@ export default function Header() {
               {link.label}
             </Link>
           ))}
-          <a href="http://pf.kakao.com/_XGxbMG/chat" target="_blank" rel="noopener noreferrer"
-            className="bg-[#7B2D8B] text-white text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-[#9B4DAB] transition-colors">
+          <KakaoButton className="bg-[#7B2D8B] text-white text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-[#9B4DAB] transition-colors">
             무료 상담
-          </a>
+          </KakaoButton>
         </nav>
 
         {/* Mobile button */}
@@ -55,10 +55,9 @@ export default function Header() {
               {link.label}
             </Link>
           ))}
-          <a href="http://pf.kakao.com/_XGxbMG/chat" target="_blank" rel="noopener noreferrer"
-            className="bg-[#7B2D8B] text-white text-sm font-semibold px-5 py-3 rounded-full text-center">
+          <KakaoButton className="bg-[#7B2D8B] text-white text-sm font-semibold px-5 py-3 rounded-full text-center">
             무료 상담
-          </a>
+          </KakaoButton>
         </div>
       )}
     </header>

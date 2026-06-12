@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
+import KakaoButton from "@/components/KakaoButton";
 
 export const metadata: Metadata = {
   title: "프로그램 안내 | 내몸에미소 동탄",
@@ -177,10 +178,9 @@ export default function ProgramsPage() {
 
               {/* CTA */}
               <div className="flex flex-col sm:flex-row gap-3">
-                <a href="http://pf.kakao.com/_XGxbMG/chat" target="_blank" rel="noopener noreferrer"
-                  className="flex-1 text-center bg-[#7B2D8B] text-white font-semibold py-4 px-6 rounded-full hover:bg-[#6a2578] transition-colors">
+                <KakaoButton className="flex-1 text-center bg-[#7B2D8B] text-white font-semibold py-4 px-6 rounded-full hover:bg-[#6a2578] transition-colors">
                   이 프로그램 상담하기
-                </a>
+                </KakaoButton>
                 <a href="https://map.naver.com/p/entry/place/1101035370" target="_blank" rel="noopener noreferrer"
                   className="flex-1 text-center border border-gray-200 text-gray-500 font-semibold py-4 px-6 rounded-full hover:border-[#7B2D8B] hover:text-[#7B2D8B] transition-colors">
                   네이버 후기 보기
@@ -232,10 +232,9 @@ export default function ProgramsPage() {
           <div className="max-w-2xl mx-auto text-center">
             <h2 className="text-xl md:text-2xl font-bold text-white mb-3">어떤 프로그램이 맞는지 모르겠다면</h2>
             <p className="text-purple-200 mb-8 text-sm md:text-base">무료 상담으로 먼저 파악합니다.</p>
-            <a href="http://pf.kakao.com/_XGxbMG/chat" target="_blank" rel="noopener noreferrer"
-              className="inline-block bg-white text-[#7B2D8B] font-bold px-10 py-4 rounded-full text-base hover:bg-gray-100 transition-colors">
+            <KakaoButton className="inline-block bg-white text-[#7B2D8B] font-bold px-10 py-4 rounded-full text-base hover:bg-gray-100 transition-colors">
               카카오로 상담하기
-            </a>
+            </KakaoButton>
           </div>
         </section>
 
