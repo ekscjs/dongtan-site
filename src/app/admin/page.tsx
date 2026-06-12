@@ -350,16 +350,16 @@ export default function AdminPage() {
             <p className="text-3xl font-bold text-gray-400">{draftCount}</p>
           </div>
           <a
-            href="https://vercel.com/ekscjs-projects/dongtan-site/analytics"
+            href="https://analytics.google.com/analytics/web/#/p541281945/reports/intelligenthome"
             target="_blank"
             rel="noopener noreferrer"
             className="bg-white rounded-2xl shadow p-5 hover:shadow-md transition-shadow cursor-pointer group col-span-2"
           >
             <p className="text-xs text-gray-400 mb-1">트래픽 분석</p>
             <p className="text-sm font-semibold text-[#7B2D8B] group-hover:underline">
-              Vercel Analytics 열기 →
+              Google Analytics 열기 →
             </p>
-            <p className="text-xs text-gray-400 mt-1">방문자 · 페이지뷰 · 유입 경로</p>
+            <p className="text-xs text-gray-400 mt-1">방문자 · 카카오 클릭 · 유입 경로</p>
           </a>
         </div>
 
