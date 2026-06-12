@@ -15,6 +15,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="border-t border-gray-800 mt-8 pt-6 text-xs text-center space-y-2">
+          <p className="text-gray-500">사업자등록번호: 864-31-01353 · 상표등록 제40-2363582호</p>
           <div>
             <Link href="/privacy" className="text-gray-500 hover:text-gray-300 transition-colors">
               개인정보처리방침
