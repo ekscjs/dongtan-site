@@ -110,7 +110,7 @@ export default function Home() {
             </div>
             <div className="text-center mt-10">
               <Link href="/programs" className="text-[#7B2D8B] font-semibold hover:underline text-sm md:text-base">
-                자세한 프로그램 및 가격 보기 →
+                동탄 재활·체형교정 프로그램 자세히 보기 →
               </Link>
             </div>
           </div>

@@ -6,8 +6,18 @@ import type { Metadata } from "next";
 import KakaoButton from "@/components/KakaoButton";
 
 export const metadata: Metadata = {
-  title: "프로그램 안내 | 내몸에미소 동탄",
-  description: "기능개선, 재활, 체형교정 전문 프로그램. 1회 체험 3만원부터 시작하세요.",
+  title: "동탄 재활·체형교정·통증 운동 프로그램 | 내몸에미소",
+  description:
+    "동탄에서 재활, 체형교정, 통증 완화 운동을 1:1 맞춤으로. 증상이 아닌 원인부터 찾는 프로그램, 1회 체험 3만원. 누적 166명·재등록률 80%.",
+  keywords: [
+    "동탄 재활",
+    "동탄 체형교정",
+    "동탄 통증 운동",
+    "동탄 재활 PT",
+    "동탄 자세교정",
+    "동탄 운동센터",
+  ],
+  alternates: { canonical: "https://dongtan.naemiso.com/programs" },
 };
 
 const stats = [
@@ -99,11 +109,15 @@ export default function ProgramsPage() {
         {/* 히어로 */}
         <section className="bg-[#FAF5FB] py-20 px-4">
           <div className="max-w-3xl mx-auto text-center">
-            <p className="text-[#9B4DAB] font-semibold text-sm mb-4 tracking-widest uppercase">프로그램 안내</p>
+            <p className="text-[#9B4DAB] font-semibold text-sm mb-4 tracking-widest uppercase">동탄 기능개선 · 재활 · 체형교정</p>
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              문제의 원인을 먼저 파악하고,<br />
-              <span className="text-[#7B2D8B]">그에 맞는 방법으로 해결합니다</span>
+              동탄에서 통증·재활·체형교정,<br />
+              <span className="text-[#7B2D8B]">원인부터 해결합니다</span>
             </h1>
+            <p className="text-gray-600 mt-5 leading-relaxed max-w-2xl mx-auto">
+              허리·무릎·어깨 통증, 수술 후 재활, 굽은 등·거북목·골반 틀어짐까지 — 증상이 아닌 움직임의
+              원인을 1:1로 찾아 해결하는 동탄 운동센터입니다.
+            </p>
           </div>
         </section>
 
