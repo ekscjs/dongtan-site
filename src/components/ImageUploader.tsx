@@ -21,6 +21,7 @@ export default function ImageUploader({ onInsert, onClose }: Props) {
   const [blockSize] = useState(20);
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState("");
+  const [alt, setAlt] = useState("");
 
   const loadFile = useCallback((f: File) => {
     setFile(f);
@@ -34,6 +35,7 @@ export default function ImageUploader({ onInsert, onClose }: Props) {
       const h = Math.round(img.height * scale);
       setCanvasSize({ w, h });
       setRects([]);
+      setAlt("");
       setStep("edit");
     };
     img.src = url;
@@ -166,7 +168,7 @@ export default function ImageUploader({ onInsert, onClose }: Props) {
       const res = await fetch("/api/admin/upload", { method: "POST", body: formData });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
-      onInsert(`\n![이미지](${data.url})\n`);
+      onInsert(`\n![${alt.trim() || "이미지"}](${data.url})\n`);
       onClose();
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "업로드 실패");
@@ -215,6 +217,22 @@ export default function ImageUploader({ onInsert, onClose }: Props) {
                   onMouseUp={onMouseUp}
                   onMouseLeave={() => { setDrawing(false); drawOverlay(null); }}
                 />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-gray-600 mb-1">
+                  대체텍스트(alt) <span className="font-normal text-gray-400">— 검색·접근성용. 사진 내용을 키워드로 설명</span>
+                </label>
+                <input
+                  type="text"
+                  value={alt}
+                  onChange={(e) => setAlt(e.target.value)}
+                  placeholder="예: 복식호흡으로 허리 심부근육을 이완하는 자세"
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#7B2D8B]"
+                />
+                <p className="text-[11px] text-gray-400 mt-1">
+                  비워두면 alt가 &quot;이미지&quot;로 들어가 SEO 효과가 없어요. 허리통증·복식호흡·동탄 같은 키워드를 자연스럽게 넣어보세요.
+                </p>
               </div>
 
               <div className="flex gap-2 flex-wrap">
