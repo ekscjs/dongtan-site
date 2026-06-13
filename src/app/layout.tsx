@@ -33,6 +33,44 @@ export const metadata: Metadata = {
   },
 };
 
+const localBusinessJsonLd = {
+  "@context": "https://schema.org",
+  "@type": ["LocalBusiness", "HealthClub"],
+  name: "내몸에미소",
+  description:
+    "동탄 기능개선·재활·체형교정·퍼스널 트레이닝(PT) 전문 운동센터. 몸의 불편함을 원인부터 해결합니다.",
+  url: "https://dongtan.naemiso.com",
+  image: "https://dongtan.naemiso.com/logo.png",
+  logo: "https://dongtan.naemiso.com/logo.png",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "동탄 지성로 134 5층",
+    addressLocality: "화성시",
+    addressRegion: "경기도",
+    addressCountry: "KR",
+  },
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      opens: "10:00",
+      closes: "22:00",
+    },
+  ],
+  areaServed: ["동탄", "화성시", "오산", "수원"],
+  knowsAbout: [
+    "재활운동",
+    "체형교정",
+    "기능개선",
+    "퍼스널 트레이닝",
+    "허리통증",
+    "자세교정",
+    "시니어 운동",
+  ],
+  priceRange: "₩₩",
+  sameAs: ["http://pf.kakao.com/_XGxbMG"],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -41,6 +79,10 @@ export default function RootLayout({
   return (
     <html lang="ko" className={`h-full ${notoSansKR.variable} ${notoSerifKR.variable}`}>
       <body className={`${notoSansKR.className} min-h-full flex flex-col`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
+        />
         {children}
         <Analytics />
         {/* Google Analytics */}

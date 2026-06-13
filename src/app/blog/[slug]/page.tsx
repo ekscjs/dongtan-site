@@ -8,6 +8,23 @@ import { markdownToHtml } from "@/lib/markdown";
 
 export const revalidate = 60;
 
+const SITE = "https://dongtan.naemiso.com";
+
+function extractFirstImage(md: string): string | null {
+  const m = md.match(/!\[[^\]]*\]\(([^)]+)\)/);
+  return m ? m[1] : null;
+}
+
+function parseFaq(md: string): { q: string; a: string }[] {
+  const out: { q: string; a: string }[] = [];
+  const re = /\*\*Q\.\s*([^*]+?)\*\*\s*\n+([^\n]+)/g;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(md)) !== null) {
+    out.push({ q: m[1].trim(), a: m[2].trim() });
+  }
+  return out;
+}
+
 async function getPost(slug: string): Promise<Post | null> {
   const { data, error } = await supabase
     .from("posts")
@@ -54,9 +71,18 @@ export async function generateMetadata({
   const { slug } = await params;
   const post = await getPost(slug);
   if (!post) return {};
+  const ogImg = extractFirstImage(post.content ?? "");
   return {
     title: `${post.title} | 내몸에미소 동탄`,
     description: post.excerpt,
+    alternates: { canonical: `${SITE}/blog/${post.slug}` },
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      type: "article",
+      url: `${SITE}/blog/${post.slug}`,
+      images: ogImg ? [ogImg] : undefined,
+    },
   };
 }
 
@@ -78,8 +104,49 @@ export default async function BlogPostPage({
   const html = markdownToHtml(post.content ?? "");
   const { prev, next } = await getAdjacentPosts(post.created_at);
 
+  const firstImg = extractFirstImage(post.content ?? "");
+  const faq = parseFaq(post.content ?? "");
+  const articleLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.excerpt,
+    datePublished: post.created_at,
+    dateModified: post.created_at,
+    ...(firstImg ? { image: [firstImg] } : {}),
+    mainEntityOfPage: `${SITE}/blog/${post.slug}`,
+    author: { "@type": "Organization", name: "내몸에미소" },
+    publisher: {
+      "@type": "Organization",
+      name: "내몸에미소",
+      logo: { "@type": "ImageObject", url: `${SITE}/logo.png` },
+    },
+  };
+  const faqLd =
+    faq.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faq.map((f) => ({
+            "@type": "Question",
+            name: f.q,
+            acceptedAnswer: { "@type": "Answer", text: f.a },
+          })),
+        }
+      : null;
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd) }}
+      />
+      {faqLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
+        />
+      )}
       <Header />
       <main className="py-20 px-4">
         <div className="max-w-3xl mx-auto">
