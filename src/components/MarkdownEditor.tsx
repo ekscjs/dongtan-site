@@ -121,6 +121,7 @@ export default function MarkdownEditor({ value, onChange }: Props) {
               <span className="w-px h-4 bg-gray-200 mx-1" />
               <button type="button" onClick={() => insertAtCursor("\n- ")} className={toolbarBtn} title="목록">• 목록</button>
               <button type="button" onClick={() => insertFormatAtCursor("\n> ")} className={toolbarBtn} title="인용">❝</button>
+              <button type="button" onClick={() => insertAtCursor("\n\n---\n\n")} className={toolbarBtn} title="구분선">― 구분선</button>
               <span className="w-px h-4 bg-gray-200 mx-1" />
               <button
                 type="button"
