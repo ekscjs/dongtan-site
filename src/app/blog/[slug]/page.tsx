@@ -148,7 +148,7 @@ export default async function BlogPostPage({
         />
       )}
       <Header />
-      <main className="py-20 px-4">
+      <main className="pt-8 pb-12 md:pt-12 md:pb-20 px-4">
         <div className="max-w-3xl mx-auto">
           <Link
             href="/blog"

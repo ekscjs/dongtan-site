@@ -107,7 +107,7 @@ export default function ProgramsPage() {
       <main>
 
         {/* 히어로 */}
-        <section className="bg-[#FAF5FB] py-20 px-4">
+        <section className="bg-[#FAF5FB] pt-8 pb-12 md:pt-12 md:pb-20 px-4">
           <div className="max-w-3xl mx-auto text-center">
             <p className="text-[#9B4DAB] font-semibold text-sm mb-4 tracking-widest uppercase">동탄 기능개선 · 재활 · 체형교정</p>
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -164,7 +164,7 @@ export default function ProgramsPage() {
         {/* 각 프로그램 섹션 */}
         {programs.map((p, i) => (
           <section key={p.id} id={p.id}
-            className={`py-20 px-4 ${i % 2 === 1 ? "bg-[#FAF5FB]" : ""}`}>
+            className={`py-12 md:py-20 px-4 ${i % 2 === 1 ? "bg-[#FAF5FB]" : ""}`}>
             <div className="max-w-3xl mx-auto">
               <p className="text-4xl mb-4">{p.emoji}</p>
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">{p.title}</h2>
@@ -205,7 +205,7 @@ export default function ProgramsPage() {
         ))}
 
         {/* 비포에프터 */}
-        <section className="py-20 px-4">
+        <section className="py-12 md:py-20 px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4">실제 변화 사례</h2>
             <p className="text-gray-500 text-center mb-12">내몸에미소 실제 회원분들의 변화입니다</p>
@@ -226,7 +226,7 @@ export default function ProgramsPage() {
         </section>
 
         {/* 가격 */}
-        <section className="bg-[#FAF5FB] py-20 px-4">
+        <section className="bg-[#FAF5FB] py-12 md:py-20 px-4">
           <div className="max-w-3xl mx-auto">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-10">가격 안내</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12">
@@ -242,7 +242,7 @@ export default function ProgramsPage() {
         </section>
 
         {/* CTA */}
-        <section className="bg-[#7B2D8B] py-16 px-4">
+        <section className="bg-[#7B2D8B] py-10 md:py-16 px-4">
           <div className="max-w-2xl mx-auto text-center">
             <h2 className="text-xl md:text-2xl font-bold text-white mb-3">어떤 프로그램이 맞는지 모르겠다면</h2>
             <p className="text-purple-200 mb-8 text-sm md:text-base">무료 상담으로 먼저 파악합니다.</p>

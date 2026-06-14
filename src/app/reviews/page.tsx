@@ -30,7 +30,7 @@ export default function ReviewsPage() {
   return (
     <>
       <Header />
-      <main className="py-20 px-4">
+      <main className="pt-8 pb-12 md:pt-12 md:pb-20 px-4">
         <div className="max-w-5xl mx-auto">
           <h1 className="text-4xl font-bold text-gray-900 text-center mb-4">회원 후기</h1>
           <p className="text-gray-500 text-center mb-16">실제 회원분들의 변화입니다</p>

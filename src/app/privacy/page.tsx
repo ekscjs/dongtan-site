@@ -47,7 +47,7 @@ export default function PrivacyPage() {
     <>
       <Header />
       <main>
-        <section className="bg-[#FAF5FB] py-20 px-4">
+        <section className="bg-[#FAF5FB] pt-8 pb-12 md:pt-12 md:pb-20 px-4">
           <div className="max-w-3xl mx-auto">
             <p className="text-[#9B4DAB] font-semibold text-sm mb-4 tracking-widest uppercase">Legal</p>
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight mb-4">
@@ -57,7 +57,7 @@ export default function PrivacyPage() {
           </div>
         </section>
 
-        <section className="py-16 px-4">
+        <section className="py-10 md:py-16 px-4">
           <div className="max-w-3xl mx-auto space-y-10">
             {sections.map((s) => (
               <div key={s.title}>

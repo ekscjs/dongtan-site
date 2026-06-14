@@ -16,7 +16,7 @@ export default function AboutPage() {
       <main>
 
         {/* 히어로 */}
-        <section className="bg-[#FAF5FB] py-20 px-4">
+        <section className="bg-[#FAF5FB] pt-8 pb-12 md:pt-12 md:pb-20 px-4">
           <div className="max-w-3xl mx-auto">
             <p className="text-[#9B4DAB] font-semibold text-sm mb-4 tracking-widest uppercase">센터 소개</p>
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight mb-6">
@@ -30,7 +30,7 @@ export default function AboutPage() {
         </section>
 
         {/* 원장 스토리 */}
-        <section className="py-20 px-4">
+        <section className="py-12 md:py-20 px-4">
           <div className="max-w-3xl mx-auto space-y-10">
 
             <div className="flex flex-col md:flex-row gap-10 items-start">
@@ -80,7 +80,7 @@ export default function AboutPage() {
         </section>
 
         {/* 접근 방식 */}
-        <section className="bg-[#FAF5FB] py-20 px-4">
+        <section className="bg-[#FAF5FB] py-12 md:py-20 px-4">
           <div className="max-w-3xl mx-auto">
             <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-10">내몸에미소가 다른 이유</h2>
             <div className="space-y-6">
@@ -116,7 +116,7 @@ export default function AboutPage() {
         </section>
 
         {/* 오시는 길 */}
-        <section className="py-20 px-4">
+        <section className="py-12 md:py-20 px-4">
           <div className="max-w-3xl mx-auto">
             <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-6">오시는 길</h2>
             <div className="bg-gray-50 rounded-2xl p-8 space-y-2">
@@ -127,7 +127,7 @@ export default function AboutPage() {
         </section>
 
         {/* CTA */}
-        <section className="bg-[#7B2D8B] py-16 px-4">
+        <section className="bg-[#7B2D8B] py-10 md:py-16 px-4">
           <div className="max-w-2xl mx-auto text-center">
             <h2 className="text-xl md:text-2xl font-bold text-white mb-3">먼저 이야기를 들어드립니다</h2>
             <p className="text-purple-200 mb-8 text-sm md:text-base">무료 상담으로 시작합니다.</p>

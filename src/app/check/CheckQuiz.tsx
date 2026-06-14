@@ -383,7 +383,7 @@ function Shell({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-[#FAF5FB] py-20 px-4">
+      <main className="min-h-screen bg-[#FAF5FB] pt-8 pb-12 md:pt-12 md:pb-20 px-4">
         <div className="max-w-xl mx-auto">{children}</div>
       </main>
       <Footer />

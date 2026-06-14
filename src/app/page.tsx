@@ -49,7 +49,7 @@ export default function Home() {
       <Header />
       <main>
         {/* Hero */}
-        <section className="bg-[#FAF5FB] py-20 px-4">
+        <section className="bg-[#FAF5FB] pt-8 pb-12 md:pt-12 md:pb-20 px-4">
           <div className="max-w-3xl mx-auto text-center">
             <p className="text-[#9B4DAB] font-semibold text-sm mb-4 tracking-widest uppercase">동탄 기능개선 · 재활 · 체형교정 전문</p>
             <h1 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight mb-6">
@@ -80,7 +80,7 @@ export default function Home() {
         </section>
 
         {/* 이런 분들 */}
-        <section className="py-20 px-4">
+        <section className="py-12 md:py-20 px-4">
           <div className="max-w-5xl mx-auto">
             <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-4">이런 분들이 찾아오십니다</h2>
             <p className="text-center text-gray-500 mb-12 text-sm md:text-base">아주 아프지 않아도, 불편함을 느끼고 있다면 충분합니다</p>
@@ -96,7 +96,7 @@ export default function Home() {
         </section>
 
         {/* 프로그램 */}
-        <section className="bg-[#FAF5FB] py-20 px-4">
+        <section className="bg-[#FAF5FB] py-12 md:py-20 px-4">
           <div className="max-w-5xl mx-auto">
             <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-4">전문 프로그램</h2>
             <p className="text-center text-gray-500 mb-12 text-sm md:text-base">문제의 원인을 먼저 파악하고, 그에 맞는 방법으로 해결합니다</p>
@@ -117,7 +117,7 @@ export default function Home() {
         </section>
 
         {/* 진행 방식 */}
-        <section className="py-20 px-4">
+        <section className="py-12 md:py-20 px-4">
           <div className="max-w-3xl mx-auto">
             <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-12">이렇게 시작합니다</h2>
             <div className="space-y-8">
@@ -137,7 +137,7 @@ export default function Home() {
         </section>
 
         {/* 갤러리 */}
-        <section className="py-20 px-4">
+        <section className="py-12 md:py-20 px-4">
           <div className="max-w-5xl mx-auto">
             <p className="text-center text-xs font-semibold text-[#9B4DAB] uppercase tracking-widest mb-3">센터 & 수업 시간</p>
             <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-10">이렇게 운동합니다</h2>
@@ -187,7 +187,7 @@ export default function Home() {
         </section>
 
         {/* 네이버 후기 */}
-        <section className="bg-[#FAF5FB] py-16 px-4">
+        <section className="bg-[#FAF5FB] py-10 md:py-16 px-4">
           <div className="max-w-2xl mx-auto text-center">
             <p className="text-[#9B4DAB] font-semibold text-sm mb-3 tracking-widest uppercase">실제 회원 후기</p>
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">직접 확인해보세요</h2>
@@ -204,7 +204,7 @@ export default function Home() {
         </section>
 
         {/* 오시는 길 */}
-        <section className="py-16 px-4">
+        <section className="py-10 md:py-16 px-4">
           <div className="max-w-3xl mx-auto">
             <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-10">오시는 길</h2>
             <div className="bg-gray-50 rounded-2xl p-8 flex flex-col sm:flex-row gap-8 items-center">
@@ -236,7 +236,7 @@ export default function Home() {
         </section>
 
         {/* CTA */}
-        <section className="bg-[#7B2D8B] py-20 px-4">
+        <section className="bg-[#7B2D8B] py-12 md:py-20 px-4">
           <div className="max-w-2xl mx-auto text-center">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">몸이 달라지는 걸 직접 느껴보세요</h2>
             <p className="text-purple-200 mb-8 text-base md:text-lg">어떤 프로그램이 맞는지 모르겠다면 체크부터 해보세요.</p>
