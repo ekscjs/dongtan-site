@@ -324,6 +324,12 @@ export default function AdminPage() {
             <p className="text-sm text-gray-400 mt-1">내몸에미소 건강 정보</p>
           </div>
           <div className="flex gap-3">
+            <a
+              href="/admin/leads"
+              className="border border-[#7B2D8B] text-[#7B2D8B] rounded-lg px-5 py-2 text-sm font-semibold hover:bg-[#FAF5FB] flex items-center"
+            >
+              신청 관리
+            </a>
             <button
               onClick={openNew}
               className="bg-[#7B2D8B] text-white rounded-lg px-5 py-2 text-sm font-semibold hover:bg-[#6a2678]"

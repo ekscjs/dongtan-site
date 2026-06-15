@@ -233,6 +233,7 @@ export default function CheckQuiz() {
         </div>
         <ShareCard type={saved.type} riskLabel={saved.risk.label} />
         <RelatedContent type={saved.type} />
+        <ClassPromo />
         <CenterCTA />
       </Shell>
     );
@@ -525,6 +526,22 @@ function RelatedContent({ type }: { type: TypeKey }) {
         전체 칼럼 보기 →
       </Link>
     </div>
+  );
+}
+
+function ClassPromo() {
+  return (
+    <Link
+      href="/class/breathing"
+      onClick={() => track("class_promo_click", { from: "check_result" })}
+      className="mt-5 block rounded-2xl p-6 bg-white border border-gray-100 hover:border-[#7B2D8B] transition-colors"
+    >
+      <p className="text-xs font-semibold text-[#9B4DAB] uppercase tracking-widest mb-1">원데이 클래스</p>
+      <p className="font-bold text-gray-900 mb-1">깊은 곳이 풀리는 호흡 · 90분</p>
+      <p className="text-sm text-gray-500">
+        스트레칭으로 안 풀리는 만성 긴장, 호흡으로 풀어보세요 →
+      </p>
+    </Link>
   );
 }
 
