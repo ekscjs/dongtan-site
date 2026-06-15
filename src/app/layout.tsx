@@ -23,6 +23,9 @@ export const metadata: Metadata = {
   },
   verification: {
     google: ["Rq1WFAvVjevRApPRg2EE2jB5l4Ht_J4JBxN9lck3DD4", "B4BtdRsdIKrsFMFKAH3TDfqYwyR5HYazjOWYHr4OPBY"],
+    other: {
+      "naver-site-verification": ["5e06b796594228b9fb997bc7d893fd881350d5d0"],
+    },
   },
   title: "동탄 체형교정·재활·기능개선 운동센터 | 내몸에미소",
   description:
