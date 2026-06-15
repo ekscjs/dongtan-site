@@ -4,7 +4,7 @@ import { supabase } from "@/lib/supabase";
 export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const base = "https://dongtan.naemiso.com";
+  const base = "https://www.bodymiso.com";
 
   const staticPages: MetadataRoute.Sitemap = [
     { url: base, lastModified: new Date(), changeFrequency: "weekly", priority: 1 },
