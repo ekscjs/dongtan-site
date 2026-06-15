@@ -413,7 +413,7 @@ function ShareCard({
 }) {
   const t = resultTypes[type];
   const [copied, setCopied] = useState(false);
-  const shareUrl = `${SITE}/check`;
+  const shareUrl = `${SITE}/check?type=${type}`;
   const shareText = retest
     ? `7일 교정 루틴 ${improved ? "효과 봤어요" : "도전 중"}! 내 몸 유형은 ${t.name} 👇`
     : t.shareLine;

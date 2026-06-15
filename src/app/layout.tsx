@@ -114,6 +114,21 @@ export default function RootLayout({
             gtag('config', 'G-8K7R4OR4T1');
           `}
         </Script>
+        {/* 구글이 붙이는 추적 꼬리표(srsltid 등)를 주소창에서 제거 — GA 추적 후 실행 */}
+        <Script id="clean-tracking-params" strategy="afterInteractive">
+          {`
+            try {
+              var u = new URL(window.location.href);
+              var junk = ['srsltid','gclsrc'];
+              var changed = false;
+              junk.forEach(function(k){ if (u.searchParams.has(k)) { u.searchParams.delete(k); changed = true; } });
+              if (changed) {
+                var q = u.searchParams.toString();
+                window.history.replaceState(null, '', u.pathname + (q ? '?' + q : '') + u.hash);
+              }
+            } catch (e) {}
+          `}
+        </Script>
       </body>
     </html>
   );
