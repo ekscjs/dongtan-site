@@ -110,13 +110,12 @@ export default function ProgramsPage() {
         <section className="bg-[#FAF5FB] pt-8 pb-12 md:pt-12 md:pb-20 px-4">
           <div className="max-w-3xl mx-auto text-center">
             <p className="text-[#9B4DAB] font-semibold text-sm mb-4 tracking-widest uppercase">동탄 기능개선 · 재활 · 체형교정</p>
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h1 className="text-2xl md:text-4xl font-bold text-gray-900 mb-4 break-keep">
               동탄에서 통증·재활·체형교정,<br />
               <span className="text-[#7B2D8B]">원인부터 해결합니다</span>
             </h1>
-            <p className="text-gray-600 mt-5 leading-relaxed max-w-2xl mx-auto">
-              허리·무릎·어깨 통증, 수술 후 재활, 굽은 등·거북목·골반 틀어짐까지 — 증상이 아닌 움직임의
-              원인을 1:1로 찾아 해결하는 동탄 운동센터입니다.
+            <p className="text-gray-600 mt-5 leading-relaxed max-w-2xl mx-auto break-keep">
+              허리·무릎·어깨 통증, 수술 후 재활, 굽은 등·거북목·골반 틀어짐까지 — 증상이 아닌 움직임의 원인을 1:1로 찾아 해결하는 동탄 운동센터입니다.
             </p>
           </div>
         </section>

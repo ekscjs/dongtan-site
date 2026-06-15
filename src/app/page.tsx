@@ -56,7 +56,7 @@ export default function Home() {
               여기저기 다녀봤는데,<br />
               <span className="text-[#7B2D8B]">왜 계속 아프고 불편할까요?</span>
             </h1>
-            <p className="text-base md:text-lg text-gray-600 mb-10 leading-relaxed">
+            <p className="text-base md:text-lg text-gray-600 mb-10 leading-relaxed break-keep">
               허리, 무릎, 어깨 — 통증의 원인은 대부분 움직임에 있습니다.<br className="hidden sm:block" />{" "}
               내몸에미소가 원인부터 찾아드립니다.
             </p>
