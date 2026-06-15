@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     canonical: "https://www.bodymiso.com",
   },
   verification: {
-    google: "Rq1WFAvVjevRApPRg2EE2jB5l4Ht_J4JBxN9lck3DD4",
+    google: ["Rq1WFAvVjevRApPRg2EE2jB5l4Ht_J4JBxN9lck3DD4", "B4BtdRsdIKrsFMFKAH3TDfqYwyR5HYazjOWYHr4OPBY"],
   },
   title: "동탄 체형교정·재활·기능개선 운동센터 | 내몸에미소",
   description:
