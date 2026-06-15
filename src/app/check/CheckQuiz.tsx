@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import KakaoButton from "@/components/KakaoButton";
+import { supabase } from "@/lib/supabase";
 import {
   questions,
   resultTypes,
@@ -14,6 +16,9 @@ import {
 
 const LS_KEY = "naemiso_check_v1";
 const PLACE_URL = "https://map.naver.com/p/entry/place/1101035370";
+const SITE = "https://www.bodymiso.com";
+
+type RelPost = { title: string; slug: string; excerpt: string | null; tag: string | null };
 
 interface SavedState {
   type: TypeKey;
@@ -226,6 +231,8 @@ export default function CheckQuiz() {
             다시 진단하기
           </button>
         </div>
+        <ShareCard type={saved.type} riskLabel={saved.risk.label} />
+        <RelatedContent type={saved.type} />
         <CenterCTA />
       </Shell>
     );
@@ -362,6 +369,8 @@ export default function CheckQuiz() {
               : "꾸준히 하셨네요. 혼자 7일로 안 바뀌는 부분은 원인이 더 깊을 수 있어요. 센터에서 정확히 짚어드릴게요."}
           </p>
         </div>
+        <ShareCard type={saved.retest.type} riskLabel={saved.retest.riskLabel} retest improved={improved} />
+        <RelatedContent type={saved.retest.type} />
         <CenterCTA highlight />
       </Shell>
     );
@@ -388,6 +397,134 @@ function Shell({ children }: { children: React.ReactNode }) {
       </main>
       <Footer />
     </>
+  );
+}
+
+function ShareCard({
+  type,
+  riskLabel,
+  retest = false,
+  improved = false,
+}: {
+  type: TypeKey;
+  riskLabel: string;
+  retest?: boolean;
+  improved?: boolean;
+}) {
+  const t = resultTypes[type];
+  const [copied, setCopied] = useState(false);
+  const shareUrl = `${SITE}/check`;
+  const shareText = retest
+    ? `7일 교정 루틴 ${improved ? "효과 봤어요" : "도전 중"}! 내 몸 유형은 ${t.name} 👇`
+    : t.shareLine;
+
+  async function handleShare() {
+    track("result_share", { type, retest });
+    const nav = typeof navigator !== "undefined" ? (navigator as Navigator & { share?: (d: ShareData) => Promise<void> }) : null;
+    if (nav?.share) {
+      try {
+        await nav.share({ title: "내몸에미소 자가진단", text: `${shareText}\n`, url: shareUrl });
+        return;
+      } catch (e) {
+        // 사용자가 공유 취소(AbortError)면 폴백 안 함
+        if (e instanceof Error && e.name === "AbortError") return;
+      }
+    }
+    // 폴백: 링크 클립보드 복사
+    try {
+      await navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      /* ignore */
+    }
+  }
+
+  return (
+    <div className="mt-5 rounded-2xl p-6 text-center text-white bg-gradient-to-br from-[#7B2D8B] to-[#9B4DAB]">
+      <p className="text-3xl mb-2">{t.emoji}</p>
+      <p className="font-bold text-lg mb-0.5">{t.name}</p>
+      <p className="text-purple-200 text-sm mb-4">위험도 {riskLabel} · 내몸에미소 1분 자가진단</p>
+      <button
+        onClick={handleShare}
+        className="w-full bg-white text-[#7B2D8B] font-bold py-3.5 px-6 rounded-full hover:bg-gray-100 transition-colors"
+      >
+        {copied ? "링크 복사됐어요! 붙여넣기 하세요 ✓" : "결과 공유하기 (카톡·링크)"}
+      </button>
+      <p className="text-purple-200 text-xs mt-3">친구 자세도 같이 체크해보세요</p>
+    </div>
+  );
+}
+
+function RelatedContent({ type }: { type: TypeKey }) {
+  const [posts, setPosts] = useState<RelPost[] | null>(null);
+
+  useEffect(() => {
+    let alive = true;
+    (async () => {
+      try {
+        const { data } = await supabase
+          .from("posts")
+          .select("title, slug, excerpt, tag")
+          .eq("published", true)
+          .order("created_at", { ascending: false })
+          .limit(30);
+        if (!alive) return;
+        const all = (data ?? []) as RelPost[];
+        const kw = resultTypes[type].keywords;
+        const matched = all.filter((p) =>
+          kw.some((k) => `${p.title} ${p.tag ?? ""}`.includes(k))
+        );
+        setPosts((matched.length ? matched : all).slice(0, 3));
+      } catch {
+        if (alive) setPosts([]);
+      }
+    })();
+    return () => {
+      alive = false;
+    };
+  }, [type]);
+
+  if (posts === null) return null; // 로딩 중 비표시
+
+  if (posts.length === 0) {
+    return (
+      <div className="mt-5 bg-white rounded-2xl p-6 border border-gray-100 text-center">
+        <p className="font-bold text-gray-900 mb-1">원장 칼럼 더 보기</p>
+        <p className="text-sm text-gray-500 mb-4">내 유형과 관련된 글을 읽어보세요</p>
+        <Link
+          href="/blog"
+          className="inline-block bg-[#FAF5FB] text-[#7B2D8B] font-semibold py-2.5 px-6 rounded-full hover:bg-[#f0e4f3] transition-colors"
+        >
+          칼럼 보러가기 →
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <div className="mt-5 bg-white rounded-2xl p-6 border border-gray-100">
+      <p className="font-bold text-gray-900 mb-1">내 유형과 관련된 칼럼</p>
+      <p className="text-sm text-gray-500 mb-4">왜 이런 몸이 됐는지 더 알아보세요</p>
+      <div className="space-y-2.5">
+        {posts.map((p) => (
+          <Link
+            key={p.slug}
+            href={`/blog/${p.slug}`}
+            className="block rounded-xl border border-gray-100 px-4 py-3 hover:border-[#7B2D8B] hover:bg-[#FAF5FB] transition-colors"
+          >
+            <p className="font-semibold text-sm text-gray-900 line-clamp-1">{p.title}</p>
+            {p.excerpt && <p className="text-xs text-gray-500 mt-0.5 line-clamp-1">{p.excerpt}</p>}
+          </Link>
+        ))}
+      </div>
+      <Link
+        href="/blog"
+        className="block text-center text-sm text-[#7B2D8B] font-semibold mt-4 hover:underline"
+      >
+        전체 칼럼 보기 →
+      </Link>
+    </div>
   );
 }
 

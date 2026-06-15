@@ -8,7 +8,7 @@ import { markdownToHtml } from "@/lib/markdown";
 
 export const revalidate = 60;
 
-const SITE = "https://dongtan.naemiso.com";
+const SITE = "https://www.bodymiso.com";
 
 function extractFirstImage(md: string): string | null {
   const m = md.match(/!\[[^\]]*\]\(([^)]+)\)/);
