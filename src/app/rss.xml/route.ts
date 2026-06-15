@@ -5,11 +5,11 @@ export const revalidate = 3600;
 export async function GET() {
   const base = "https://www.bodymiso.com";
 
-  let posts: { title: string; slug: string; description: string; created_at: string }[] = [];
+  let posts: { title: string; slug: string; excerpt: string; created_at: string }[] = [];
   try {
     const { data } = await supabase
       .from("posts")
-      .select("title, slug, description, created_at")
+      .select("title, slug, excerpt, created_at")
       .eq("published", true)
       .order("created_at", { ascending: false });
     posts = data ?? [];
@@ -24,7 +24,7 @@ export async function GET() {
       <title><![CDATA[${p.title}]]></title>
       <link>${base}/blog/${p.slug}</link>
       <guid>${base}/blog/${p.slug}</guid>
-      <description><![CDATA[${p.description ?? ""}]]></description>
+      <description><![CDATA[${p.excerpt ?? ""}]]></description>
       <pubDate>${new Date(p.created_at).toUTCString()}</pubDate>
     </item>`
     )
