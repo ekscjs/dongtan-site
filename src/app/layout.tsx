@@ -17,6 +17,10 @@ const notoSerifKR = Noto_Serif_KR({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.bodymiso.com"),
+  alternates: {
+    canonical: "https://www.bodymiso.com",
+  },
   verification: {
     google: "Rq1WFAvVjevRApPRg2EE2jB5l4Ht_J4JBxN9lck3DD4",
   },
@@ -38,7 +42,7 @@ export const metadata: Metadata = {
     description: "허리, 무릎, 어깨가 불편하신가요? 동탄에서 몸의 불편함을 원인부터 해결합니다.",
     locale: "ko_KR",
     type: "website",
-    url: "https://dongtan.naemiso.com",
+    url: "https://www.bodymiso.com",
   },
 };
 
@@ -48,9 +52,9 @@ const localBusinessJsonLd = {
   name: "내몸에미소",
   description:
     "동탄 기능개선·재활·체형교정·퍼스널 트레이닝(PT) 전문 운동센터. 몸의 불편함을 원인부터 해결합니다.",
-  url: "https://dongtan.naemiso.com",
-  image: "https://dongtan.naemiso.com/logo.png",
-  logo: "https://dongtan.naemiso.com/logo.png",
+  url: "https://www.bodymiso.com",
+  image: "https://www.bodymiso.com/logo.png",
+  logo: "https://www.bodymiso.com/logo.png",
   address: {
     "@type": "PostalAddress",
     streetAddress: "동탄 지성로 134 5층",
