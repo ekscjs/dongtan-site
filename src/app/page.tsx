@@ -52,12 +52,12 @@ export default function Home() {
         <section className="bg-[#FAF5FB] pt-8 pb-12 md:pt-12 md:pb-20 px-4">
           <div className="max-w-3xl mx-auto text-center">
             <p className="text-[#9B4DAB] font-semibold text-sm mb-4 tracking-widest uppercase">동탄 기능개선 · 재활 · 체형교정 전문</p>
-            <h1 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight mb-6">
+            <h1 className="text-2xl md:text-5xl font-bold text-gray-900 leading-tight mb-6">
               여기저기 다녀봤는데,<br />
               <span className="text-[#7B2D8B]">왜 계속 아프고 불편할까요?</span>
             </h1>
             <p className="text-base md:text-lg text-gray-600 mb-10 leading-relaxed">
-              허리, 무릎, 어깨 — 통증의 원인은 대부분 움직임에 있습니다.<br className="hidden sm:block" />
+              허리, 무릎, 어깨 — 통증의 원인은 대부분 움직임에 있습니다.<br className="hidden sm:block" />{" "}
               내몸에미소가 원인부터 찾아드립니다.
             </p>
             <KakaoButton className="inline-block bg-[#7B2D8B] text-white font-bold px-8 py-4 rounded-full text-base md:text-lg hover:bg-[#9B4DAB] transition-colors">
