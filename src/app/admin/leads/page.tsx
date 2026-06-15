@@ -149,7 +149,7 @@ export default function AdminLeadsPage() {
                     {STATUS_LABEL[l.status]}
                   </span>
                 </div>
-                {l.preferred && <p className="text-sm text-gray-600">희망: {l.preferred}</p>}
+                {l.preferred && <p className="text-sm text-gray-600">신청 일정: {l.preferred}</p>}
                 {l.message && (
                   <p className="text-sm text-gray-600 mt-1 bg-[#FAF5FB] rounded-lg px-3 py-2">{l.message}</p>
                 )}

@@ -13,10 +13,14 @@ export default function LeadForm({
   program,
   source,
   timeOptions = ["평일 오전", "평일 오후", "평일 저녁", "주말", "아무때나 가능"],
+  timeLabel = "희망 시간대",
+  timePlaceholder = "선택 안 함",
 }: {
   program: string;
   source?: string;
   timeOptions?: string[];
+  timeLabel?: string;
+  timePlaceholder?: string;
 }) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -85,13 +89,13 @@ export default function LeadForm({
         />
       </div>
       <div>
-        <label className="block text-sm font-semibold text-gray-700 mb-1">희망 시간대</label>
+        <label className="block text-sm font-semibold text-gray-700 mb-1">{timeLabel}</label>
         <select
           value={preferred}
           onChange={(e) => setPreferred(e.target.value)}
           className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:border-[#7B2D8B] focus:outline-none bg-white"
         >
-          <option value="">선택 안 함</option>
+          <option value="">{timePlaceholder}</option>
           {timeOptions.map((t) => (
             <option key={t} value={t}>
               {t}
