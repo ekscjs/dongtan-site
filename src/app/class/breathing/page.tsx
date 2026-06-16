@@ -41,7 +41,7 @@ const FLOW = [
 const INFO = [
   { k: "시간", v: "50분" },
   { k: "정원", v: "소수 정예 6명" },
-  { k: "장소", v: "동탄 내몸에미소 (지성로 134, 5층)" },
+  { k: "장소", v: "지성로 134, 5층" },
   { k: "정가", v: "39,000원" },
   { k: "론칭특가", v: "29,000원" },
 ];
@@ -149,12 +149,12 @@ export default function BreathingClassPage() {
                   }`}
                 >
                   <p className={`text-xs mb-1 ${i.k === "론칭특가" ? "text-purple-200" : "text-gray-400"}`}>{i.k}</p>
-                  <p className={`font-bold ${i.k === "론칭특가" ? "text-white text-lg" : i.k === "정가" ? "text-gray-400 line-through" : "text-gray-900"}`}>{i.v}</p>
+                  <p className={`font-bold ${i.k === "론칭특가" ? "text-white text-lg" : i.k === "정가" ? "text-gray-400 line-through" : i.k === "장소" ? "text-gray-900 text-sm" : "text-gray-900"}`}>{i.v}</p>
                 </div>
               ))}
             </div>
             <p className="text-xs text-gray-400 text-center mt-4">
-              * 정원이 작아 신청 순서대로 일정을 안내드립니다. 현재는 동탄 센터 현장 수업으로 진행됩니다.
+              * 정원이 작아 신청 순서대로 일정을 안내드립니다.<br />현재는 동탄 센터 현장 수업으로 진행됩니다.
             </p>
           </div>
         </section>
