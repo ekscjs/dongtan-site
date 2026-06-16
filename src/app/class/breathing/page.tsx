@@ -42,7 +42,8 @@ const INFO = [
   { k: "시간", v: "50분" },
   { k: "정원", v: "소수 정예 6명" },
   { k: "장소", v: "동탄 내몸에미소 (지성로 134, 5층)" },
-  { k: "체험가", v: "30,000원" },
+  { k: "정가", v: "39,000원" },
+  { k: "론칭특가", v: "29,000원" },
 ];
 
 // ⬇️ 수업 날짜. 회차가 끝나면 지우고 다음 날짜로 바꾸세요. (한 번에 한 날짜만 권장)
@@ -139,9 +140,16 @@ export default function BreathingClassPage() {
           <div className="max-w-2xl mx-auto">
             <div className="grid grid-cols-2 gap-3">
               {INFO.map((i) => (
-                <div key={i.k} className="bg-white rounded-2xl border border-gray-100 p-5 text-center">
-                  <p className="text-xs text-gray-400 mb-1">{i.k}</p>
-                  <p className="font-bold text-gray-900">{i.v}</p>
+                <div
+                  key={i.k}
+                  className={`rounded-2xl border p-5 text-center ${
+                    i.k === "론칭특가"
+                      ? "bg-[#7B2D8B] border-[#7B2D8B]"
+                      : "bg-white border-gray-100"
+                  }`}
+                >
+                  <p className={`text-xs mb-1 ${i.k === "론칭특가" ? "text-purple-200" : "text-gray-400"}`}>{i.k}</p>
+                  <p className={`font-bold ${i.k === "론칭특가" ? "text-white text-lg" : i.k === "정가" ? "text-gray-400 line-through" : "text-gray-900"}`}>{i.v}</p>
                 </div>
               ))}
             </div>
