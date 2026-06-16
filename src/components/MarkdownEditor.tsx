@@ -122,6 +122,20 @@ export default function MarkdownEditor({ value, onChange }: Props) {
               <button type="button" onClick={() => insertAtCursor("\n- ")} className={toolbarBtn} title="목록">• 목록</button>
               <button type="button" onClick={() => insertFormatAtCursor("\n> ")} className={toolbarBtn} title="인용">❝</button>
               <button type="button" onClick={() => insertAtCursor("\n\n---\n\n")} className={toolbarBtn} title="구분선">― 구분선</button>
+              <button
+                type="button"
+                onClick={() => {
+                  const el = textareaRef.current;
+                  if (!el) return;
+                  const selected = value.slice(el.selectionStart, el.selectionEnd);
+                  const url = window.prompt("링크 주소 입력 (예: https://...)");
+                  if (!url) return;
+                  const text = selected || window.prompt("링크에 표시할 텍스트") || url;
+                  insertAtCursor(`[${text}](${url})`);
+                }}
+                className={toolbarBtn}
+                title="링크"
+              >🔗 링크</button>
               <span className="w-px h-4 bg-gray-200 mx-1" />
               <button
                 type="button"

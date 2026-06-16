@@ -41,6 +41,7 @@ async function translateToSlug(text: string): Promise<string> {
 }
 
 export default function AdminPage() {
+  useEffect(() => { document.title = "🔧 관리자 — 내몸에미소"; }, []);
   const [view, setView] = useState<View>("login");
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
