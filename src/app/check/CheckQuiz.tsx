@@ -332,8 +332,8 @@ export default function CheckQuiz() {
             </div>
           )}
 
-          <button onClick={resetAll} className="w-full text-xs text-gray-300 hover:text-gray-500 underline mt-6">
-            처음부터 다시
+          <button onClick={resetAll} className="w-full text-sm text-gray-500 hover:text-gray-800 underline mt-6 py-2">
+            처음부터 다시 진단하기
           </button>
         </div>
         <CenterCTA />

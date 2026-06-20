@@ -21,6 +21,13 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://www.bodymiso.com",
   },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
   verification: {
     google: ["Rq1WFAvVjevRApPRg2EE2jB5l4Ht_J4JBxN9lck3DD4", "B4BtdRsdIKrsFMFKAH3TDfqYwyR5HYazjOWYHr4OPBY"],
     other: {
