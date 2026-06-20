@@ -42,13 +42,13 @@ const INFO = [
   { k: "시간", v: "50분" },
   { k: "정원", v: "소수 정예 6명" },
   { k: "장소", v: "지성로 134, 5층" },
-  { k: "정가", v: "39,000원" },
+  { k: "정가", v: "49,000원" },
   { k: "론칭특가", v: "29,000원" },
 ];
 
 // ⬇️ 수업 날짜. 회차가 끝나면 지우고 다음 날짜로 바꾸세요. (한 번에 한 날짜만 권장)
 const SESSIONS = [
-  "7월 4일 (토) 오전 11:00",
+  "7월 26일 (토) 오전 11:00",
 ];
 
 export default function BreathingClassPage() {
@@ -60,7 +60,7 @@ export default function BreathingClassPage() {
         <section className="px-4 pt-12 pb-10 md:pt-20 md:pb-14">
           <div className="max-w-2xl mx-auto text-center">
             <span className="inline-block bg-[#7B2D8B] text-white text-xs font-semibold px-3 py-1 rounded-full mb-5">
-              7월 4일 (토) 오전 11시 · 선착순 6명
+              7월 26일 (토) 오전 11시 · 선착순 6명
             </span>
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 leading-snug mb-4">
               힘으로 푸는 게 아니라,
