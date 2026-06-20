@@ -27,7 +27,7 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const marketingDir = path.join(process.cwd(), "..", "marketing");
+  const marketingDir = path.join(process.cwd(), "marketing");
 
   if (!fs.existsSync(marketingDir)) {
     return NextResponse.json({ files: [] });
