@@ -35,7 +35,9 @@ export default function ImageUploader({ onInsert, onClose }: Props) {
       const h = Math.round(img.height * scale);
       setCanvasSize({ w, h });
       setRects([]);
-      setAlt("");
+      // 파일명으로 대체텍스트 자동 생성
+      const name = f.name.replace(/\.[^.]+$/, "").replace(/[-_]/g, " ");
+      setAlt(name);
       setStep("edit");
     };
     img.src = url;
