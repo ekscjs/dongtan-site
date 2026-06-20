@@ -111,19 +111,20 @@ export default function MarkdownEditor({ value, onChange }: Props) {
 
           {tab === "write" && (
             <div className="flex items-center gap-0.5 flex-wrap">
-              <button type="button" onClick={() => wrapLine("# ")} className={toolbarBtn} title="H1">H1</button>
-              <button type="button" onClick={() => wrapLine("## ")} className={toolbarBtn} title="H2">H2</button>
-              <button type="button" onClick={() => wrapLine("### ")} className={toolbarBtn} title="H3">H3</button>
+              <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => wrapLine("# ")} className={toolbarBtn} title="H1">H1</button>
+              <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => wrapLine("## ")} className={toolbarBtn} title="H2">H2</button>
+              <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => wrapLine("### ")} className={toolbarBtn} title="H3">H3</button>
               <span className="w-px h-4 bg-gray-200 mx-1" />
-              <button type="button" onClick={() => insertFormatAtCursor("**", "**")} className={toolbarBtn} title="굵게"><strong>B</strong></button>
-              <button type="button" onClick={() => insertFormatAtCursor("*", "*")} className={toolbarBtn} title="기울임"><em>I</em></button>
-              <button type="button" onClick={() => insertFormatAtCursor("`", "`")} className={toolbarBtn} title="코드">{"<>"}</button>
+              <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => insertFormatAtCursor("**", "**")} className={toolbarBtn} title="굵게"><strong>B</strong></button>
+              <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => insertFormatAtCursor("*", "*")} className={toolbarBtn} title="기울임"><em>I</em></button>
+              <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => insertFormatAtCursor("`", "`")} className={toolbarBtn} title="코드">{"<>"}</button>
               <span className="w-px h-4 bg-gray-200 mx-1" />
-              <button type="button" onClick={() => insertAtCursor("\n- ")} className={toolbarBtn} title="목록">• 목록</button>
-              <button type="button" onClick={() => insertFormatAtCursor("\n> ")} className={toolbarBtn} title="인용">❝</button>
-              <button type="button" onClick={() => insertAtCursor("\n\n---\n\n")} className={toolbarBtn} title="구분선">― 구분선</button>
+              <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => insertAtCursor("\n- ")} className={toolbarBtn} title="목록">• 목록</button>
+              <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => insertFormatAtCursor("\n> ")} className={toolbarBtn} title="인용">❝</button>
+              <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => insertAtCursor("\n\n---\n\n")} className={toolbarBtn} title="구분선">― 구분선</button>
               <button
                 type="button"
+                onMouseDown={(e) => e.preventDefault()}
                 onClick={() => {
                   const el = textareaRef.current;
                   if (!el) return;
@@ -139,6 +140,7 @@ export default function MarkdownEditor({ value, onChange }: Props) {
               <span className="w-px h-4 bg-gray-200 mx-1" />
               <button
                 type="button"
+                onMouseDown={(e) => e.preventDefault()}
                 onClick={() => setShowImageModal(true)}
                 className={`${toolbarBtn} flex items-center gap-1`}
                 title="이미지 업로드"
