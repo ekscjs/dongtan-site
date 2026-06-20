@@ -188,12 +188,40 @@ export default function AdminPage() {
             <h1 className="text-2xl font-bold text-gray-900">
               {editId ? "글 수정" : "새 글 작성"}
             </h1>
-            <button
-              onClick={() => setView("list")}
-              className="text-sm text-gray-400 hover:text-gray-700"
-            >
-              ← 목록
-            </button>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={async () => {
+                  const res = await fetch("/api/admin/marketing");
+                  if (!res.ok) return;
+                  const { files } = await res.json();
+                  if (!files.length) return alert("불러올 파일이 없습니다.");
+                  // 파일이 여러 개면 선택, 하나면 바로 적용
+                  const file = files.length === 1 ? files[0] : files[
+                    parseInt(prompt(files.map((f: {filename:string}, i: number) => `${i+1}. ${f.filename}`).join("\n") + "\n\n번호 입력:") ?? "1") - 1
+                  ];
+                  if (!file) return;
+                  setForm({
+                    title: file.title,
+                    slug: file.slug,
+                    tag: file.tag,
+                    excerpt: file.excerpt,
+                    content: file.content,
+                    published: true,
+                  });
+                  setMsg("마케팅 파일에서 불러왔습니다. 내용을 확인 후 저장하세요.");
+                }}
+                className="text-sm text-[#7B2D8B] border border-[#7B2D8B] rounded-lg px-4 py-1.5 hover:bg-[#FAF5FB]"
+              >
+                📂 마케팅 글 불러오기
+              </button>
+              <button
+                onClick={() => setView("list")}
+                className="text-sm text-gray-400 hover:text-gray-700"
+              >
+                ← 목록
+              </button>
+            </div>
           </div>
 
           <form onSubmit={handleSave} className="bg-white rounded-2xl shadow p-6 space-y-5">
