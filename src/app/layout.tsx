@@ -34,7 +34,7 @@ export const metadata: Metadata = {
       "naver-site-verification": ["5e06b796594228b9fb997bc7d893fd881350d5d0"],
     },
   },
-  title: "동탄 체형교정·재활·기능개선 운동센터 | 내몸에미소",
+  title: "내몸에미소 | 동탄 허리·체형·재활 운동센터",
   description:
     "동탄에서 허리·무릎·어깨 통증, 체형교정, 재활 운동을 1:1로. 증상이 아닌 원인부터 찾아 해결하는 동탄 운동센터 내몸에미소입니다. 누적 166명·재등록률 80%.",
   keywords: [
