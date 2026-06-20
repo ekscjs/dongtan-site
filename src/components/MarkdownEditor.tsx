@@ -9,11 +9,36 @@ interface Props {
   onChange: (value: string) => void;
 }
 
+const COLORS = [
+  { label: "빨강", value: "#e53e3e" },
+  { label: "주황", value: "#dd6b20" },
+  { label: "파랑", value: "#3182ce" },
+  { label: "초록", value: "#38a169" },
+  { label: "보라", value: "#7B2D8B" },
+  { label: "회색", value: "#718096" },
+];
+
 export default function MarkdownEditor({ value, onChange }: Props) {
   const [tab, setTab] = useState<"write" | "preview">("write");
   const [showImageModal, setShowImageModal] = useState(false);
+  const [showColorPicker, setShowColorPicker] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const cursorPosRef = useRef<number>(0);
+  const historyRef = useRef<string[]>([value]);
+  const historyIndexRef = useRef<number>(0);
+
+  function pushHistory(newVal: string) {
+    const hist = historyRef.current.slice(0, historyIndexRef.current + 1);
+    hist.push(newVal);
+    historyRef.current = hist;
+    historyIndexRef.current = hist.length - 1;
+  }
+
+  function handleUndo() {
+    if (historyIndexRef.current <= 0) return;
+    historyIndexRef.current--;
+    onChange(historyRef.current[historyIndexRef.current]);
+  }
 
   // 모달 닫힐 때 textarea 포커스 + 커서 위치 복원
   useEffect(() => {
@@ -36,6 +61,7 @@ export default function MarkdownEditor({ value, onChange }: Props) {
     const newVal = value.slice(0, start) + text + value.slice(end);
     const newPos = start + text.length;
     cursorPosRef.current = newPos;
+    pushHistory(newVal);
     onChange(newVal);
     setTimeout(() => {
       el.focus();
@@ -50,6 +76,7 @@ export default function MarkdownEditor({ value, onChange }: Props) {
     const end = el.selectionEnd;
     const selected = value.slice(start, end);
     const newVal = value.slice(0, start) + before + selected + after + value.slice(end);
+    pushHistory(newVal);
     onChange(newVal);
     setTimeout(() => {
       el.focus();
@@ -122,6 +149,51 @@ export default function MarkdownEditor({ value, onChange }: Props) {
               <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => insertAtCursor("\n- ")} className={toolbarBtn} title="목록">• 목록</button>
               <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => insertFormatAtCursor("\n> ")} className={toolbarBtn} title="인용">❝</button>
               <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => insertAtCursor("\n\n---\n\n")} className={toolbarBtn} title="구분선">― 구분선</button>
+              <span className="w-px h-4 bg-gray-200 mx-1" />
+              <button
+                type="button"
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={handleUndo}
+                className={toolbarBtn}
+                title="되돌리기 (Ctrl+Z)"
+              >↩ 되돌리기</button>
+              <div className="relative">
+                <button
+                  type="button"
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={() => setShowColorPicker((v) => !v)}
+                  className={toolbarBtn}
+                  title="글자색"
+                >🎨 색상</button>
+                {showColorPicker && (
+                  <div className="absolute top-8 left-0 bg-white border border-gray-200 rounded-xl shadow-lg p-2 flex gap-1 z-10">
+                    {COLORS.map((c) => (
+                      <button
+                        key={c.value}
+                        type="button"
+                        onMouseDown={(e) => e.preventDefault()}
+                        onClick={() => {
+                          const el = textareaRef.current;
+                          if (!el) return;
+                          const selected = value.slice(el.selectionStart, el.selectionEnd);
+                          const text = selected || "텍스트";
+                          insertAtCursor(`<span style="color:${c.value}">${text}</span>`);
+                          setShowColorPicker(false);
+                        }}
+                        className="w-6 h-6 rounded-full border-2 border-white shadow hover:scale-110 transition-transform"
+                        style={{ backgroundColor: c.value }}
+                        title={c.label}
+                      />
+                    ))}
+                    <button
+                      type="button"
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={() => setShowColorPicker(false)}
+                      className="text-xs text-gray-400 px-1"
+                    >✕</button>
+                  </div>
+                )}
+              </div>
               <button
                 type="button"
                 onMouseDown={(e) => e.preventDefault()}
