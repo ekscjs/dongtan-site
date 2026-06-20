@@ -261,7 +261,7 @@ export default function AdminPage() {
 
             <div>
               <label className="block text-xs font-semibold text-gray-500 mb-1">
-                슬러그 (URL){slugGenerating && <span className="ml-2 text-[#7B2D8B] font-normal">번역 중...</span>}
+                슬러그{slugGenerating && <span className="ml-2 text-[#7B2D8B] font-normal">번역 중...</span>}
               </label>
               <input
                 value={form.slug}
