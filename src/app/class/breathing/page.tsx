@@ -123,13 +123,17 @@ export default function BreathingClassPage() {
         {/* 왜 호흡인가 */}
         <section className="px-4 py-12 bg-white">
           <div className="max-w-2xl mx-auto">
-            <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">왜 ‘호흡’일까요?</h2>
+            <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">왜 ‘근막이완 + 호흡’일까요?</h2>
             <p className="text-gray-600 leading-relaxed mb-3">
               스트레칭이나 마사지로 잠깐 시원했다가 금방 다시 굳는다면, 표면이 아니라 더 깊은 곳이 긴장해 있는
-              경우가 많습니다. 깊은 근육은 힘으로 누른다고 풀리지 않고, 호흡이 만드는 안쪽의 움직임으로 풀립니다.
+              경우가 많습니다. 깊은 근육은 힘으로 누른다고 풀리지 않아요.
+            </p>
+            <p className="text-gray-600 leading-relaxed mb-3">
+              이 클래스는 먼저 도구로 굳은 근막을 풀어줍니다. 근막이 풀려야 호흡이 제대로 깊이 들어가거든요.
+              이완된 몸에 깊은 호흡을 넣으면, 손이 닿지 않는 안쪽 긴장이 비로소 빠지기 시작합니다.
             </p>
             <p className="text-gray-600 leading-relaxed">
-              이 클래스는 운동을 빡세게 하는 시간이 아니라, 내 숨을 다시 깊게 쓰는 법을 익혀 몸의 힘을 빼는 50분입니다.
+              운동을 빡세게 하는 시간이 아니라, 몸을 이완시키고 숨을 깊게 쓰는 법을 익히는 50분입니다.
               원장이 한 사람씩 직접 짚어드립니다.
             </p>
           </div>
