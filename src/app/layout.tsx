@@ -110,7 +110,7 @@ export default function RootLayout({
         <Analytics />
         {/* Google Analytics */}
         <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-8K7R4OR4T1"
+          src="https://www.googletagmanager.com/gtag/js?id=G-8K7R40R4T1"
           strategy="afterInteractive"
         />
         <Script id="google-analytics" strategy="afterInteractive">
@@ -118,7 +118,7 @@ export default function RootLayout({
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-8K7R4OR4T1');
+            gtag('config', 'G-8K7R40R4T1');
           `}
         </Script>
         {/* 구글이 붙이는 추적 꼬리표(srsltid 등)를 주소창에서 제거 — GA 추적 후 실행 */}
