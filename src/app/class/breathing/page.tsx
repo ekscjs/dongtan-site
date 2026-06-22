@@ -48,7 +48,7 @@ const INFO = [
 
 // ⬇️ 수업 날짜. 회차가 끝나면 지우고 다음 날짜로 바꾸세요. (한 번에 한 날짜만 권장)
 const SESSIONS = [
-  "7월 26일 (토) 오전 11:00",
+  "7월 25일 (토) 오전 11:00",
 ];
 
 export default function BreathingClassPage() {
@@ -60,7 +60,7 @@ export default function BreathingClassPage() {
         <section className="px-4 pt-12 pb-10 md:pt-20 md:pb-14">
           <div className="max-w-2xl mx-auto text-center">
             <span className="inline-block bg-[#7B2D8B] text-white text-xs font-semibold px-3 py-1 rounded-full mb-5">
-              7월 26일 (토) 오전 11시 · 선착순 6명
+              7월 25일 (토) 오전 11시 · 선착순 6명
             </span>
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 leading-snug mb-4">
               힘으로 푸는 게 아니라,

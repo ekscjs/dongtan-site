@@ -117,20 +117,21 @@ export default function AdminPage() {
     setView("form");
   }
 
-  async function handleSave(e: React.FormEvent) {
+  async function handleSave(e: React.FormEvent, asDraft?: boolean) {
     e.preventDefault();
     setSaving(true);
     setMsg("");
+    const payload = asDraft ? { ...form, published: false } : form;
     try {
       const url = editId ? `/api/admin/posts/${editId}` : "/api/admin/posts";
       const method = editId ? "PUT" : "POST";
       const res = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify(payload),
       });
       if (res.ok) {
-        setMsg("저장되었습니다.");
+        setMsg(asDraft ? "임시저장 완료." : "저장되었습니다.");
         await fetchPosts();
         setTimeout(() => setView("list"), 800);
       } else {
@@ -140,6 +141,16 @@ export default function AdminPage() {
     } finally {
       setSaving(false);
     }
+  }
+
+  async function handlePublish(post: Post) {
+    const res = await fetch(`/api/admin/posts/${post.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...post, published: true }),
+    });
+    if (res.ok) await fetchPosts();
+    else alert("발행 실패");
   }
 
   async function handleDelete(id: number, title: string) {
@@ -324,7 +335,15 @@ export default function AdminPage() {
                 disabled={saving}
                 className="bg-[#7B2D8B] text-white rounded-lg px-6 py-2.5 text-sm font-semibold hover:bg-[#6a2678] disabled:opacity-50"
               >
-                {saving ? "저장 중..." : "저장"}
+                {saving ? "저장 중..." : "발행"}
+              </button>
+              <button
+                type="button"
+                disabled={saving}
+                onClick={(e) => handleSave(e as unknown as React.FormEvent, true)}
+                className="border border-[#7B2D8B] text-[#7B2D8B] rounded-lg px-6 py-2.5 text-sm font-semibold hover:bg-[#FAF5FB] disabled:opacity-50"
+              >
+                임시저장
               </button>
               <button
                 type="button"
@@ -450,6 +469,14 @@ export default function AdminPage() {
                     </td>
                     <td className="px-4 py-4">
                       <div className="flex gap-2 justify-end">
+                        {!post.published && (
+                          <button
+                            onClick={() => handlePublish(post)}
+                            className="text-xs bg-[#7B2D8B] text-white px-2.5 py-1 rounded-full hover:bg-[#6a2678]"
+                          >
+                            발행
+                          </button>
+                        )}
                         <button
                           onClick={() => openEdit(post)}
                           className="text-xs text-[#7B2D8B] hover:underline"
