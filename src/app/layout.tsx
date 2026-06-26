@@ -3,6 +3,7 @@ import { Noto_Sans_KR, Noto_Serif_KR } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import Script from "next/script";
 import Tracker from "@/components/Tracker";
+import ScrollToTop from "@/components/ScrollToTop";
 import "./globals.css";
 
 const notoSansKR = Noto_Sans_KR({
@@ -119,6 +120,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
         />
+        <ScrollToTop />
         {children}
         <Tracker />
         <Analytics />
