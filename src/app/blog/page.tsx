@@ -44,21 +44,26 @@ export default function BlogPage() {
             <>
               <div className="space-y-8">
                 {posts.slice(0, visible).map((post) => (
-                  <article key={post.id} className="border-b border-gray-100 pb-8">
-                    <div className="flex items-center gap-3 mb-3">
-                      {post.tag && (
-                        <span className="bg-[#FAF5FB] text-[#7B2D8B] text-xs font-semibold px-3 py-1 rounded-full">
-                          {post.tag}
-                        </span>
+                  <article key={post.id}>
+                    <Link
+                      href={`/blog/${post.slug}`}
+                      className="block border-b border-gray-100 pb-8 group"
+                    >
+                      <div className="flex items-center gap-3 mb-3">
+                        {post.tag && (
+                          <span className="bg-[#FAF5FB] text-[#7B2D8B] text-xs font-semibold px-3 py-1 rounded-full">
+                            {post.tag}
+                          </span>
+                        )}
+                        <span className="text-xs text-gray-400">{formatDate(post.created_at)}</span>
+                      </div>
+                      <h2 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#7B2D8B]">
+                        {post.title}
+                      </h2>
+                      {post.excerpt && (
+                        <p className="text-gray-500 text-sm leading-relaxed">{post.excerpt}</p>
                       )}
-                      <span className="text-xs text-gray-400">{formatDate(post.created_at)}</span>
-                    </div>
-                    <h2 className="text-xl font-bold text-gray-900 mb-2 hover:text-[#7B2D8B]">
-                      <Link href={`/blog/${post.slug}`}>{post.title}</Link>
-                    </h2>
-                    {post.excerpt && (
-                      <p className="text-gray-500 text-sm leading-relaxed">{post.excerpt}</p>
-                    )}
+                    </Link>
                   </article>
                 ))}
               </div>
