@@ -59,8 +59,8 @@ export default function Tracker() {
     if (typeof navigator !== "undefined" && /bot|crawl|spider|prerender/i.test(navigator.userAgent)) {
       return;
     }
-    // 관리자 제외 — admin_auth 쿠키가 있으면 트래킹 안 함
-    if (document.cookie.split(";").some((c) => c.trim() === "admin_auth=1")) {
+    // 관리자 제외 — admin_flag 쿠키가 있으면 트래킹 안 함 (admin_auth는 httpOnly라 JS에서 못 읽음)
+    if (document.cookie.split(";").some((c) => c.trim() === "admin_flag=1")) {
       return;
     }
 
