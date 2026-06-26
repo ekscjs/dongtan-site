@@ -437,7 +437,7 @@ function ShareCard({
   const [copied, setCopied] = useState(false);
   const shareUrl = `${SITE}/check?type=${type}`;
   const shareText = retest
-    ? `7일 교정 루틴 ${improved ? "효과 봤어요" : "도전 중"}! 내 몸 유형은 ${t.name} 👇`
+    ? `7일 교정 루틴 ${improved ? "효과 봤어요" : "도전 중"}! 내 몸 유형은 ${t.name}`
     : t.shareLine;
 
   async function handleShare() {
@@ -464,7 +464,6 @@ function ShareCard({
 
   return (
     <div className="mt-5 rounded-2xl p-6 text-center text-white bg-gradient-to-br from-[#7B2D8B] to-[#9B4DAB]">
-      <p className="text-3xl mb-2">{t.emoji}</p>
       <p className="font-bold text-lg mb-0.5">{t.name}</p>
       <p className="text-purple-200 text-sm mb-4">위험도 {riskLabel} · 내몸에미소 1분 자가진단</p>
       <button
