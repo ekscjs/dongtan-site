@@ -53,6 +53,18 @@ export const metadata: Metadata = {
     locale: "ko_KR",
     type: "website",
     url: "https://www.bodymiso.com",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "내몸에미소 동탄 기능성 운동센터",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/og-image.png"],
   },
 };
 
