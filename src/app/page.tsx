@@ -9,7 +9,7 @@ import {
 
 const stats = [
   { value: "4년+", label: "동탄 센터 오픈" },
-  { value: "166명+", label: "누적 회원" },
+  { value: "200명+", label: "누적 회원" },
   { value: "90%", label: "재등록률" },
 ];
 
