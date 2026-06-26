@@ -70,7 +70,7 @@ export default function Home() {
               동탄 기능개선 · 재활 · 체형교정 전문
             </p>
             <h1 className="text-2xl md:text-5xl font-bold text-gray-900 leading-tight mb-6">
-              여기저기 다녀뵐는데,
+              여기저기 다녀봤는데,
               <br />
               <span className="text-[#7B2D8B]">왜 계속 아프고 불편할까요?</span>
             </h1>
