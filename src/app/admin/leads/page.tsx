@@ -77,6 +77,16 @@ export default function AdminLeadsPage() {
     });
   }
 
+  async function deleteLead(id: number) {
+    if (!confirm("삭제할까요?")) return;
+    setLeads((prev) => prev.filter((l) => l.id !== id));
+    await fetch("/api/admin/leads", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
+    });
+  }
+
   if (view === "loading") {
     return (
       <main className="min-h-screen bg-[#FAF5FB] flex items-center justify-center">
@@ -153,20 +163,28 @@ export default function AdminLeadsPage() {
                 {l.message && (
                   <p className="text-sm text-gray-600 mt-1 bg-[#FAF5FB] rounded-lg px-3 py-2">{l.message}</p>
                 )}
-                <div className="flex gap-2 mt-3">
-                  {(["new", "contacted", "done"] as const).map((s) => (
-                    <button
-                      key={s}
-                      onClick={() => setStatus(l.id, s)}
-                      className={`text-xs font-semibold px-3 py-1.5 rounded-full border transition-colors ${
-                        l.status === s
-                          ? "border-[#7B2D8B] bg-[#7B2D8B] text-white"
-                          : "border-gray-200 text-gray-500 hover:border-[#7B2D8B]"
-                      }`}
-                    >
-                      {STATUS_LABEL[s]}
-                    </button>
-                  ))}
+                <div className="flex items-center justify-between mt-3">
+                  <div className="flex gap-2">
+                    {(["new", "contacted", "done"] as const).map((s) => (
+                      <button
+                        key={s}
+                        onClick={() => setStatus(l.id, s)}
+                        className={`text-xs font-semibold px-3 py-1.5 rounded-full border transition-colors ${
+                          l.status === s
+                            ? "border-[#7B2D8B] bg-[#7B2D8B] text-white"
+                            : "border-gray-200 text-gray-500 hover:border-[#7B2D8B]"
+                        }`}
+                      >
+                        {STATUS_LABEL[s]}
+                      </button>
+                    ))}
+                  </div>
+                  <button
+                    onClick={() => deleteLead(l.id)}
+                    className="text-xs text-gray-400 hover:text-red-500 transition-colors px-2 py-1"
+                  >
+                    삭제
+                  </button>
                 </div>
               </div>
             ))}

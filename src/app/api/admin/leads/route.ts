@@ -20,6 +20,17 @@ export async function GET() {
   return NextResponse.json(data);
 }
 
+export async function DELETE(req: NextRequest) {
+  if (!(await checkAuth())) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  const { id } = await req.json();
+  if (!id) return NextResponse.json({ error: "잘못된 요청입니다." }, { status: 400 });
+  const { error } = await supabaseAdmin.from("leads").delete().eq("id", id);
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  return NextResponse.json({ ok: true });
+}
+
 export async function PATCH(req: NextRequest) {
   if (!(await checkAuth())) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
