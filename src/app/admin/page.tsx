@@ -425,6 +425,18 @@ export default function AdminPage() {
             </p>
             <p className="text-xs text-gray-400 mt-1">국가 · 기기 · GA4 연동</p>
           </a>
+          <a
+            href="https://analytics.google.com/analytics/web/#/p541281945/reports/intelligenthome"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="col-span-2 bg-white rounded-2xl shadow p-4 hover:shadow-md transition-shadow cursor-pointer group flex items-center justify-between"
+          >
+            <div>
+              <p className="text-xs text-gray-400 mb-0.5">Google Analytics 세부 리포트</p>
+              <p className="text-sm font-semibold text-gray-700 group-hover:text-[#7B2D8B]">전환 · 이벤트 · 잠재고객 심층 분석 →</p>
+            </div>
+            <span className="text-gray-300 text-lg">↗</span>
+          </a>
         </div>
 
         <div className="bg-white rounded-2xl shadow overflow-hidden">
