@@ -25,7 +25,7 @@ import {
   ArrowRightIcon,
 } from "@/components/Icons";
 
-type IconComponent = (props: { className?: string; size?: number }) => JSX.Element;
+type IconComponent = (props: { className?: string; size?: number }) => React.ReactElement;
 const typeIconMap: Record<TypeKey, IconComponent> = {
   neck: UserIcon,
   pelvis: ActivityIcon,
