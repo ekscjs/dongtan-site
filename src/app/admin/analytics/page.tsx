@@ -81,9 +81,9 @@ function pageLabel(path: string, slugToTitle?: Record<string, string>) {
 
 function StatCard({ label, value }: { label: string; value: number | string }) {
   return (
-    <div className="bg-white rounded-2xl shadow p-5">
-      <p className="text-xs text-gray-400 mb-1">{label}</p>
-      <p className="text-3xl font-bold text-gray-900">{value.toLocaleString()}</p>
+    <div className="bg-white rounded-2xl shadow p-5 flex flex-col">
+      <p className="text-xs text-gray-400 flex-1">{label}</p>
+      <p className="text-3xl font-bold text-gray-900 mt-2">{value.toLocaleString()}</p>
     </div>
   );
 }
