@@ -27,11 +27,11 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json();
-  const { title, slug, content, excerpt, tag, published } = body;
+  const { title, slug, content, excerpt, tag, published, publish_at } = body;
 
   const { data, error } = await supabase
     .from("posts")
-    .insert([{ title, slug, content, excerpt, tag, published: published ?? true }])
+    .insert([{ title, slug, content, excerpt, tag, published: published ?? true, publish_at: publish_at || null }])
     .select()
     .single();
 

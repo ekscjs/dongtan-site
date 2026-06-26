@@ -17,6 +17,7 @@ type AnalyticsData = {
   topPages: PagePoint[];
   exitPages: PagePoint[];
   newVsReturn: NewVsReturn;
+  slugToTitle: Record<string, string>;
 };
 
 type SearchData = {
@@ -57,9 +58,12 @@ const PAGE_LABELS: Record<string, string> = {
   "/privacy": "개인정보처리방침",
 };
 
-function pageLabel(path: string) {
+function pageLabel(path: string, slugToTitle?: Record<string, string>) {
   if (PAGE_LABELS[path]) return PAGE_LABELS[path];
-  if (path.startsWith("/blog/")) return `블로그: ${path.replace("/blog/", "")}`;
+  if (path.startsWith("/blog/")) {
+    const slug = path.replace("/blog/", "");
+    return slugToTitle?.[slug] ?? `블로그: ${slug}`;
+  }
   return path;
 }
 
@@ -96,30 +100,81 @@ function BarChart({ data, colorKey }: { data: { label: string; count: number; co
   );
 }
 
-function DailyChart({ data }: { data: DailyPoint[] }) {
+function LineChart({ data }: { data: DailyPoint[] }) {
   if (!data.length) return <p className="text-xs text-gray-400">데이터 없음</p>;
-  const max = Math.max(...data.map((d) => d.count), 1);
+
   const recent = data.slice(-30);
+  const max = Math.max(...recent.map((d) => d.count), 1);
+
+  const W = 600;
+  const H = 140;
+  const PAD = { top: 12, right: 12, bottom: 28, left: 32 };
+  const cW = W - PAD.left - PAD.right;
+  const cH = H - PAD.top - PAD.bottom;
+
+  const pts = recent.map((d, i) => ({
+    x: PAD.left + (recent.length === 1 ? cW / 2 : (i / (recent.length - 1)) * cW),
+    y: PAD.top + (1 - d.count / max) * cH,
+    ...d,
+  }));
+
+  const linePath = pts.map((p, i) => `${i === 0 ? "M" : "L"}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
+  const areaPath =
+    linePath +
+    ` L${pts[pts.length - 1].x.toFixed(1)},${(PAD.top + cH).toFixed(1)} L${pts[0].x.toFixed(1)},${(PAD.top + cH).toFixed(1)} Z`;
+
+  // y축 눈금 (0, 중간, max)
+  const yTicks = [0, Math.round(max / 2), max];
+
+  // x축 레이블 (첫날, 중간, 마지막)
+  const xLabels = [0, Math.floor(recent.length / 2), recent.length - 1]
+    .filter((i) => i >= 0 && i < recent.length)
+    .map((i) => ({ i, label: recent[i].date.slice(5) }));
 
   return (
-    <div className="flex items-end gap-0.5 h-28 w-full">
-      {recent.map((d, i) => {
-        const height = Math.max((d.count / max) * 100, 2);
-        const date = new Date(d.date);
-        const label = `${date.getMonth() + 1}/${date.getDate()}`;
-        return (
-          <div key={i} className="flex-1 flex flex-col items-center justify-end gap-0.5 group relative">
-            <div
-              className="w-full rounded-t bg-[#7B2D8B] group-hover:bg-[#6a2678] transition-colors"
-              style={{ height: `${height}%` }}
-            />
-            {/* 툴팁 */}
-            <div className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs rounded px-2 py-1 whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none z-10">
-              {label}: {d.count}명
-            </div>
-          </div>
-        );
-      })}
+    <div className="w-full">
+      <svg viewBox={`0 0 ${W} ${H}`} className="w-full" style={{ height: "140px" }}>
+        <defs>
+          <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#7B2D8B" stopOpacity="0.18" />
+            <stop offset="100%" stopColor="#7B2D8B" stopOpacity="0.02" />
+          </linearGradient>
+        </defs>
+
+        {/* 수평 그리드 */}
+        {yTicks.map((v) => {
+          const y = PAD.top + (1 - v / max) * cH;
+          return (
+            <g key={v}>
+              <line x1={PAD.left} y1={y} x2={PAD.left + cW} y2={y} stroke="#E5E7EB" strokeWidth="1" />
+              <text x={PAD.left - 4} y={y + 3.5} textAnchor="end" fontSize="9" fill="#9CA3AF">
+                {v}
+              </text>
+            </g>
+          );
+        })}
+
+        {/* 영역 채우기 */}
+        <path d={areaPath} fill="url(#areaGrad)" />
+
+        {/* 꺾은선 */}
+        <path d={linePath} fill="none" stroke="#7B2D8B" strokeWidth="2.2" strokeLinejoin="round" strokeLinecap="round" />
+
+        {/* 데이터 점 + 툴팁 */}
+        {pts.map((p, i) => (
+          <g key={i}>
+            <circle cx={p.x} cy={p.y} r="3.5" fill="white" stroke="#7B2D8B" strokeWidth="2" />
+            <title>{`${p.date}: ${p.count}명`}</title>
+          </g>
+        ))}
+
+        {/* x축 레이블 */}
+        {xLabels.map(({ i, label }) => (
+          <text key={i} x={pts[i].x} y={H - 6} textAnchor="middle" fontSize="9" fill="#9CA3AF">
+            {label}
+          </text>
+        ))}
+      </svg>
     </div>
   );
 }
@@ -188,17 +243,18 @@ export default function AnalyticsPage() {
   }
 
   const summary = data?.summary ?? { today: 0, week: 0, month: 0 };
+  const slugToTitle = data?.slugToTitle ?? {};
   const sourceData = (data?.sourceChart ?? []).map((s) => ({
     label: SOURCE_LABELS[s.source] ?? s.source,
     count: s.count,
     color: SOURCE_COLORS[s.source],
   }));
   const topPageData = (data?.topPages ?? []).map((p) => ({
-    label: pageLabel(p.page),
+    label: pageLabel(p.page, slugToTitle),
     count: p.count,
   }));
   const exitPageData = (data?.exitPages ?? []).map((p) => ({
-    label: pageLabel(p.page),
+    label: pageLabel(p.page, slugToTitle),
     count: p.count,
   }));
 
@@ -242,11 +298,7 @@ export default function AnalyticsPage() {
         {/* 날짜별 방문자 그래프 */}
         <div className="bg-white rounded-2xl shadow p-6 mb-6">
           <h2 className="text-sm font-semibold text-gray-700 mb-4">날짜별 방문자 (최근 30일)</h2>
-          <DailyChart data={data?.dailyChart ?? []} />
-          <div className="flex justify-between text-xs text-gray-400 mt-2">
-            <span>{data?.dailyChart[0]?.date ?? ""}</span>
-            <span>{data?.dailyChart[data.dailyChart.length - 1]?.date ?? ""}</span>
-          </div>
+          <LineChart data={data?.dailyChart ?? []} />
         </div>
 
         {/* 유입경로 + 신규/재방문 */}

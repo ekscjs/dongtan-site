@@ -26,11 +26,13 @@ function parseFaq(md: string): { q: string; a: string }[] {
 }
 
 async function getPost(slug: string): Promise<Post | null> {
+  const now = new Date().toISOString();
   const { data, error } = await supabase
     .from("posts")
     .select("*")
     .eq("slug", slug)
     .eq("published", true)
+    .or(`publish_at.is.null,publish_at.lte.${now}`)
     .single();
 
   if (error) return null;
@@ -41,11 +43,13 @@ async function getAdjacentPosts(createdAt: string): Promise<{
   prev: Pick<Post, "title" | "slug"> | null;
   next: Pick<Post, "title" | "slug"> | null;
 }> {
+  const now = new Date().toISOString();
   const [{ data: prevData }, { data: nextData }] = await Promise.all([
     supabase
       .from("posts")
       .select("title, slug")
       .eq("published", true)
+      .or(`publish_at.is.null,publish_at.lte.${now}`)
       .lt("created_at", createdAt)
       .order("created_at", { ascending: false })
       .limit(1),
@@ -53,6 +57,7 @@ async function getAdjacentPosts(createdAt: string): Promise<{
       .from("posts")
       .select("title, slug")
       .eq("published", true)
+      .or(`publish_at.is.null,publish_at.lte.${now}`)
       .gt("created_at", createdAt)
       .order("created_at", { ascending: true })
       .limit(1),

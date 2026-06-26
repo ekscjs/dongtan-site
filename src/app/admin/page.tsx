@@ -12,6 +12,7 @@ const EMPTY_FORM = {
   content: "",
   tag: "",
   published: true,
+  publish_at: "",
 };
 
 function slugify(text: string) {
@@ -111,6 +112,7 @@ export default function AdminPage() {
       content: post.content ?? "",
       tag: post.tag ?? "",
       published: post.published,
+      publish_at: post.publish_at ? post.publish_at.slice(0, 16) : "",
     });
     setEditId(post.id);
     setMsg("");
@@ -219,6 +221,7 @@ export default function AdminPage() {
                     excerpt: file.excerpt,
                     content: file.content,
                     published: true,
+                    publish_at: "",
                   });
                   setMsg("마케팅 파일에서 불러왔습니다. 내용을 확인 후 저장하세요.");
                 }}

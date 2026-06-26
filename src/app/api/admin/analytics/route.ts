@@ -171,6 +171,13 @@ export async function GET(req: NextRequest) {
       return s.size;
     };
 
+    // 블로그 글 제목 맵
+    const postsRes = await supabaseAdmin.from("posts").select("title, slug");
+    const slugToTitle: Record<string, string> = {};
+    for (const post of postsRes.data ?? []) {
+      if (post.slug && post.title) slugToTitle[post.slug] = post.title;
+    }
+
     return NextResponse.json({
       summary: {
         today: countUnique(todayRes.data ?? []),
@@ -182,6 +189,7 @@ export async function GET(req: NextRequest) {
       topPages,
       exitPages,
       newVsReturn: { new: newCount, return: returnCount },
+      slugToTitle,
     });
   } catch (err) {
     console.error("[analytics]", err);

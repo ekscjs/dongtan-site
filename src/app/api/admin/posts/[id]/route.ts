@@ -17,11 +17,11 @@ export async function PUT(
 
   const { id } = await params;
   const body = await req.json();
-  const { title, slug, content, excerpt, tag, published } = body;
+  const { title, slug, content, excerpt, tag, published, publish_at } = body;
 
   const { data, error } = await supabase
     .from("posts")
-    .update({ title, slug, content, excerpt, tag, published })
+    .update({ title, slug, content, excerpt, tag, published, publish_at: publish_at || null })
     .eq("id", id)
     .select()
     .single();

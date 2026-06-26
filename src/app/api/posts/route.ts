@@ -4,10 +4,12 @@ import { supabase } from "@/lib/supabase";
 export const revalidate = 60;
 
 export async function GET() {
+  const now = new Date().toISOString();
   const { data, error } = await supabase
     .from("posts")
     .select("*")
     .eq("published", true)
+    .or(`publish_at.is.null,publish_at.lte.${now}`)
     .order("created_at", { ascending: false });
 
   if (error) {

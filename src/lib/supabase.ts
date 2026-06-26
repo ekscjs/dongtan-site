@@ -14,4 +14,5 @@ export type Post = {
   tag: string;
   published: boolean;
   created_at: string;
+  publish_at: string | null;
 };
