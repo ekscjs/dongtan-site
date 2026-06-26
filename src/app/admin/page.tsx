@@ -378,33 +378,27 @@ export default function AdminPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-4xl mx-auto px-4 py-10">
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-start justify-between mb-8 gap-3">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">블로그 관리</h1>
             <p className="text-sm text-gray-400 mt-1">내몸에미소 건강 정보</p>
           </div>
-          <div className="flex gap-3">
-            <a
-              href="/admin/analytics"
-              className="border border-[#7B2D8B] text-[#7B2D8B] rounded-lg px-5 py-2 text-sm font-semibold hover:bg-[#FAF5FB] flex items-center"
-            >
-              📊 애널리틱스
-            </a>
+          <div className="flex flex-wrap gap-2 justify-end">
             <a
               href="/admin/leads"
-              className="border border-[#7B2D8B] text-[#7B2D8B] rounded-lg px-5 py-2 text-sm font-semibold hover:bg-[#FAF5FB] flex items-center"
+              className="border border-[#7B2D8B] text-[#7B2D8B] rounded-lg px-4 py-2 text-sm font-semibold hover:bg-[#FAF5FB]"
             >
               신청 관리
             </a>
             <button
               onClick={openNew}
-              className="bg-[#7B2D8B] text-white rounded-lg px-5 py-2 text-sm font-semibold hover:bg-[#6a2678]"
+              className="bg-[#7B2D8B] text-white rounded-lg px-4 py-2 text-sm font-semibold hover:bg-[#6a2678]"
             >
               + 새 글
             </button>
             <button
               onClick={handleLogout}
-              className="border border-gray-200 text-gray-500 rounded-lg px-5 py-2 text-sm hover:bg-gray-100"
+              className="border border-gray-200 text-gray-500 rounded-lg px-4 py-2 text-sm hover:bg-gray-100"
             >
               로그아웃
             </button>
@@ -412,7 +406,7 @@ export default function AdminPage() {
         </div>
 
         {/* 대시보드 카드 */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-2 gap-4 mb-8">
           <div className="bg-white rounded-2xl shadow p-5">
             <p className="text-xs text-gray-400 mb-1">공개 글</p>
             <p className="text-3xl font-bold text-gray-900">{publishedCount}</p>
@@ -422,28 +416,14 @@ export default function AdminPage() {
             <p className="text-3xl font-bold text-gray-400">{draftCount}</p>
           </div>
           <a
-            href="https://vercel.com/ekscjs-projects/dongtan-site/analytics"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-white rounded-2xl shadow p-5 hover:shadow-md transition-shadow cursor-pointer group"
+            href="/admin/analytics"
+            className="col-span-2 bg-[#FAF5FB] border border-[#7B2D8B]/20 rounded-2xl p-5 hover:shadow-md transition-shadow cursor-pointer group"
           >
-            <p className="text-xs text-gray-400 mb-1">Vercel 애널리틱스</p>
-            <p className="text-sm font-semibold text-[#7B2D8B] group-hover:underline">
-              방문자 · 페이지별 조회 →
+            <p className="text-xs text-[#7B2D8B] font-semibold mb-1">사이트 분석</p>
+            <p className="text-sm font-semibold text-gray-800 group-hover:text-[#7B2D8B]">
+              방문자 · 검색 · 유입경로 · 콘텐츠 성과 →
             </p>
-            <p className="text-xs text-gray-400 mt-1">실시간 트래픽 확인</p>
-          </a>
-          <a
-            href="https://analytics.google.com/analytics/web/#/p541281945/reports/intelligenthome"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-white rounded-2xl shadow p-5 hover:shadow-md transition-shadow cursor-pointer group"
-          >
-            <p className="text-xs text-gray-400 mb-1">Google Analytics</p>
-            <p className="text-sm font-semibold text-[#7B2D8B] group-hover:underline">
-              유입 경로 · 전환 →
-            </p>
-            <p className="text-xs text-gray-400 mt-1">검색 유입 · 카카오 클릭</p>
+            <p className="text-xs text-gray-400 mt-1">국가 · 기기 · GA4 연동</p>
           </a>
         </div>
 

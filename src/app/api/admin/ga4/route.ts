@@ -65,7 +65,7 @@ export async function GET(req: NextRequest) {
 
     const dateRange = [{ startDate: "30daysAgo", endDate: "today" }];
 
-    const [countryData, deviceData, pageData] = await Promise.all([
+    const [countryData, deviceData, pageData, channelData] = await Promise.all([
       // 국가별 방문자
       runReport(token, {
         dateRanges: dateRange,
@@ -101,6 +101,13 @@ export async function GET(req: NextRequest) {
         orderBys: [{ metric: { metricName: "screenPageViews" }, desc: true }],
         limit: 10,
       }),
+      // 채널별 유입 (직접/검색/SNS 등)
+      runReport(token, {
+        dateRanges: dateRange,
+        dimensions: [{ name: "sessionDefaultChannelGroup" }],
+        metrics: [{ name: "sessions" }],
+        orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
+      }),
     ]);
 
     // 국가 데이터 파싱
@@ -128,11 +135,27 @@ export async function GET(req: NextRequest) {
       engagementRate: parseFloat(row.metricValues[2].value),
     }));
 
-    return NextResponse.json({ countries, devices, pages });
+    // 채널 데이터 파싱 (GA4 기본 채널 그룹 → 한글)
+    const channelMap: Record<string, string> = {
+      "Direct": "직접 방문",
+      "Organic Search": "검색",
+      "Organic Social": "SNS",
+      "Paid Search": "유료 검색",
+      "Paid Social": "유료 SNS",
+      "Referral": "외부 링크",
+      "Email": "이메일",
+      "Unassigned": "미분류",
+    };
+    const channels = (channelData.rows ?? []).map((row: { dimensionValues: {value:string}[]; metricValues: {value:string}[] }) => ({
+      channel: channelMap[row.dimensionValues[0].value] ?? row.dimensionValues[0].value,
+      sessions: parseInt(row.metricValues[0].value),
+    }));
+
+    return NextResponse.json({ countries, devices, pages, channels });
   } catch (err) {
     console.error("[ga4]", err);
     return NextResponse.json(
-      { error: String(err), countries: [], devices: [], pages: [] },
+      { error: String(err), countries: [], devices: [], pages: [], channels: [] },
       { status: 200 }
     );
   }

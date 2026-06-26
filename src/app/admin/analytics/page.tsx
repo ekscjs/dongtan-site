@@ -30,10 +30,12 @@ type SearchData = {
 type Ga4Country = { country: string; sessions: number };
 type Ga4Device = { device: string; sessions: number };
 type Ga4Page = { path: string; views: number; avgDuration: number; engagementRate: number };
+type Ga4Channel = { channel: string; sessions: number };
 type Ga4Data = {
   countries: Ga4Country[];
   devices: Ga4Device[];
   pages: Ga4Page[];
+  channels: Ga4Channel[];
   error?: string;
 };
 
@@ -307,8 +309,19 @@ export default function AnalyticsPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div className="bg-white rounded-2xl shadow p-6">
-            <h2 className="text-sm font-semibold text-gray-700 mb-4">유입 경로 (30일)</h2>
-            {sourceData.length ? <BarChart data={sourceData} /> : <p className="text-xs text-gray-400">데이터 없음</p>}
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-sm font-semibold text-gray-700">유입 채널 <span className="text-xs font-normal text-gray-400">(GA4 30일)</span></h2>
+            </div>
+            {ga4?.channels && ga4.channels.length > 0 ? (
+              <BarChart data={ga4.channels.map((c) => ({ label: c.channel, count: c.sessions }))} />
+            ) : sourceData.length ? (
+              <>
+                <p className="text-xs text-gray-400 mb-2">GA4 로딩 중 — 임시 데이터</p>
+                <BarChart data={sourceData} />
+              </>
+            ) : (
+              <p className="text-xs text-gray-400">데이터 없음</p>
+            )}
           </div>
           <div className="bg-white rounded-2xl shadow p-6">
             <h2 className="text-sm font-semibold text-gray-700 mb-4">신규 vs 재방문 (30일)</h2>
