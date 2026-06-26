@@ -4,10 +4,6 @@ import Link from "next/link";
 import Image from "next/image";
 import KakaoButton from "@/components/KakaoButton";
 import {
-  CheckCircle2,
-  MessageSquareIcon,
-  ActivityIcon,
-  TargetIcon,
   ArrowRightIcon,
 } from "@/components/Icons";
 
@@ -44,26 +40,21 @@ const programs = [
   },
 ];
 
-type StepIcon = typeof MessageSquareIcon;
-
-const steps: { step: string; title: string; desc: string; Icon: StepIcon }[] = [
+const steps: { step: string; title: string; desc: string }[] = [
   {
-    step: "01",
+    step: "1",
     title: "무료 상담",
     desc: "카카오톡으로 편하게 말씀해 주세요. 바로 연결됩니다.",
-    Icon: MessageSquareIcon,
   },
   {
-    step: "02",
+    step: "2",
     title: "1회 체험",
     desc: "직접 움직임을 확인하고 문제 원인을 파악합니다.",
-    Icon: ActivityIcon,
   },
   {
-    step: "03",
+    step: "3",
     title: "맞춤 프로그램",
     desc: "원인에 맞는 운동 방법으로 실질적인 변화를 만들어 드립니다.",
-    Icon: TargetIcon,
   },
 ];
 
@@ -117,8 +108,7 @@ export default function Home() {
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {symptoms.map((s, i) => (
-                <div key={i} className="bg-gray-50 rounded-2xl px-6 py-5 flex items-start gap-4">
-                  <CheckCircle2 className="text-emerald-600 mt-0.5 shrink-0" size={20} />
+                <div key={i} className="bg-gray-50 rounded-2xl px-6 py-5 border-l-4 border-[#7B2D8B]">
                   <p className="text-gray-700 font-medium leading-relaxed text-sm md:text-base tracking-tight">
                     {s.text}
                   </p>
@@ -158,13 +148,10 @@ export default function Home() {
             <div className="space-y-8">
               {steps.map((s, i) => (
                 <div key={i} className="flex gap-5 items-start">
-                  <div className="shrink-0 flex flex-col items-center gap-2">
-                    <div className="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center">
-                      <s.Icon className="text-emerald-600" size={22} />
-                    </div>
-                    <span className="text-[10px] font-bold text-emerald-600 tracking-widest">{s.step}</span>
+                  <div className="shrink-0 w-11 h-11 rounded-full bg-[#7B2D8B] flex items-center justify-center">
+                    <span className="text-white font-bold text-base">{s.step}</span>
                   </div>
-                  <div className="pt-1">
+                  <div className="pt-2">
                     <h3 className="text-base md:text-lg font-bold text-gray-900 mb-1">{s.title}</h3>
                     <p className="text-gray-500 text-sm md:text-base leading-relaxed">{s.desc}</p>
                   </div>
