@@ -112,13 +112,13 @@ function BarChart({ data }: { data: { label: string; count: number; color?: stri
   );
 }
 
-function LineChart({ data }: { data: DailyPoint[] }) {
+function LineChart({ data, days }: { data: DailyPoint[]; days: 7 | 30 }) {
   if (!data.length) return <p className="text-xs text-gray-400">데이터 없음</p>;
 
-  const recent = data.slice(-30);
+  const recent = data.slice(-days);
   const max = Math.max(...recent.map((d) => d.count), 1);
-  const W = 600, H = 140;
-  const PAD = { top: 12, right: 12, bottom: 28, left: 32 };
+  const W = 600, H = 180;
+  const PAD = { top: 16, right: 16, bottom: 36, left: 36 };
   const cW = W - PAD.left - PAD.right;
   const cH = H - PAD.top - PAD.bottom;
 
@@ -134,38 +134,42 @@ function LineChart({ data }: { data: DailyPoint[] }) {
     + " L" + pts[0].x.toFixed(1) + "," + (PAD.top + cH).toFixed(1) + " Z";
 
   const yTicks = [0, Math.round(max / 2), max];
-  const xLabels = [0, Math.floor(recent.length / 2), recent.length - 1]
-    .filter((i) => i >= 0 && i < recent.length)
-    .map((i) => ({ i, label: recent[i].date.slice(5) }));
+
+  // x축 레이블: 7일이면 전부, 30일이면 6개만
+  const xLabelIndices = days === 7
+    ? recent.map((_, i) => i)
+    : [0, 5, 10, 15, 20, 25, recent.length - 1].filter((i) => i < recent.length);
 
   return (
-    <div className="w-full">
-      <svg viewBox={"0 0 " + W + " " + H} className="w-full" style={{ height: "140px" }}>
+    <div className="w-full overflow-x-auto">
+      <svg viewBox={"0 0 " + W + " " + H} className="w-full" style={{ minWidth: days === 30 ? "320px" : "200px" }}>
         <defs>
           <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#7B2D8B" stopOpacity="0.18" />
-            <stop offset="100%" stopColor="#7B2D8B" stopOpacity="0.02" />
+            <stop offset="0%" stopColor="#7B2D8B" stopOpacity="0.25" />
+            <stop offset="100%" stopColor="#7B2D8B" stopOpacity="0.03" />
           </linearGradient>
         </defs>
         {yTicks.map((v) => {
           const y = PAD.top + (1 - v / max) * cH;
           return (
             <g key={v}>
-              <line x1={PAD.left} y1={y} x2={PAD.left + cW} y2={y} stroke="#E5E7EB" strokeWidth="1" />
-              <text x={PAD.left - 4} y={y + 3.5} textAnchor="end" fontSize="9" fill="#9CA3AF">{v}</text>
+              <line x1={PAD.left} y1={y} x2={PAD.left + cW} y2={y} stroke="#D1D5DB" strokeWidth="1.2" strokeDasharray="4 3" />
+              <text x={PAD.left - 6} y={y + 4} textAnchor="end" fontSize="11" fill="#6B7280" fontWeight="500">{v}</text>
             </g>
           );
         })}
         <path d={areaPath} fill="url(#areaGrad)" />
-        <path d={linePath} fill="none" stroke="#7B2D8B" strokeWidth="2.2" strokeLinejoin="round" strokeLinecap="round" />
+        <path d={linePath} fill="none" stroke="#7B2D8B" strokeWidth="3" strokeLinejoin="round" strokeLinecap="round" />
         {pts.map((p, i) => (
           <g key={i}>
-            <circle cx={p.x} cy={p.y} r="3.5" fill="white" stroke="#7B2D8B" strokeWidth="2" />
+            <circle cx={p.x} cy={p.y} r={days === 7 ? 5 : 3.5} fill="white" stroke="#7B2D8B" strokeWidth="2.5" />
             <title>{p.date + ": " + p.count + "명"}</title>
           </g>
         ))}
-        {xLabels.map(({ i, label }) => (
-          <text key={i} x={pts[i].x} y={H - 6} textAnchor="middle" fontSize="9" fill="#9CA3AF">{label}</text>
+        {xLabelIndices.map((i) => (
+          <text key={i} x={pts[i].x} y={H - 8} textAnchor="middle" fontSize="11" fill="#6B7280" fontWeight="500">
+            {recent[i].date.slice(5)}
+          </text>
         ))}
       </svg>
     </div>
@@ -187,6 +191,7 @@ export default function AnalyticsPage() {
   const [searchLoading, setSearchLoading] = useState(false);
   const [ga4Loading, setGa4Loading] = useState(false);
   const [error, setError] = useState("");
+  const [chartDays, setChartDays] = useState<7 | 30>(30);
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -303,8 +308,27 @@ export default function AnalyticsPage() {
         </div>
 
         <div className="bg-white rounded-2xl shadow p-6 mb-6">
-          <h2 className="text-sm font-semibold text-gray-700 mb-4">날짜별 방문자 (최근 30일)</h2>
-          <LineChart data={data?.dailyChart ?? []} />
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-sm font-semibold text-gray-700">
+              날짜별 방문자 <span className="text-xs font-normal text-gray-400">(최근 {chartDays}일)</span>
+            </h2>
+            <div className="flex gap-1.5">
+              {([7, 30] as const).map((d) => (
+                <button
+                  key={d}
+                  onClick={() => setChartDays(d)}
+                  className={`text-xs font-semibold px-3 py-1.5 rounded-full border transition-colors ${
+                    chartDays === d
+                      ? "bg-[#7B2D8B] text-white border-[#7B2D8B]"
+                      : "border-gray-200 text-gray-500 hover:border-[#7B2D8B]"
+                  }`}
+                >
+                  {d === 7 ? "주간" : "월간"}
+                </button>
+              ))}
+            </div>
+          </div>
+          <LineChart data={data?.dailyChart ?? []} days={chartDays} />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
