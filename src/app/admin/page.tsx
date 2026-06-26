@@ -295,6 +295,15 @@ export default function AdminPage() {
                   className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#7B2D8B]"
                 />
               </div>
+              <div className="flex-1">
+                <label className="block text-xs font-semibold text-gray-500 mb-1">예약 발행 일시 (비우면 즉시)</label>
+                <input
+                  type="datetime-local"
+                  value={form.publish_at}
+                  onChange={(e) => setForm((f) => ({ ...f, publish_at: e.target.value }))}
+                  className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#7B2D8B]"
+                />
+              </div>
               <div className="flex items-end pb-0.5">
                 <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
                   <input
@@ -475,15 +484,26 @@ export default function AdminPage() {
                       )}
                     </td>
                     <td className="px-4 py-4">
-                      <span
-                        className={`text-xs px-2 py-0.5 rounded-full ${
-                          post.published
-                            ? "bg-green-50 text-green-600"
-                            : "bg-gray-100 text-gray-400"
-                        }`}
-                      >
-                        {post.published ? "공개" : "비공개"}
-                      </span>
+                      {(() => {
+                        const isScheduled = post.published && post.publish_at && new Date(post.publish_at) > new Date();
+                        const isPublished = post.published && !isScheduled;
+                        return (
+                          <div>
+                            <span className={`text-xs px-2 py-0.5 rounded-full ${
+                              isScheduled ? "bg-orange-50 text-orange-500"
+                              : isPublished ? "bg-green-50 text-green-600"
+                              : "bg-gray-100 text-gray-400"
+                            }`}>
+                              {isScheduled ? "예약됨" : isPublished ? "공개" : "비공개"}
+                            </span>
+                            {isScheduled && post.publish_at && (
+                              <div className="text-xs text-gray-400 mt-0.5">
+                                {new Date(post.publish_at).toLocaleDateString("ko-KR", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" })}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })()}
                     </td>
                     <td className="px-4 py-4 text-xs text-gray-400">
                       {new Date(post.created_at).toLocaleDateString("ko-KR")}
