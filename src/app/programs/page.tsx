@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
 import KakaoButton from "@/components/KakaoButton";
+import { ZapIcon, RefreshCwIcon, UserIcon, CheckIcon } from "@/components/Icons";
 
 export const metadata: Metadata = {
   title: "동탄 재활·체형교정·통증 운동 프로그램 | 내몸에미소",
@@ -33,11 +34,16 @@ const certs = [
   { year: "2006", title: "문화체육관광부", desc: "지도자 전원 스포츠 지도사 자격 보유" },
 ];
 
+const programIcons = {
+  pain: ZapIcon,
+  rehab: RefreshCwIcon,
+  posture: UserIcon,
+};
+
 const programs = [
   {
     id: "pain",
     title: "통증 완화 운동",
-    emoji: "💪",
     short: "일상의 불편함을 회복합니다",
     desc: "팔이 잘 안 올라가거나 무릎이 뻐근한 것도 원인이 있습니다. 증상이 아닌 움직임의 원인을 찾아 해결합니다.",
     targets: [
@@ -54,7 +60,6 @@ const programs = [
   {
     id: "rehab",
     title: "재활",
-    emoji: "🔄",
     short: "병원과 일상 사이를 채웁니다",
     desc: "수술 후 또는 부상 후, 치료는 끝났는데 몸이 예전 같지 않은 분을 위한 프로그램입니다.",
     targets: [
@@ -71,7 +76,6 @@ const programs = [
   {
     id: "posture",
     title: "체형교정",
-    emoji: "🧍",
     short: "자세 문제를 근본 원인부터 잡습니다",
     desc: "굽은 등, 거북목, 골반 틀어짐. 자세 문제에는 반드시 원인이 있습니다.",
     targets: [
@@ -154,18 +158,22 @@ export default function ProgramsPage() {
             {programs.map((p) => (
               <a key={p.id} href={`#${p.id}`}
                 className="flex-1 text-center border border-[#7B2D8B] text-[#7B2D8B] font-semibold py-3 px-4 rounded-full text-sm hover:bg-[#7B2D8B] hover:text-white transition-colors">
-                {p.emoji} {p.title}
+                {p.title}
               </a>
             ))}
           </div>
         </section>
 
         {/* 각 프로그램 섹션 */}
-        {programs.map((p, i) => (
+        {programs.map((p, i) => {
+          const PIcon = programIcons[p.id as keyof typeof programIcons];
+          return (
           <section key={p.id} id={p.id}
             className={`py-12 md:py-20 px-4 ${i % 2 === 1 ? "bg-[#FAF5FB]" : ""}`}>
             <div className="max-w-3xl mx-auto">
-              <p className="text-4xl mb-4">{p.emoji}</p>
+              <div className="w-12 h-12 rounded-full bg-[#FAF5FB] flex items-center justify-center mb-4">
+                <PIcon className="text-[#7B2D8B]" size={24} />
+              </div>
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">{p.title}</h2>
               <p className="text-[#7B2D8B] font-semibold mb-4">{p.short}</p>
               <p className="text-gray-600 mb-8 leading-relaxed">{p.desc}</p>
@@ -174,7 +182,7 @@ export default function ProgramsPage() {
               <div className="space-y-3 mb-10">
                 {p.targets.map((t, j) => (
                   <div key={j} className="flex items-center gap-3 bg-white rounded-xl px-5 py-4 shadow-sm border border-gray-100">
-                    <span className="text-[#7B2D8B] font-bold">✓</span>
+                    <CheckIcon className="text-[#7B2D8B] shrink-0" size={16} />
                     <p className="text-gray-700 text-sm md:text-base">{t}</p>
                   </div>
                 ))}
@@ -201,7 +209,8 @@ export default function ProgramsPage() {
               </div>
             </div>
           </section>
-        ))}
+          );
+        })}
 
         {/* 비포에프터 */}
         <section className="py-12 md:py-20 px-4">

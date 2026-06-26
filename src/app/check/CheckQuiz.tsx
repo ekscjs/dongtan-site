@@ -13,6 +13,25 @@ import {
   scoreToRisk,
   type TypeKey,
 } from "./data";
+import {
+  UserIcon,
+  ActivityIcon,
+  ZapIcon,
+  RefreshCwIcon,
+  LightbulbIcon,
+  LockIcon,
+  CheckIcon,
+  TrendingUpIcon,
+  ArrowRightIcon,
+} from "@/components/Icons";
+
+type IconComponent = (props: { className?: string; size?: number }) => JSX.Element;
+const typeIconMap: Record<TypeKey, IconComponent> = {
+  neck: UserIcon,
+  pelvis: ActivityIcon,
+  back: ZapIcon,
+  whole: RefreshCwIcon,
+};
 
 const LS_KEY = "naemiso_check_v1";
 const PLACE_URL = "https://map.naver.com/p/entry/place/1101035370";
@@ -212,7 +231,7 @@ export default function CheckQuiz() {
       <Shell>
         <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
           <div className="text-center">
-            <p className="text-5xl mb-3">{t.emoji}</p>
+            {(() => { const TIcon = typeIconMap[saved.type]; return <div className="w-14 h-14 rounded-full bg-[#FAF5FB] flex items-center justify-center mb-3 mx-auto"><TIcon className="text-[#7B2D8B]" size={28} /></div>; })()}
             <span className="inline-block bg-[#FAF5FB] text-[#7B2D8B] text-xs font-semibold px-3 py-1 rounded-full mb-3">
               위험도 {saved.risk.label}
             </span>
@@ -220,7 +239,7 @@ export default function CheckQuiz() {
             <p className="text-[#7B2D8B] font-semibold mb-5">{t.oneLiner}</p>
           </div>
           <p className="text-gray-600 leading-relaxed mb-3">{t.why}</p>
-          <p className="text-sm text-gray-500 bg-[#FAF5FB] rounded-xl px-4 py-3 mb-8">💡 {saved.risk.note}</p>
+          <p className="text-sm text-gray-500 bg-[#FAF5FB] rounded-xl px-4 py-3 mb-8 flex items-start gap-2"><LightbulbIcon className="text-[#9B4DAB] shrink-0 mt-0.5" size={16} />{saved.risk.note}</p>
           <button
             onClick={startRoutine}
             className="w-full bg-[#7B2D8B] text-white font-bold py-4 px-6 rounded-full hover:bg-[#6a2578] transition-colors mb-3"
@@ -260,7 +279,7 @@ export default function CheckQuiz() {
             <div className="bg-[#7B2D8B] h-2 rounded-full transition-all duration-500" style={{ width: `${(done.length / 7) * 100}%` }} />
           </div>
           <p className="text-sm text-gray-500 mb-6">
-            {allDone ? "7일 완주! 정말 잘하셨어요 🎉" : `${done.length}일째 함께하고 있어요`}
+            {allDone ? "7일 완주! 정말 잘하셨어요" : `${done.length}일째 함께하고 있어요`}
           </p>
 
           <div className="space-y-3">
@@ -281,7 +300,7 @@ export default function CheckQuiz() {
                         isDone ? "bg-green-500 text-white" : isToday ? "bg-[#7B2D8B] text-white" : "bg-gray-200 text-gray-400"
                       }`}
                     >
-                      {isDone ? "✓" : isLocked ? "🔒" : d.day}
+                      {isDone ? <CheckIcon size={14} /> : isLocked ? <LockIcon size={13} /> : d.day}
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center justify-between">
@@ -296,7 +315,7 @@ export default function CheckQuiz() {
                             <img src={d.imageUrl} alt={d.title} className="rounded-lg my-3 w-full" />
                           )}
                           <p className="text-sm text-gray-600 mt-1 leading-relaxed">{d.how}</p>
-                          <p className="text-xs text-[#7B2D8B] mt-1">👉 {d.point}</p>
+                          <p className="text-xs text-[#7B2D8B] mt-1 flex items-center gap-1"><ArrowRightIcon size={12} />{d.point}</p>
                         </>
                       )}
                       {isToday && (
@@ -304,7 +323,7 @@ export default function CheckQuiz() {
                           onClick={() => completeDay(d.day)}
                           className="mt-3 bg-[#7B2D8B] text-white text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-[#6a2578] transition-colors"
                         >
-                          오늘 동작 완료 ✓
+                          오늘 동작 완료
                         </button>
                       )}
                     </div>
@@ -316,7 +335,7 @@ export default function CheckQuiz() {
 
           {!allDone && !canDoToday && (
             <p className="text-center text-sm text-gray-500 mt-6 bg-[#FAF5FB] rounded-xl py-3">
-              오늘 동작 완료! 내일 Day {nextDay}가 열려요 🔓
+              오늘 동작 완료! 내일 Day {nextDay}가 열려요
             </p>
           )}
 
@@ -349,7 +368,9 @@ export default function CheckQuiz() {
     return (
       <Shell>
         <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 text-center">
-          <p className="text-5xl mb-3">{improved ? "🌱" : "💪"}</p>
+          <div className="w-14 h-14 rounded-full bg-[#FAF5FB] flex items-center justify-center mb-3 mx-auto">
+            {improved ? <TrendingUpIcon className="text-[#7B2D8B]" size={28} /> : <ActivityIcon className="text-[#7B2D8B]" size={28} />}
+          </div>
           <h2 className="text-2xl font-bold text-gray-900 mb-4">7일 전과 비교</h2>
           <div className="flex items-center justify-center gap-3 mb-6 text-sm">
             <div className="bg-gray-50 rounded-xl px-4 py-3 flex-1">

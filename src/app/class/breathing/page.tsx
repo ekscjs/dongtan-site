@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import LeadForm from "@/components/LeadForm";
+import { CheckIcon } from "@/components/Icons";
 
 export const metadata: Metadata = {
   title: "깊은 곳이 풀리는 호흡 · 50분 원데이 클래스 | 내몸에미소 동탄",
@@ -90,7 +91,7 @@ export default function BreathingClassPage() {
             <div className="space-y-3">
               {FOR_YOU.map((t) => (
                 <div key={t} className="flex items-start gap-3 bg-[#FAF5FB] rounded-xl px-5 py-4">
-                  <span className="text-[#7B2D8B] font-bold">✓</span>
+                  <CheckIcon className="text-[#7B2D8B] shrink-0 mt-0.5" size={16} />
                   <p className="text-gray-700 text-sm md:text-base">{t}</p>
                 </div>
               ))}

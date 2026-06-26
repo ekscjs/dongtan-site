@@ -92,7 +92,6 @@ export interface RoutineDay {
 export interface ResultType {
   key: TypeKey;
   name: string;
-  emoji: string;
   oneLiner: string;
   why: string;
   routine: RoutineDay[];
@@ -105,8 +104,7 @@ export const resultTypes: Record<TypeKey, ResultType> = {
     key: "neck",
     name: "거북목·라운드숄더형",
     keywords: ["거북목", "목", "어깨", "라운드숄더", "승모근", "굽은등", "자세", "스마트폰"],
-    shareLine: "나는 거북목·라운드숄더형! 너도 1분이면 확인돼 👇",
-    emoji: "🧍",
+    shareLine: "나는 거북목·라운드숄더형! 너도 1분이면 확인돼",
     oneLiner: "머리와 어깨가 앞으로 — 상체 앞쪽이 굳고 뒤쪽이 늘어진 상태예요.",
     why: "오래 앉아 화면을 보면 머리가 앞으로 빠지고 어깨가 말립니다. 목·등 뒤 근육은 늘어난 채 계속 버티느라 뭉치고, 가슴 앞쪽은 짧아져요. 스트레칭만으로는 잘 안 돌아오는 이유입니다.",
     routine: [
@@ -123,8 +121,7 @@ export const resultTypes: Record<TypeKey, ResultType> = {
     key: "pelvis",
     name: "골반·하체 불균형형",
     keywords: ["골반", "짝다리", "다리", "엉덩이", "좌우", "불균형", "비대칭", "고관절"],
-    shareLine: "나는 골반·하체 불균형형! 너도 1분이면 확인돼 👇",
-    emoji: "🦵",
+    shareLine: "나는 골반·하체 불균형형! 너도 1분이면 확인돼",
     oneLiner: "골반이 한쪽으로 기울거나 틀어져, 하체로 불균형이 내려간 상태예요.",
     why: "짝다리·다리 꼬기 습관이 쌓이면 골반이 한쪽으로 기울고, 양쪽 근육이 다르게 일합니다. 한쪽 신발만 닳거나 한쪽이 더 뻐근한 건 그 신호예요.",
     routine: [
@@ -141,8 +138,7 @@ export const resultTypes: Record<TypeKey, ResultType> = {
     key: "back",
     name: "허리 심부형",
     keywords: ["허리", "코어", "디스크", "요통", "심부", "호흡", "복압"],
-    shareLine: "나는 허리 심부형! 너도 1분이면 확인돼 👇",
-    emoji: "🌀",
+    shareLine: "나는 허리 심부형! 너도 1분이면 확인돼",
     oneLiner: "표면이 아니라 허리 깊은 곳(심부)이 굳어, 풀려도 자꾸 돌아오는 상태예요.",
     why: "스트레칭·마사지로도 잠깐 낫다 재발한다면, 표면이 아니라 심부 근육의 문제일 때가 많습니다. 심부는 힘이 아니라 호흡이 만드는 내부 압력으로 풀어야 합니다.",
     routine: [
@@ -159,8 +155,7 @@ export const resultTypes: Record<TypeKey, ResultType> = {
     key: "whole",
     name: "전신 뻣뻣·순환형",
     keywords: ["전신", "순환", "뻣뻣", "스트레칭", "운동", "움직임", "유연성"],
-    shareLine: "나는 전신 뻣뻣·순환형! 너도 1분이면 확인돼 👇",
-    emoji: "🔄",
+    shareLine: "나는 전신 뻣뻣·순환형! 너도 1분이면 확인돼",
     oneLiner: "특정 부위보다 전반적으로 굳고 순환이 더딘, 관리 시작이 필요한 상태예요.",
     why: "한 곳이 아니라 전반적으로 뻐근하다면, 움직임 양이 적고 순환이 더딘 경우가 많습니다. 짧게라도 매일 몸을 깨우는 습관이 가장 효과적입니다.",
     routine: [

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { CheckCircle2 } from "@/components/Icons";
 
 function track(event: string, params?: Record<string, unknown>) {
   if (typeof window !== "undefined") {
@@ -57,7 +58,7 @@ export default function LeadForm({
   if (status === "done") {
     return (
       <div className="bg-white rounded-2xl p-8 border border-gray-100 text-center">
-        <p className="text-4xl mb-3">✅</p>
+        <div className="flex justify-center mb-3"><CheckCircle2 className="text-[#7B2D8B]" size={48} /></div>
         <p className="font-bold text-lg text-gray-900 mb-2">신청이 접수됐어요!</p>
         <p className="text-sm text-gray-500 mb-1">곧 카카오톡 또는 남겨주신 연락처로 입금 안내를 드릴게요.</p>
         <p className="text-xs text-gray-400">입금 확인 후 예약이 최종 확정됩니다.</p>
