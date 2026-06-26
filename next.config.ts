@@ -25,8 +25,7 @@ const nextConfig: NextConfig = {
       { source: "/talk/:path*",    destination: "/", permanent: true },
       { source: "/talk",           destination: "/", permanent: true },
 
-      // ── 도메인 이전 301 ───────────────────────────────────────────────
-      // dongtan.naemiso.com → www.bodymiso.com
+      // ── 도메인 이전 301 ──────────────────────────────────────────────�      // dongtan.naemiso.com → www.bodymiso.com
       {
         source: "/:path*",
         has: [{ type: "host", value: "dongtan.naemiso.com" }],
@@ -45,3 +44,4 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+;

@@ -373,6 +373,12 @@ export default function AdminPage() {
           </div>
           <div className="flex gap-3">
             <a
+              href="/admin/analytics"
+              className="border border-[#7B2D8B] text-[#7B2D8B] rounded-lg px-5 py-2 text-sm font-semibold hover:bg-[#FAF5FB] flex items-center"
+            >
+              📊 애널리틱스
+            </a>
+            <a
               href="/admin/leads"
               className="border border-[#7B2D8B] text-[#7B2D8B] rounded-lg px-5 py-2 text-sm font-semibold hover:bg-[#FAF5FB] flex items-center"
             >
@@ -499,7 +505,7 @@ export default function AdminPage() {
                           onClick={() => handleDelete(post.id, post.title)}
                           className="text-xs text-red-400 hover:underline"
                         >
-                          삭제
+                               삭제
                         </button>
                       </div>
                     </td>

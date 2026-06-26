@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Noto_Sans_KR, Noto_Serif_KR } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import Script from "next/script";
+import Tracker from "@/components/Tracker";
 import "./globals.css";
 
 const notoSansKR = Noto_Sans_KR({
@@ -119,6 +120,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
         />
         {children}
+        <Tracker />
         <Analytics />
         {/* Google Analytics */}
         <Script
