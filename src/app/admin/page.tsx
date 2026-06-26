@@ -381,7 +381,14 @@ export default function AdminPage() {
         <div className="flex items-start justify-between mb-8 gap-3">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">블로그 관리</h1>
-            <p className="text-sm text-gray-400 mt-1">내몸에미소 건강 정보</p>
+            <a
+              href="https://www.bodymiso.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-[#7B2D8B] hover:underline mt-1 inline-block"
+            >
+              사이트 바로가기 →
+            </a>
           </div>
           <div className="flex flex-wrap gap-2 justify-end">
             <a
