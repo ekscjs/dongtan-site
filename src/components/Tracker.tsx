@@ -55,8 +55,12 @@ export default function Tracker() {
   const pathname = usePathname();
 
   useEffect(() => {
-    // 봇 제외 (간단한 체크)
+    // 봇 제외
     if (typeof navigator !== "undefined" && /bot|crawl|spider|prerender/i.test(navigator.userAgent)) {
+      return;
+    }
+    // 관리자 제외 — admin_auth 쿠키가 있으면 트래킹 안 함
+    if (document.cookie.split(";").some((c) => c.trim() === "admin_auth=1")) {
       return;
     }
 

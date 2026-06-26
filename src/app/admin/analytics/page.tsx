@@ -82,7 +82,7 @@ function BarChart({ data, colorKey }: { data: { label: string; count: number; co
     <div className="space-y-2">
       {data.map((d, i) => (
         <div key={i} className="flex items-center gap-3">
-          <span className="text-xs text-gray-500 w-24 truncate shrink-0">{d.label}</span>
+          <span className="text-xs text-gray-500 w-28 shrink-0 truncate" title={d.label}>{d.label}</span>
           <div className="flex-1 bg-gray-100 rounded-full h-5 overflow-hidden">
             <div
               className="h-5 rounded-full flex items-center justify-end pr-2 text-xs font-semibold text-white"
