@@ -9,7 +9,7 @@ import { ZapIcon, RefreshCwIcon, UserIcon, CheckIcon } from "@/components/Icons"
 export const metadata: Metadata = {
   title: "동탄 재활·체형교정·통증 운동 프로그램 | 내몸에미소",
   description:
-    "동탄에서 재활, 체형교정, 통증 완화 운동을 1:1 맞춤으로. 증상이 아닌 원인부터 찾는 프로그램, 1회 체험 3만원. 누적 166명·재등록률 90%.",
+    "동탄에서 재활, 체형교정, 통증 완화 운동을 1:1 맞춤으로. 증상이 아닌 원인부터 찾는 프로그램, 1회 체험 3만원. 누적 200명·재등록률 90%.",
   keywords: [
     "동탄 재활",
     "동탄 체형교정",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 
 const stats = [
   { value: "4년+", label: "동탄 센터 오픈" },
-  { value: "166명+", label: "누적 회원" },
+  { value: "200명+", label: "누적 회원" },
   { value: "90%", label: "재등록률" },
 ];
 
