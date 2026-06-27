@@ -464,7 +464,7 @@ export default function AdminPage() {
           </a>
         </div>
 
-        <div className="bg-white rounded-2xl shadow overflow-hidden">
+        <div className="bg-white rounded-2xl shadow overflow-x-auto">
           {posts.length === 0 ? (
             <div className="text-center py-16 text-gray-400 text-sm">
               <p>글이 없습니다.</p>
