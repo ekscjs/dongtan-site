@@ -10,6 +10,8 @@ const notoSansKR = Noto_Sans_KR({
   subsets: ["latin"],
   weight: ["400", "500", "700"],
   variable: "--font-sans-kr",
+  display: "swap",
+  preload: false,
 });
 
 
