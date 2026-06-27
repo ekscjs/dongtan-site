@@ -237,7 +237,7 @@ export default function Home() {
             <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-10">오시는 길</h2>
             <div className="rounded-2xl overflow-hidden shadow-sm mb-4">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3175.123456789!2d127.073!3d37.209!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357b4b2b2b2b2b2b%3A0x0!2z64yA66Oo7JeQ66GcIOyEseyKpOydtA!5e0!3m2!1sko!2skr!4v1700000000000!5m2!1sko!2skr&q=내몸에미소+경기도+화성시+동탄+지성로+134+5층"
+                src="https://www.google.com/maps/embed?pb=!1m5!3m3!1m2!1s0x357b45afc4a27497%3A0xb295dc65b7af4820!2z64K0IOuquOyXkCDrr7jshow!5e0!3m2!1sko!2skr!4v1782537380013!5m2!1sko!2skr"
                 width="100%"
                 height="280"
                 style={{ border: 0 }}
@@ -276,3 +276,35 @@ export default function Home() {
                   href="https://map.naver.com/p/entry/place/1101035370"
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="border border-[#7B2D8B] text-[#7B2D8B] font-bold px-6 py-3 rounded-full text-sm hover:bg-purple-50 transition-colors text-center"
+                >
+                  네이버 지도로 보기
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-[#7B2D8B] py-12 md:py-20 px-4">
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+              몸이 달라지는 걸 직접 느껴보세요
+            </h2>
+            <p className="text-purple-200 mb-8 text-base md:text-lg">
+              어떤 프로그램이 맞는지 모르겠다면 체크부터 해보세요.
+            </p>
+            <Link
+              href="/check"
+              className="group inline-flex items-center gap-2 bg-white text-[#7B2D8B] font-bold px-10 py-4 rounded-full text-base md:text-lg hover:bg-gray-100 transition-all hover:scale-[1.03]"
+            >
+              내 몸 상태 체크하기
+              <ArrowRightIcon size={18} className="transition-transform group-hover:translate-x-1" />
+            </Link>
+          </div>
+        </section>
+
+      </main>
+      <Footer />
+    </>
+  );
+}

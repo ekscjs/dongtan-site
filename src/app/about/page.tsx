@@ -121,7 +121,7 @@ export default function AboutPage() {
             <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-6">오시는 길</h2>
             <div className="rounded-2xl overflow-hidden shadow-sm mb-4">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3175.123456789!2d127.073!3d37.209!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357b4b2b2b2b2b2b%3A0x0!2z64yA66Oo7JeQ66GcIOyEseyKpOydtA!5e0!3m2!1sko!2skr!4v1700000000000!5m2!1sko!2skr&q=내몸에미소+경기도+화성시+동탄+지성로+134+5층"
+                src="https://www.google.com/maps/embed?pb=!1m5!3m3!1m2!1s0x357b45afc4a27497%3A0xb295dc65b7af4820!2z64K0IOuquOyXkCDrr7jshow!5e0!3m2!1sko!2skr!4v1782537380013!5m2!1sko!2skr"
                 width="100%"
                 height="320"
                 style={{ border: 0 }}
@@ -134,4 +134,41 @@ export default function AboutPage() {
             <div className="bg-gray-50 rounded-2xl p-8 space-y-3">
               <p className="text-gray-700 font-medium">경기도 화성시 동탄 지성로 134 5층</p>
               <p className="text-gray-500 text-sm">카카오맵, 네이버 지도에서 "내몸에미소"로 검색하세요.</p>
-   
+              <div className="flex gap-3 pt-1">
+                <a
+                  href="https://maps.google.com/?q=내몸에미소+경기도+화성시+동탄+지성로+134"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-[#7B2D8B] text-white font-bold px-5 py-2.5 rounded-full text-sm hover:bg-[#6a2578] transition-colors"
+                >
+                  구글 지도
+                </a>
+                <a
+                  href="https://map.naver.com/p/entry/place/1101035370"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="border border-[#7B2D8B] text-[#7B2D8B] font-bold px-5 py-2.5 rounded-full text-sm hover:bg-purple-50 transition-colors"
+                >
+                  네이버 지도
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA */}
+        <section className="bg-[#7B2D8B] py-10 md:py-16 px-4">
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="text-xl md:text-2xl font-bold text-white mb-3">먼저 이야기를 들어드립니다</h2>
+            <p className="text-purple-200 mb-8 text-sm md:text-base">무료 상담으로 시작합니다.</p>
+            <KakaoButton className="inline-block bg-white text-[#7B2D8B] font-bold px-10 py-4 rounded-full text-base hover:bg-gray-100 transition-colors">
+              카카오로 상담하기
+            </KakaoButton>
+          </div>
+        </section>
+
+      </main>
+      <Footer />
+    </>
+  );
+}
