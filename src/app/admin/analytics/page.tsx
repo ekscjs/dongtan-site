@@ -241,7 +241,7 @@ export default function AnalyticsPage() {
       const json = await res.json();
       setGa4(json);
     } catch {
-      setGa4({ countries: [], devices: [], pages: [], channels: [], error: "GA4 미연동" });
+      setGa4({ countries: [], cities: [], devices: [], pages: [], channels: [], error: "GA4 미연동" });
     } finally {
       setGa4Loading(false);
     }
