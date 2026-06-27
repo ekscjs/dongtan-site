@@ -380,7 +380,9 @@ export default function AdminPage() {
   }
 
   // list view
-  const publishedCount = posts.filter((p) => p.published).length;
+  const now = new Date();
+  const scheduledCount = posts.filter((p) => p.published && p.publish_at && new Date(p.publish_at) > now).length;
+  const publishedCount = posts.filter((p) => p.published && !(p.publish_at && new Date(p.publish_at) > now)).length;
   const draftCount = posts.filter((p) => !p.published).length;
 
   return (
@@ -421,10 +423,14 @@ export default function AdminPage() {
         </div>
 
         {/* 대시보드 카드 */}
-        <div className="grid grid-cols-2 gap-4 mb-8">
+        <div className="grid grid-cols-3 gap-4 mb-8">
           <div className="bg-white rounded-2xl shadow p-5">
-            <p className="text-xs text-gray-400 mb-1">공개 글</p>
+            <p className="text-xs text-gray-400 mb-1">공개</p>
             <p className="text-3xl font-bold text-gray-900">{publishedCount}</p>
+          </div>
+          <div className="bg-white rounded-2xl shadow p-5">
+            <p className="text-xs text-orange-400 mb-1">예약</p>
+            <p className="text-3xl font-bold text-orange-400">{scheduledCount}</p>
           </div>
           <div className="bg-white rounded-2xl shadow p-5">
             <p className="text-xs text-gray-400 mb-1">비공개</p>
