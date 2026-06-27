@@ -49,7 +49,7 @@ interface SavedState {
   retest?: { type: TypeKey; riskLabel: string; at: string };
 }
 
-type View = "loading" | "quiz" | "result" | "routine" | "retest";
+type View = "loading" | "hub" | "quiz" | "result" | "routine" | "retest";
 
 function todayStr() {
   return new Date().toISOString().slice(0, 10);
@@ -95,7 +95,7 @@ export default function CheckQuiz() {
       setSaved(s);
       setView("result");
     } else {
-      setView("quiz");
+      setView("hub");
     }
   }, []);
 
@@ -177,6 +177,70 @@ export default function CheckQuiz() {
   }
 
   // ---------- 렌더 ----------
+
+  // 허브 선택 화면
+  if (view === "hub") {
+    return (
+      <>
+        <Header />
+        <main className="min-h-screen bg-[#FAF5FB] pt-8 pb-12 md:pt-12 md:pb-20 px-4">
+          <div className="max-w-xl mx-auto">
+            <p className="text-xs font-semibold text-[#9B4DAB] uppercase tracking-widest mb-3">몸 상태 체크</p>
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+              어떤 방식으로<br />확인해볼까요?
+            </h1>
+            <p className="text-sm text-gray-500 mb-8">둘 다 무료 · 1~3분이면 완료됩니다</p>
+
+            <div className="space-y-4">
+              {/* 체형 유형 진단 */}
+              <button
+                onClick={startFresh}
+                className="w-full text-left bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:border-[#7B2D8B] transition-colors group"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-[#FAF5FB] flex items-center justify-center shrink-0 group-hover:bg-[#7B2D8B] transition-colors">
+                    <UserIcon className="text-[#7B2D8B] group-hover:text-white" size={24} />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-xs font-semibold text-[#9B4DAB] mb-1">1분 자가진단</p>
+                    <h2 className="text-lg font-bold text-gray-900 mb-1">체형 유형 진단</h2>
+                    <p className="text-sm text-gray-500">
+                      거북목 / 골반 / 허리 / 전신 — 내 몸 유형을 파악하고<br />
+                      7일 교정 루틴을 받아보세요
+                    </p>
+                  </div>
+                  <span className="text-gray-300 text-xl shrink-0">›</span>
+                </div>
+              </button>
+
+              {/* 통증지도 */}
+              <Link
+                href="/check/pain"
+                className="block bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:border-[#7B2D8B] transition-colors group"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-[#FAF5FB] flex items-center justify-center shrink-0 group-hover:bg-[#7B2D8B] transition-colors">
+                    <ActivityIcon className="text-[#7B2D8B] group-hover:text-white" size={24} />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-xs font-semibold text-[#9B4DAB] mb-1">통증지도</p>
+                    <h2 className="text-lg font-bold text-gray-900 mb-1">통증 부위 체크</h2>
+                    <p className="text-sm text-gray-500">
+                      목·어깨·허리·골반·무릎·발목 중<br />
+                      아픈 부위를 클릭하면 원인 분석을 해드려요
+                    </p>
+                  </div>
+                  <span className="text-gray-300 text-xl shrink-0">›</span>
+                </div>
+              </Link>
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </>
+    );
+  }
+
   if (view === "loading") {
     return (
       <>
