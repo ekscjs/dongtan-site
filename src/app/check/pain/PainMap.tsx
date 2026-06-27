@@ -380,14 +380,14 @@ function ResultView({
             <span className="text-xs text-gray-400">50% 할인</span>
           </div>
         </div>
-        <KakaoButton className="w-full bg-white text-[#7B2D8B] font-bold py-4 rounded-full hover:bg-gray-50 transition-colors mb-3">
+        <KakaoButton className="block w-full text-center bg-white text-[#7B2D8B] font-bold text-base py-4 rounded-full hover:bg-gray-50 transition-colors mb-4">
           카카오로 예약하기
         </KakaoButton>
         <a
           href={PLACE_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="block w-full border border-purple-300 text-white font-semibold py-3.5 rounded-full hover:bg-white/10 transition-colors text-sm"
+          className="block w-full text-center border border-purple-300 text-white font-semibold text-base py-4 rounded-full hover:bg-white/10 transition-colors"
         >
           네이버로 예약·후기 보기
         </a>
