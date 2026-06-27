@@ -13,6 +13,7 @@ type SearchQuery = { keys: string[]; clicks: number; impressions: number; ctr: n
 type AnalyticsData = {
   summary: Summary;
   dailyChart: DailyPoint[];
+  yearlyChart: DailyPoint[];
   sourceChart: SourcePoint[];
   topPages: PagePoint[];
   exitPages: PagePoint[];
@@ -112,18 +113,26 @@ function BarChart({ data }: { data: { label: string; count: number; color?: stri
   );
 }
 
-function LineChart({ data, days }: { data: DailyPoint[]; days: 7 | 30 }) {
+type ChartMode = "month" | "year";
+
+function LineChart({ data, mode }: { data: DailyPoint[]; mode: ChartMode }) {
   if (!data.length) return <p className="text-xs text-gray-400">데이터 없음</p>;
 
-  const recent = data.slice(-days);
-  const max = Math.max(...recent.map((d) => d.count), 1);
+  // 연간: date가 "YYYY-MM" 형식, 월간: "YYYY-MM-DD"
+  const pts_raw = data.map((d) => ({
+    label: mode === "year" ? d.date.slice(0, 7).replace("-", "/") : d.date.slice(5),
+    count: d.count,
+    tooltip: d.date + ": " + d.count + "명",
+  }));
+
+  const max = Math.max(...pts_raw.map((d) => d.count), 1);
   const W = 600, H = 180;
   const PAD = { top: 16, right: 16, bottom: 36, left: 36 };
   const cW = W - PAD.left - PAD.right;
   const cH = H - PAD.top - PAD.bottom;
 
-  const pts = recent.map((d, i) => ({
-    x: PAD.left + (recent.length === 1 ? cW / 2 : (i / (recent.length - 1)) * cW),
+  const pts = pts_raw.map((d, i) => ({
+    x: PAD.left + (pts_raw.length === 1 ? cW / 2 : (i / (pts_raw.length - 1)) * cW),
     y: PAD.top + (1 - d.count / max) * cH,
     ...d,
   }));
@@ -135,14 +144,14 @@ function LineChart({ data, days }: { data: DailyPoint[]; days: 7 | 30 }) {
 
   const yTicks = [0, Math.round(max / 2), max];
 
-  // x축 레이블: 7일이면 전부, 30일이면 6개만
-  const xLabelIndices = days === 7
-    ? recent.map((_, i) => i)
-    : [0, 5, 10, 15, 20, 25, recent.length - 1].filter((i) => i < recent.length);
+  // 연간은 전부 표시, 월간은 6개만
+  const xLabelIndices = mode === "year"
+    ? pts.map((_, i) => i)
+    : [0, 5, 10, 15, 20, 25, pts.length - 1].filter((i) => i < pts.length);
 
   return (
     <div className="w-full overflow-x-auto">
-      <svg viewBox={"0 0 " + W + " " + H} className="w-full" style={{ minWidth: days === 30 ? "320px" : "200px" }}>
+      <svg viewBox={"0 0 " + W + " " + H} className="w-full" style={{ minWidth: "280px" }}>
         <defs>
           <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#7B2D8B" stopOpacity="0.25" />
@@ -162,13 +171,13 @@ function LineChart({ data, days }: { data: DailyPoint[]; days: 7 | 30 }) {
         <path d={linePath} fill="none" stroke="#7B2D8B" strokeWidth="3" strokeLinejoin="round" strokeLinecap="round" />
         {pts.map((p, i) => (
           <g key={i}>
-            <circle cx={p.x} cy={p.y} r={days === 7 ? 5 : 3.5} fill="white" stroke="#7B2D8B" strokeWidth="2.5" />
-            <title>{p.date + ": " + p.count + "명"}</title>
+            <circle cx={p.x} cy={p.y} r={mode === "year" ? 6 : 3.5} fill="white" stroke="#7B2D8B" strokeWidth="2.5" />
+            <title>{p.tooltip}</title>
           </g>
         ))}
         {xLabelIndices.map((i) => (
           <text key={i} x={pts[i].x} y={H - 8} textAnchor="middle" fontSize="11" fill="#6B7280" fontWeight="500">
-            {recent[i].date.slice(5)}
+            {pts[i].label}
           </text>
         ))}
       </svg>
@@ -191,7 +200,8 @@ export default function AnalyticsPage() {
   const [searchLoading, setSearchLoading] = useState(false);
   const [ga4Loading, setGa4Loading] = useState(false);
   const [error, setError] = useState("");
-  const [chartDays, setChartDays] = useState<7 | 30>(30);
+  const [chartMode, setChartMode] = useState<ChartMode>("month");
+  const chartData = chartMode === "year" ? (data?.yearlyChart ?? []) : (data?.dailyChart ?? []);
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -310,25 +320,28 @@ export default function AnalyticsPage() {
         <div className="bg-white rounded-2xl shadow p-6 mb-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-sm font-semibold text-gray-700">
-              날짜별 방문자 <span className="text-xs font-normal text-gray-400">(최근 {chartDays}일)</span>
+              방문자 추이{" "}
+              <span className="text-xs font-normal text-gray-400">
+                {chartMode === "month" ? "(최근 30일)" : "(월별 누적)"}
+              </span>
             </h2>
             <div className="flex gap-1.5">
-              {([7, 30] as const).map((d) => (
+              {(["month", "year"] as const).map((m) => (
                 <button
-                  key={d}
-                  onClick={() => setChartDays(d)}
+                  key={m}
+                  onClick={() => setChartMode(m)}
                   className={`text-xs font-semibold px-3 py-1.5 rounded-full border transition-colors ${
-                    chartDays === d
+                    chartMode === m
                       ? "bg-[#7B2D8B] text-white border-[#7B2D8B]"
                       : "border-gray-200 text-gray-500 hover:border-[#7B2D8B]"
                   }`}
                 >
-                  {d === 7 ? "주간" : "월간"}
+                  {m === "month" ? "월간" : "연간"}
                 </button>
               ))}
             </div>
           </div>
-          <LineChart data={data?.dailyChart ?? []} days={chartDays} />
+          <LineChart data={chartData} mode={chartMode} />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">

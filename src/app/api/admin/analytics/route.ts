@@ -108,6 +108,12 @@ export async function GET(req: NextRequest) {
       .gte("created_at", fmt(monthStart))
       .order("created_at", { ascending: true });
 
+    // 전체 기간 (연간 차트용)
+    const allTimeRes = await supabaseAdmin
+      .from("page_views")
+      .select("created_at, visitor_id")
+      .order("created_at", { ascending: true });
+
     const dailyVisitors: Record<string, Set<string>> = {};
     for (const row of dailyWithVisitor.data ?? []) {
       const date = row.created_at.slice(0, 10);
@@ -115,6 +121,17 @@ export async function GET(req: NextRequest) {
       if (row.visitor_id) dailyVisitors[date].add(row.visitor_id);
     }
     const dailyChart = Object.entries(dailyVisitors)
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([date, visitors]) => ({ date, count: visitors.size }));
+
+    // 월별 방문자 집계 (연간 차트)
+    const monthlyVisitors: Record<string, Set<string>> = {};
+    for (const row of allTimeRes.data ?? []) {
+      const month = row.created_at.slice(0, 7); // YYYY-MM
+      if (!monthlyVisitors[month]) monthlyVisitors[month] = new Set();
+      if (row.visitor_id) monthlyVisitors[month].add(row.visitor_id);
+    }
+    const yearlyChart = Object.entries(monthlyVisitors)
       .sort(([a], [b]) => a.localeCompare(b))
       .map(([date, visitors]) => ({ date, count: visitors.size }));
 
@@ -185,6 +202,7 @@ export async function GET(req: NextRequest) {
         month: countUnique(monthRes.data ?? []),
       },
       dailyChart,
+      yearlyChart,
       sourceChart,
       topPages,
       exitPages,
