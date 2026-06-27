@@ -21,7 +21,9 @@ const COLORS = [
 export default function MarkdownEditor({ value, onChange }: Props) {
   const [tab, setTab] = useState<"write" | "preview">("write");
   const [showImageModal, setShowImageModal] = useState(false);
+  const [droppedFile, setDroppedFile] = useState<File | null>(null);
   const [showColorPicker, setShowColorPicker] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const cursorPosRef = useRef<number>(0);
   const historyRef = useRef<string[]>([value]);
@@ -225,14 +227,33 @@ export default function MarkdownEditor({ value, onChange }: Props) {
 
         {/* 에디터 / 미리보기 */}
         {tab === "write" ? (
-          <textarea
-            ref={textareaRef}
-            value={value}
-            onChange={(e) => onChange(e.target.value)}
-            rows={22}
-            placeholder={`# 제목\n\n## 소제목\n\n본문 내용을 입력하세요.\n\n- 목록 항목\n- 항목 2\n\n**굵게** *기울임* \`코드\``}
-            className="w-full px-4 py-3 text-sm font-mono focus:outline-none resize-y bg-white leading-relaxed"
-          />
+          <div className="relative">
+            <textarea
+              ref={textareaRef}
+              value={value}
+              onChange={(e) => onChange(e.target.value)}
+              rows={22}
+              placeholder={`# 제목\n\n## 소제목\n\n본문 내용을 입력하세요.\n\n- 목록 항목\n- 항목 2\n\n**굵게** *기울임* \`코드\``}
+              className={`w-full px-4 py-3 text-sm font-mono focus:outline-none resize-y bg-white leading-relaxed transition-colors ${isDragging ? "bg-purple-50" : ""}`}
+              onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+              onDragLeave={() => setIsDragging(false)}
+              onDrop={(e) => {
+                e.preventDefault();
+                setIsDragging(false);
+                const file = e.dataTransfer.files?.[0];
+                if (!file || !file.type.startsWith("image/")) return;
+                const el = textareaRef.current;
+                if (el) cursorPosRef.current = el.selectionStart;
+                setDroppedFile(file);
+                setShowImageModal(true);
+              }}
+            />
+            {isDragging && (
+              <div className="absolute inset-0 border-2 border-dashed border-[#7B2D8B] rounded-b-xl pointer-events-none flex items-center justify-center">
+                <span className="bg-white px-4 py-2 rounded-lg text-sm font-semibold text-[#7B2D8B] shadow">이미지를 여기에 놓으세요</span>
+              </div>
+            )}
+          </div>
         ) : (
           <div
             className="min-h-[440px] px-6 py-4 bg-white"
@@ -249,7 +270,8 @@ export default function MarkdownEditor({ value, onChange }: Props) {
       {showImageModal && (
         <ImageUploader
           onInsert={(md) => insertAtCursor(md)}
-          onClose={() => setShowImageModal(false)}
+          onClose={() => { setShowImageModal(false); setDroppedFile(null); }}
+          initialFile={droppedFile ?? undefined}
         />
       )}
     </>

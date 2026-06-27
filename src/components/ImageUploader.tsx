@@ -5,11 +5,12 @@ import { useRef, useState, useEffect, useCallback } from "react";
 interface Props {
   onInsert: (markdownText: string) => void;
   onClose: () => void;
+  initialFile?: File;
 }
 
 interface Rect { x: number; y: number; w: number; h: number; }
 
-export default function ImageUploader({ onInsert, onClose }: Props) {
+export default function ImageUploader({ onInsert, onClose, initialFile }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const overlayRef = useRef<HTMLCanvasElement>(null);
   const imgRef = useRef<HTMLImageElement | null>(null);
@@ -22,6 +23,11 @@ export default function ImageUploader({ onInsert, onClose }: Props) {
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState("");
   const [alt, setAlt] = useState("");
+
+  useEffect(() => {
+    if (initialFile) loadFile(initialFile);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const loadFile = useCallback((f: File) => {
     setFile(f);
@@ -188,9 +194,19 @@ export default function ImageUploader({ onInsert, onClose }: Props) {
 
         <div className="p-6">
           {step === "pick" && (
-            <label className="flex flex-col items-center justify-center gap-3 border-2 border-dashed border-gray-200 rounded-xl p-12 cursor-pointer hover:border-[#7B2D8B] transition-colors">
+            <label
+              className="flex flex-col items-center justify-center gap-3 border-2 border-dashed border-gray-200 rounded-xl p-12 cursor-pointer hover:border-[#7B2D8B] transition-colors"
+              onDragOver={(e) => { e.preventDefault(); e.currentTarget.classList.add("border-[#7B2D8B]", "bg-purple-50"); }}
+              onDragLeave={(e) => { e.currentTarget.classList.remove("border-[#7B2D8B]", "bg-purple-50"); }}
+              onDrop={(e) => {
+                e.preventDefault();
+                e.currentTarget.classList.remove("border-[#7B2D8B]", "bg-purple-50");
+                const file = e.dataTransfer.files?.[0];
+                if (file && file.type.startsWith("image/")) loadFile(file);
+              }}
+            >
               <span className="text-4xl">📷</span>
-              <span className="text-sm font-semibold text-gray-600">클릭하여 이미지 선택</span>
+              <span className="text-sm font-semibold text-gray-600">클릭하거나 이미지를 여기에 끌어다 놓으세요</span>
               <span className="text-xs text-gray-400">JPG, PNG, WEBP</span>
               <input
                 type="file"
