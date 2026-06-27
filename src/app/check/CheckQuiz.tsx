@@ -316,6 +316,7 @@ export default function CheckQuiz() {
         </div>
         <ShareCard type={saved.type} riskLabel={saved.risk.label} />
         <RelatedContent type={saved.type} />
+        <CrossPromo to="pain" />
         <ClassPromo />
         <CenterCTA />
       </Shell>
@@ -457,6 +458,7 @@ export default function CheckQuiz() {
         </div>
         <ShareCard type={saved.retest.type} riskLabel={saved.retest.riskLabel} retest improved={improved} />
         <RelatedContent type={saved.retest.type} />
+        <CrossPromo to="pain" />
         <CenterCTA highlight />
       </Shell>
     );
@@ -660,5 +662,34 @@ function CenterCTA({ highlight = false }: { highlight?: boolean }) {
         </a>
       </div>
     </div>
+  );
+}
+
+function CrossPromo({ to }: { to: "pain" | "quiz" }) {
+  if (to === "pain") {
+    return (
+      <Link
+        href="/check/pain"
+        className="mt-5 block bg-white rounded-2xl p-5 border border-gray-100 hover:border-[#7B2D8B] transition-colors group"
+      >
+        <p className="text-xs font-semibold text-[#9B4DAB] mb-1">통증지도도 해볼까요?</p>
+        <p className="font-bold text-gray-900 mb-1">아픈 부위 클릭 → 원인 분석</p>
+        <p className="text-sm text-gray-500">
+          목·어깨·허리·골반·무릎·발목 중 불편한 곳을 골라보세요 →
+        </p>
+      </Link>
+    );
+  }
+  return (
+    <Link
+      href="/check"
+      className="mt-5 block bg-white rounded-2xl p-5 border border-gray-100 hover:border-[#7B2D8B] transition-colors group"
+    >
+      <p className="text-xs font-semibold text-[#9B4DAB] mb-1">체형 유형 진단도 해볼까요?</p>
+      <p className="font-bold text-gray-900 mb-1">1분 자가진단 → 7일 교정 루틴</p>
+      <p className="text-sm text-gray-500">
+        거북목·골반·허리·전신 — 내 몸 유형을 확인하고 루틴을 받아보세요 →
+      </p>
+    </Link>
   );
 }

@@ -385,6 +385,18 @@ function ResultView({
         </a>
       </div>
 
+      {/* 체형진단 크로스 프로모 */}
+      <Link
+        href="/check"
+        className="block bg-white rounded-2xl p-5 border border-gray-100 hover:border-[#7B2D8B] transition-colors"
+      >
+        <p className="text-xs font-semibold text-[#9B4DAB] mb-1">체형 유형 진단도 해볼까요?</p>
+        <p className="font-bold text-gray-900 mb-1">1분 자가진단 → 7일 교정 루틴</p>
+        <p className="text-sm text-gray-500">
+          거북목·골반·허리·전신 — 내 몸 유형을 확인하고 루틴을 받아보세요 →
+        </p>
+      </Link>
+
       {/* 다시하기 */}
       <button
         onClick={onReset}
