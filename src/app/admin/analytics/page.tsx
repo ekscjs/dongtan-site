@@ -96,16 +96,17 @@ function BarChart({ data }: { data: { label: string; count: number; color?: stri
       {data.map((d, i) => (
         <div key={i} className="flex items-center gap-3">
           <span className="text-xs text-gray-500 w-28 shrink-0 truncate" title={d.label}>{d.label}</span>
-          <div className="flex-1 bg-gray-100 rounded-full h-5 overflow-hidden">
-            <div
-              className="h-5 rounded-full flex items-center justify-end pr-2 text-xs font-semibold text-white"
-              style={{
-                width: Math.max((d.count / max) * 100, 3) + "%",
-                backgroundColor: d.color ?? "#7B2D8B",
-              }}
-            >
-              {d.count}
+          <div className="flex-1 flex items-center gap-2">
+            <div className="flex-1 bg-gray-100 rounded-full h-5 overflow-hidden">
+              <div
+                className="h-5 rounded-full"
+                style={{
+                  width: Math.max((d.count / max) * 100, 3) + "%",
+                  backgroundColor: d.color ?? "#7B2D8B",
+                }}
+              />
             </div>
+            <span className="text-xs font-semibold text-gray-700 w-6 text-right shrink-0">{d.count}</span>
           </div>
         </div>
       ))}
