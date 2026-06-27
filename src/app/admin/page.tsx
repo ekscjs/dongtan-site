@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import type { Post } from "@/lib/supabase";
 import MarkdownEditor from "@/components/MarkdownEditor";
-type View = "login" | "list" | "form";
+type View = "loading" | "login" | "list" | "form";
 
 const EMPTY_FORM = {
   title: "",
@@ -43,7 +43,7 @@ async function translateToSlug(text: string): Promise<string> {
 
 export default function AdminPage() {
   useEffect(() => { document.title = "🔧 관리자 — 내몸에미소"; }, []);
-  const [view, setView] = useState<View>("login");
+  const [view, setView] = useState<View>("loading");
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
   const [posts, setPosts] = useState<Post[]>([]);
@@ -163,6 +163,14 @@ export default function AdminPage() {
     } else {
       alert("삭제 실패");
     }
+  }
+
+  if (view === "loading") {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <p className="text-gray-300 text-sm">불러오는 중...</p>
+      </div>
+    );
   }
 
   if (view === "login") {
