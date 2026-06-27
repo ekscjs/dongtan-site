@@ -123,7 +123,9 @@ export default function AdminPage() {
     e.preventDefault();
     setSaving(true);
     setMsg("");
-    const payload = asDraft ? { ...form, published: false } : form;
+    // 예약글(publish_at 있음)은 임시저장해도 published 건드리지 않음
+    const isScheduled = form.publish_at && new Date(form.publish_at) > new Date();
+    const payload = asDraft && !isScheduled ? { ...form, published: false } : form;
     try {
       const url = editId ? `/api/admin/posts/${editId}` : "/api/admin/posts";
       const method = editId ? "PUT" : "POST";
