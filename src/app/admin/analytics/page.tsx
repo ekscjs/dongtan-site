@@ -29,11 +29,13 @@ type SearchData = {
 };
 
 type Ga4Country = { country: string; sessions: number };
+type Ga4City = { city: string; sessions: number };
 type Ga4Device = { device: string; sessions: number };
 type Ga4Page = { path: string; views: number; avgDuration: number; engagementRate: number };
 type Ga4Channel = { channel: string; sessions: number };
 type Ga4Data = {
   countries: Ga4Country[];
+  cities: Ga4City[];
   devices: Ga4Device[];
   pages: Ga4Page[];
   channels: Ga4Channel[];
@@ -397,15 +399,26 @@ export default function AnalyticsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div className="bg-white rounded-2xl shadow p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-sm font-semibold text-gray-700">국가별 방문자 <span className="text-xs font-normal text-gray-400">(GA4 30일)</span></h2>
+              <h2 className="text-sm font-semibold text-gray-700">국가 / 도시별 방문자 <span className="text-xs font-normal text-gray-400">(GA4 30일)</span></h2>
               {ga4Loading && <span className="text-xs text-gray-400">불러오는 중...</span>}
             </div>
             {ga4?.error && !ga4.countries.length ? (
               <p className="text-xs text-gray-400">{ga4.error}</p>
-            ) : ga4?.countries.length ? (
-              <BarChart data={ga4.countries.map((c) => ({ label: c.country === "(not set)" ? "미분류" : c.country, count: c.sessions }))} />
             ) : (
-              <p className="text-xs text-gray-400">데이터 없음</p>
+              <>
+                {ga4?.countries.length ? (
+                  <>
+                    <p className="text-xs font-semibold text-gray-400 mb-2">국가</p>
+                    <BarChart data={ga4.countries.map((c) => ({ label: c.country === "(not set)" ? "미분류" : c.country, count: c.sessions }))} />
+                  </>
+                ) : <p className="text-xs text-gray-400">데이터 없음</p>}
+                {ga4?.cities && ga4.cities.length > 0 && (
+                  <>
+                    <p className="text-xs font-semibold text-gray-400 mt-5 mb-2">도시</p>
+                    <BarChart data={ga4.cities.map((c) => ({ label: c.city, count: c.sessions, color: "#B05CC2" }))} />
+                  </>
+                )}
+              </>
             )}
           </div>
           <div className="bg-white rounded-2xl shadow p-6">

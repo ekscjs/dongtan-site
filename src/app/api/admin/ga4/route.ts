@@ -65,11 +65,19 @@ export async function GET(req: NextRequest) {
 
     const dateRange = [{ startDate: "30daysAgo", endDate: "today" }];
 
-    const [countryData, deviceData, pageData, channelData] = await Promise.all([
+    const [countryData, cityData, deviceData, pageData, channelData] = await Promise.all([
       // 국가별 방문자
       runReport(token, {
         dateRanges: dateRange,
         dimensions: [{ name: "country" }],
+        metrics: [{ name: "sessions" }],
+        orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
+        limit: 10,
+      }),
+      // 도시별 방문자
+      runReport(token, {
+        dateRanges: dateRange,
+        dimensions: [{ name: "city" }],
         metrics: [{ name: "sessions" }],
         orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
         limit: 10,
@@ -116,6 +124,12 @@ export async function GET(req: NextRequest) {
       sessions: parseInt(row.metricValues[0].value),
     }));
 
+    // 도시 데이터 파싱
+    const cities = (cityData.rows ?? []).map((row: { dimensionValues: {value:string}[]; metricValues: {value:string}[] }) => ({
+      city: row.dimensionValues[0].value === "(not set)" ? "미분류" : row.dimensionValues[0].value,
+      sessions: parseInt(row.metricValues[0].value),
+    }));
+
     // 기기 데이터 파싱
     const deviceMap: Record<string, string> = {
       mobile: "모바일",
@@ -151,7 +165,7 @@ export async function GET(req: NextRequest) {
       sessions: parseInt(row.metricValues[0].value),
     }));
 
-    return NextResponse.json({ countries, devices, pages, channels });
+    return NextResponse.json({ countries, cities, devices, pages, channels });
   } catch (err) {
     console.error("[ga4]", err);
     return NextResponse.json(
