@@ -171,43 +171,43 @@ export default function Home() {
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               <div className="col-span-2 row-span-2 rounded-2xl overflow-hidden aspect-square">
-                <Image src="/gallery/center-2.jpg" alt="내몸에미소 센터 내부" width={800} height={800} className="w-full h-full object-cover" />
+                <Image src="/gallery/center-2.jpg" alt="내몸에미소 센터 내부" width={800} height={800} className="w-full h-full object-cover" priority sizes="(max-width: 768px) 50vw, 25vw" />
               </div>
               <div className="rounded-2xl overflow-hidden aspect-square">
-                <Image src="/gallery/training-1.jpg" alt="1:1 운동 지도" width={400} height={400} className="w-full h-full object-cover" />
+                <Image src="/gallery/training-1.jpg" alt="1:1 운동 지도" width={400} height={400} className="w-full h-full object-cover" sizes="(max-width: 768px) 50vw, 25vw" />
               </div>
               <div className="rounded-2xl overflow-hidden aspect-square">
-                <Image src="/gallery/training-2.jpg" alt="1:1 운동 지도" width={400} height={400} className="w-full h-full object-cover" />
+                <Image src="/gallery/training-2.jpg" alt="1:1 운동 지도" width={400} height={400} className="w-full h-full object-cover" sizes="(max-width: 768px) 50vw, 25vw" />
               </div>
               <div className="rounded-2xl overflow-hidden aspect-square">
-                <Image src="/gallery/training-3.jpg" alt="1:1 운동 지도" width={400} height={400} className="w-full h-full object-cover" />
+                <Image src="/gallery/training-3.jpg" alt="1:1 운동 지도" width={400} height={400} className="w-full h-full object-cover" sizes="(max-width: 768px) 50vw, 25vw" />
               </div>
               <div className="rounded-2xl overflow-hidden aspect-square">
-                <Image src="/gallery/training-4.jpg" alt="1:1 운동 지도" width={400} height={400} className="w-full h-full object-cover" />
+                <Image src="/gallery/training-4.jpg" alt="1:1 운동 지도" width={400} height={400} className="w-full h-full object-cover" sizes="(max-width: 768px) 50vw, 25vw" />
               </div>
               <div className="rounded-2xl overflow-hidden aspect-square">
-                <Image src="/gallery/center-1.jpg" alt="내몸에미소 센터 내부" width={400} height={400} className="w-full h-full object-cover" />
+                <Image src="/gallery/center-1.jpg" alt="내몸에미소 센터 내부" width={400} height={400} className="w-full h-full object-cover" sizes="(max-width: 768px) 50vw, 25vw" />
               </div>
               <div className="rounded-2xl overflow-hidden aspect-square">
-                <Image src="/gallery/training-6.jpg" alt="1:1 운동 지도" width={400} height={400} className="w-full h-full object-cover" />
+                <Image src="/gallery/training-6.jpg" alt="1:1 운동 지도" width={400} height={400} className="w-full h-full object-cover" sizes="(max-width: 768px) 50vw, 25vw" />
               </div>
               <div className="rounded-2xl overflow-hidden aspect-square">
-                <Image src="/gallery/training-7.jpg" alt="1:1 운동 지도" width={400} height={400} className="w-full h-full object-cover" />
+                <Image src="/gallery/training-7.jpg" alt="1:1 운동 지도" width={400} height={400} className="w-full h-full object-cover" sizes="(max-width: 768px) 50vw, 25vw" />
               </div>
               <div className="rounded-2xl overflow-hidden aspect-square">
-                <Image src="/gallery/training-8.jpg" alt="1:1 운동 지도" width={400} height={400} className="w-full h-full object-cover" />
+                <Image src="/gallery/training-8.jpg" alt="1:1 운동 지도" width={400} height={400} className="w-full h-full object-cover" sizes="(max-width: 768px) 50vw, 25vw" />
               </div>
               <div className="rounded-2xl overflow-hidden aspect-square">
-                <Image src="/gallery/training-9.jpg" alt="1:1 운동 지도" width={400} height={400} className="w-full h-full object-cover" />
+                <Image src="/gallery/training-9.jpg" alt="1:1 운동 지도" width={400} height={400} className="w-full h-full object-cover" sizes="(max-width: 768px) 50vw, 25vw" />
               </div>
               <div className="rounded-2xl overflow-hidden aspect-square">
-                <Image src="/gallery/추가1.jpg" alt="1:1 운동 지도" width={400} height={400} className="w-full h-full object-cover" />
+                <Image src="/gallery/추가1.jpg" alt="1:1 운동 지도" width={400} height={400} className="w-full h-full object-cover" sizes="(max-width: 768px) 50vw, 25vw" />
               </div>
               <div className="rounded-2xl overflow-hidden aspect-square">
-                <Image src="/gallery/추가3.png" alt="1:1 운동 지도" width={400} height={400} className="w-full h-full object-cover" />
+                <Image src="/gallery/추가3.png" alt="1:1 운동 지도" width={400} height={400} className="w-full h-full object-cover" sizes="(max-width: 768px) 50vw, 25vw" />
               </div>
               <div className="rounded-2xl overflow-hidden aspect-square">
-                <Image src="/gallery/추가4.jpg" alt="1:1 운동 지도" width={400} height={400} className="w-full h-full object-cover" />
+                <Image src="/gallery/추가4.jpg" alt="1:1 운동 지도" width={400} height={400} className="w-full h-full object-cover" sizes="(max-width: 768px) 50vw, 25vw" />
               </div>
             </div>
           </div>
