@@ -20,7 +20,16 @@ function detectSource(referrer: string | null): string {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { page, referrer, visitor_id, session_id, is_new_visitor } = body;
+    const { page, referrer, visitor_id, session_id, is_new_visitor, event, properties } = body;
+
+    // 이벤트 트래킹 분기 (event 필드가 있으면 events 테이블에 저장)
+    if (event && typeof event === "string") {
+      await supabaseAdmin.from("events").insert({
+        event_name: event,
+        properties: properties ?? {},
+      });
+      return NextResponse.json({ ok: true });
+    }
 
     // 관리자 페이지·API 경로는 추적 제외
     if (!page || page.startsWith("/admin") || page.startsWith("/api")) {

@@ -55,11 +55,12 @@ function todayStr() {
   return new Date().toISOString().slice(0, 10);
 }
 
-function track(event: string, params?: Record<string, unknown>) {
-  if (typeof window !== "undefined") {
-    const w = window as unknown as { gtag?: (...a: unknown[]) => void };
-    w.gtag?.("event", event, params ?? {});
-  }
+function track(event: string, properties?: Record<string, unknown>) {
+  fetch("/api/track", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ event, properties: properties ?? {} }),
+  }).catch(() => {});
 }
 
 function load(): SavedState | null {

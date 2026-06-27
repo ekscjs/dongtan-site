@@ -42,6 +42,14 @@ type Ga4Data = {
   error?: string;
 };
 
+type EventsData = {
+  counts: Record<string, number>;
+  typeBreakdown: Record<string, number>;
+  areaBreakdown: Record<string, number>;
+  daily: { date: string; check: number; pain: number }[];
+  error?: string;
+};
+
 const SOURCE_LABELS: Record<string, string> = {
   google: "구글",
   naver: "네이버",
@@ -199,6 +207,7 @@ export default function AnalyticsPage() {
   const [data, setData] = useState<AnalyticsData | null>(null);
   const [search, setSearch] = useState<SearchData | null>(null);
   const [ga4, setGa4] = useState<Ga4Data | null>(null);
+  const [events, setEvents] = useState<EventsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [searchLoading, setSearchLoading] = useState(false);
   const [ga4Loading, setGa4Loading] = useState(false);
@@ -247,11 +256,22 @@ export default function AnalyticsPage() {
     }
   }, []);
 
+  const fetchEvents = useCallback(async () => {
+    try {
+      const res = await fetch("/api/admin/events");
+      const json = await res.json();
+      setEvents(json);
+    } catch {
+      setEvents({ counts: {}, typeBreakdown: {}, areaBreakdown: {}, daily: [], error: "이벤트 데이터 없음" });
+    }
+  }, []);
+
   useEffect(() => {
     fetchData();
     fetchSearch();
     fetchGa4();
-  }, [fetchData, fetchSearch, fetchGa4]);
+    fetchEvents();
+  }, [fetchData, fetchSearch, fetchGa4, fetchEvents]);
 
   if (loading) {
     return (
@@ -303,7 +323,7 @@ export default function AnalyticsPage() {
           </div>
           <div className="flex gap-3">
             <button
-              onClick={() => { fetchData(); fetchSearch(); fetchGa4(); }}
+              onClick={() => { fetchData(); fetchSearch(); fetchGa4(); fetchEvents(); }}
               className="border border-gray-200 text-gray-500 rounded-lg px-4 py-2 text-sm hover:bg-gray-100"
             >
               새로고침
@@ -471,6 +491,57 @@ export default function AnalyticsPage() {
             </div>
           </div>
         )}
+
+        {/* ── 이벤트 통계 ── */}
+        <div className="bg-white rounded-2xl shadow p-6 mb-6">
+          <h2 className="text-sm font-semibold text-gray-700 mb-4">
+            몸 상태 체크 사용 현황 <span className="text-xs font-normal text-gray-400">(최근 30일)</span>
+          </h2>
+          {!events ? (
+            <p className="text-xs text-gray-400">불러오는 중...</p>
+          ) : events.error && !Object.keys(events.counts).length ? (
+            <p className="text-xs text-gray-400">아직 데이터가 없습니다. events 테이블을 생성하고 사용자가 체크를 완료하면 표시됩니다.</p>
+          ) : (
+            <div className="space-y-6">
+              {/* 완료 수 비교 */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-[#FAF5FB] rounded-xl p-4 text-center">
+                  <p className="text-xs text-gray-500 mb-1">체형 유형 진단 완료</p>
+                  <p className="text-3xl font-bold text-[#7B2D8B]">{events.counts["self_check_complete"] ?? 0}</p>
+                  <p className="text-xs text-gray-400 mt-1">명</p>
+                </div>
+                <div className="bg-[#FAF5FB] rounded-xl p-4 text-center">
+                  <p className="text-xs text-gray-500 mb-1">통증지도 완료</p>
+                  <p className="text-3xl font-bold text-[#7B2D8B]">{events.counts["pain_map_complete"] ?? 0}</p>
+                  <p className="text-xs text-gray-400 mt-1">명</p>
+                </div>
+              </div>
+
+              {/* 체형진단 유형 분포 */}
+              {Object.keys(events.typeBreakdown).length > 0 && (
+                <div>
+                  <p className="text-xs font-semibold text-gray-500 mb-3">체형진단 유형 분포</p>
+                  <BarChart data={[
+                    { label: "거북목·라운드숄더", count: events.typeBreakdown["neck"] ?? 0 },
+                    { label: "골반·하체 불균형", count: events.typeBreakdown["pelvis"] ?? 0 },
+                    { label: "허리 심부형", count: events.typeBreakdown["back"] ?? 0 },
+                    { label: "전신 뻣뻣·순환형", count: events.typeBreakdown["whole"] ?? 0 },
+                  ].filter((d) => d.count > 0)} />
+                </div>
+              )}
+
+              {/* 통증지도 부위 분포 */}
+              {Object.keys(events.areaBreakdown).length > 0 && (
+                <div>
+                  <p className="text-xs font-semibold text-gray-500 mb-3">통증지도 선택 부위 (중복 포함)</p>
+                  <BarChart data={Object.entries(events.areaBreakdown)
+                    .sort(([, a], [, b]) => b - a)
+                    .map(([label, count]) => ({ label, count, color: "#B05CC2" }))} />
+                </div>
+              )}
+            </div>
+          )}
+        </div>
 
         <div className="bg-white rounded-2xl shadow p-6 mb-6">
           <div className="flex items-center justify-between mb-4">

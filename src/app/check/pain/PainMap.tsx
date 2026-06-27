@@ -16,11 +16,12 @@ import {
 
 const PLACE_URL = "https://map.naver.com/p/entry/place/1101035370";
 
-function track(event: string, params?: Record<string, unknown>) {
-  if (typeof window !== "undefined") {
-    const w = window as unknown as { gtag?: (...a: unknown[]) => void };
-    w.gtag?.("event", event, params ?? {});
-  }
+function track(event: string, properties?: Record<string, unknown>) {
+  fetch("/api/track", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ event, properties: properties ?? {} }),
+  }).catch(() => {});
 }
 
 type View = "map" | "checklist" | "result";
