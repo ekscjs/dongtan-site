@@ -69,8 +69,10 @@ export default function AdminPage() {
           setPosts(data);
           setView("list");
         });
+      } else {
+        setView("login");
       }
-    });
+    }).catch(() => setView("login"));
   }, []);
 
   async function handleLogin(e: React.FormEvent) {
