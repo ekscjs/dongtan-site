@@ -100,11 +100,19 @@ export default function CheckQuiz() {
     }
   }, []);
 
+  // 뒤로가기 시 hub로 복귀
+  useEffect(() => {
+    const onPop = () => setView("hub");
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+
   // ---- 진단 ----
   function startFresh() {
     setStep(0);
     setAnswers([]);
     setIsRetest(false);
+    window.history.pushState({ view: "quiz" }, "");
     setView("quiz");
   }
   function startRetest() {
