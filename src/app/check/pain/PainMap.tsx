@@ -16,12 +16,19 @@ import {
 
 const PLACE_URL = "https://map.naver.com/p/entry/place/1101035370";
 
+function track(event: string, params?: Record<string, unknown>) {
+  if (typeof window !== "undefined") {
+    const w = window as unknown as { gtag?: (...a: unknown[]) => void };
+    w.gtag?.("event", event, params ?? {});
+  }
+}
+
 type View = "map" | "checklist" | "result";
 type RelPost = { title: string; slug: string; excerpt: string | null };
 
 // ── SVG 인체 부위 좌표 정의 ────────────────────────────────────────────────
 // viewBox="0 0 200 480"
-const FRONT_AREAS: { key: AreaKey; label: string; d?: string; cx?: number; cy?: number; rx?: number; ry?: number }[] = [
+const FRONT_AREAS: { key: AreaKey; label: string; cx: number; cy: number; rx: number; ry: number }[] = [
   { key: "neck",     label: "목",   cx: 100, cy: 68,  rx: 14, ry: 11 },
   { key: "shoulder", label: "어깨", cx: 100, cy: 108, rx: 46, ry: 14 },
   { key: "back",     label: "허리", cx: 100, cy: 198, rx: 28, ry: 18 },
@@ -424,6 +431,7 @@ export default function PainMap() {
 
   function handleDone(ans: Record<AreaKey, boolean[]>) {
     setAnswers(ans);
+    track("pain_map_complete", { areas: selectedOrdered.join(","), area_count: selectedOrdered.length });
     setView("result");
   }
 
@@ -481,7 +489,10 @@ export default function PainMap() {
 
               {selected.size > 0 ? (
                 <button
-                  onClick={() => setView("checklist")}
+                  onClick={() => {
+                    track("pain_map_start", { areas: selectedOrdered.join(","), area_count: selectedOrdered.length });
+                    setView("checklist");
+                  }}
                   className="w-full bg-[#7B2D8B] text-white font-bold py-4 rounded-full hover:bg-[#6a2578] transition-colors"
                 >
                   {selectedOrdered.map((k) => painAreas[k].label).join("·")} 체크리스트 시작 →
