@@ -45,7 +45,7 @@ export default function BlogPage() {
               <div className="space-y-8">
                 {posts.slice(0, visible).map((post) => (
                   <article key={post.id}>
-                    <Link href={`/blog/${post.slug}`} className="block border-b border-gray-100 pb-8 group">
+                    <Link href={`/blog/${post.slug}`} className="block border-b border-gray-100 pb-8 group active:opacity-60 transition-opacity duration-100">
                       <div className="flex items-center gap-3 mb-3">
                         {post.tag && (
                           <span className="bg-[#FAF5FB] text-[#7B2D8B] text-xs font-semibold px-3 py-1 rounded-full">
