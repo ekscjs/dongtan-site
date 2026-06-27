@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Noto_Sans_KR, Noto_Serif_KR } from "next/font/google";
+import { Noto_Sans_KR } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import Script from "next/script";
 import Tracker from "@/components/Tracker";
@@ -12,11 +12,6 @@ const notoSansKR = Noto_Sans_KR({
   variable: "--font-sans-kr",
 });
 
-const notoSerifKR = Noto_Serif_KR({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-serif-kr",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.bodymiso.com"),
@@ -119,7 +114,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={`h-full ${notoSansKR.variable} ${notoSerifKR.variable}`}>
+    <html lang="ko" className={`h-full ${notoSansKR.variable}`}>
       <body className={`${notoSansKR.className} min-h-full flex flex-col`}>
         <script
           type="application/ld+json"
