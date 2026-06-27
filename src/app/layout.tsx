@@ -104,8 +104,13 @@ const localBusinessJsonLd = {
     "자세교정",
     "시니어 운동",
   ],
+  telephone: "+82-31-613-1211",
   priceRange: "₩₩",
-  sameAs: ["http://pf.kakao.com/_XGxbMG"],
+  sameAs: [
+    "http://pf.kakao.com/_XGxbMG",
+    "https://share.google/VbU2JEdmnxyE49qRK",
+    "https://map.naver.com/p/entry/place/1101035370",
+  ],
 };
 
 export default function RootLayout({
