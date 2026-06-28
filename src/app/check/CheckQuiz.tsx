@@ -631,10 +631,10 @@ function ClassPromo() {
       onClick={() => track("class_promo_click", { from: "check_result" })}
       className="mt-5 block rounded-2xl p-6 bg-white border border-gray-100 hover:border-[#7B2D8B] transition-colors"
     >
-      <p className="text-xs font-semibold text-[#9B4DAB] uppercase tracking-widest mb-1">원데이 클래스</p>
-      <p className="font-bold text-gray-900 mb-1">깊은 곳이 풀리는 호흡 · 50분</p>
+      <p className="text-xs font-semibold text-[#9B4DAB] uppercase tracking-widest mb-1">바디 리셋 세션</p>
+      <p className="font-bold text-gray-900 mb-1">운동보다 먼저 해야 할 것 · 2시간</p>
       <p className="text-sm text-gray-500">
-        스트레칭으로 안 풀리는 만성 긴장, 호흡으로 풀어보세요 →
+        잠든 근육을 깨우는 2시간 1:1 세션 →
       </p>
     </Link>
   );

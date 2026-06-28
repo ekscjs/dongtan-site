@@ -195,9 +195,4 @@ export default function BodyResetSessionPage() {
               timePlaceholder="선택 안 함"
             />
           </div>
-        </section>
-      </main>
-      <Footer />
-    </>
-  );
-}
+  
