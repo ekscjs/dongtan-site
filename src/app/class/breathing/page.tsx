@@ -63,7 +63,8 @@ const INFO = [
   { k: "시간", v: "2시간" },
   { k: "형태", v: "1:1" },
   { k: "장소", v: "지성로 134, 5층" },
-  { k: "가격", v: "250,000원" },
+  { k: "정가", v: "300,000원" },
+  { k: "특가", v: "250,000원" },
 ];
 
 export default function BodyResetSessionPage() {
@@ -164,13 +165,13 @@ export default function BodyResetSessionPage() {
                 <div
                   key={i.k}
                   className={`rounded-2xl border p-5 text-center ${
-                    i.k === "가격"
+                    i.k === "특가"
                       ? "bg-[#7B2D8B] border-[#7B2D8B]"
                       : "bg-white border-gray-100"
                   }`}
                 >
-                  <p className={`text-xs mb-1 ${i.k === "가격" ? "text-purple-200" : "text-gray-400"}`}>{i.k}</p>
-                  <p className={`font-bold ${i.k === "가격" ? "text-white text-lg" : i.k === "장소" ? "text-gray-900 text-sm" : "text-gray-900"}`}>{i.v}</p>
+                  <p className={`text-xs mb-1 ${i.k === "특가" ? "text-purple-200" : "text-gray-400"}`}>{i.k}</p>
+                  <p className={`font-bold ${i.k === "특가" ? "text-white text-lg" : i.k === "정가" ? "text-gray-400 line-through" : i.k === "장소" ? "text-gray-900 text-sm" : "text-gray-900"}`}>{i.v}</p>
                 </div>
               ))}
             </div>
