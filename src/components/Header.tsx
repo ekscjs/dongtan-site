@@ -9,7 +9,7 @@ const navLinks = [
   { href: "/programs", label: "프로그램" },
   { href: "/blog", label: "칼럼" },
   { href: "/check", label: "몸 상태 체크" },
-  { href: "/class/breathing", label: "원데이 클래스" },
+  { href: "/class/breathing", label: "바디 리셋 세션" },
 ];
 
 export default function Header() {

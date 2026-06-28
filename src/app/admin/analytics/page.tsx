@@ -77,7 +77,7 @@ const PAGE_LABELS: Record<string, string> = {
   "/blog": "블로그",
   "/reviews": "후기",
   "/check": "자가진단",
-  "/class/breathing": "호흡 클래스",
+  "/class/breathing": "바디 리셋 세션",
   "/privacy": "개인정보처리방침",
 };
 
