@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import KakaoButton from "@/components/KakaoButton";
@@ -386,7 +387,7 @@ export default function CheckQuiz() {
                       {(isToday || isDone) && (
                         <>
                           {d.imageUrl && (
-                            <img src={d.imageUrl} alt={d.title} className="rounded-lg my-3 w-full" />
+                            <Image src={d.imageUrl} alt={d.title} width={600} height={600} className="rounded-lg my-3 w-full h-auto" />
                           )}
                           <p className="text-sm text-gray-600 mt-1 leading-relaxed">{d.how}</p>
                           <p className="text-xs text-[#7B2D8B] mt-1 flex items-center gap-1"><ArrowRightIcon size={12} />{d.point}</p>
