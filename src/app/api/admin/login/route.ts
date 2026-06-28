@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
-    maxAge: 60 * 60 * 8, // 8시간
+    maxAge: 60 * 60 * 24 * 30, // 30일
     path: "/",
   });
   // JS에서 읽을 수 있는 플래그 쿠키 (Tracker 관리자 제외용)
@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
     httpOnly: false,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
-    maxAge: 60 * 60 * 8, // 8시간
+    maxAge: 60 * 60 * 24 * 30, // 30일
     path: "/",
   });
 
