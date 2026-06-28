@@ -5,13 +5,13 @@ import LeadForm from "@/components/LeadForm";
 import { CheckIcon } from "@/components/Icons";
 
 export const metadata: Metadata = {
-  title: "깊은 곳이 풀리는 호흡 · 50분 원데이 클래스 | 내몸에미소 동탄",
+  title: "바디 리셋 세션 · 2시간 1:1 | 내몸에미소 동탄",
   description:
-    "늘 어깨가 뭉치고 잠이 얕은 직장인을 위한 50분 호흡 원데이 클래스. 힘으로 푸는 스트레칭이 아니라, 깊은 긴장을 호흡으로 풀어내는 경험. 동탄 내몸에미소.",
+    "병원, 필라테스, PT 다 해봤는데 불편함이 그대로인 분들을 위한 2시간 1:1 세션. 쓰여야 할 근육이 왜 잠들어 있는지, 움직임으로 함께 찾아봅니다. 동탄 내몸에미소.",
   alternates: { canonical: "https://www.bodymiso.com/class/breathing" },
   openGraph: {
-    title: "깊은 곳이 풀리는 호흡 · 50분 원데이 클래스",
-    description: "힘으로 푸는 게 아니라, 호흡으로 깊은 긴장을 풀어내는 50분. 동탄 내몸에미소.",
+    title: "바디 리셋 세션 · 2시간 1:1 | 내몸에미소 동탄",
+    description: "병원, 필라테스, PT 다 해봤는데 불편함이 그대로인 분들을 위한 2시간 1:1 세션.",
     url: "https://www.bodymiso.com/class/breathing",
     type: "website",
     locale: "ko_KR",
@@ -19,40 +19,54 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "깊은 곳이 풀리는 호흡 · 50분 원데이 클래스",
-    description: "힘으로 푸는 게 아니라, 호흡으로 깊은 긴장을 풀어내는 50분. 동탄 내몸에미소.",
+    title: "바디 리셋 세션 · 2시간 1:1 | 내몸에미소 동탄",
+    description: "병원, 필라테스, PT 다 해봤는데 불편함이 그대로인 분들을 위한 2시간 1:1 세션.",
     images: ["/og/class-breathing.png"],
   },
 };
 
 const FOR_YOU = [
-  "하루 종일 어깨·목이 뭉쳐 있는 직장인",
-  "스트레칭·마사지를 받아도 금방 다시 뻐근한 분",
-  "긴장이 안 풀리고, 잠이 얕고 자주 피곤한 분",
-  "숨이 늘 얕고 가슴이 답답하게 느껴지는 분",
+  "여러 곳 다녀봤는데 불편함이 그대로인 분",
+  "잠깐 나아졌다가 다시 돌아오는 게 반복되는 분",
+  "특정 동작이 잘 안 되는 이유를 모르는 분",
+  "그냥 이렇게 살아야 하나 싶었던 분",
 ];
 
 const FLOW = [
-  { step: "01", title: "내 호흡 점검", desc: "지금 내 숨이 얼마나 얕은지, 어디가 굳어 있는지 직접 확인합니다.", min: "8분" },
-  { step: "02", title: "360도 호흡 깨우기", desc: "배·옆구리·등까지 사방으로 숨을 채우는 호흡을 몸에 익힙니다.", min: "15분" },
-  { step: "03", title: "깊은 긴장 풀어내기", desc: "굳은 부위를 힘이 아니라 호흡과 이완으로 천천히 풀어냅니다.", min: "20분" },
-  { step: "04", title: "일상으로 가져가기", desc: "사무실·잠들기 전에 혼자 쓸 수 있는 호흡 루틴을 정리해 드립니다.", min: "7분" },
+  {
+    step: "01",
+    title: "움직임 살펴보기",
+    desc: "지금 몸이 어떻게 움직이는지 함께 확인합니다. 어디가 제대로 쓰이지 않고 있는지 봅니다.",
+    min: "30분",
+  },
+  {
+    step: "02",
+    title: "호흡·이완",
+    desc: "굳어 있는 곳을 힘이 아닌 호흡과 이완으로 풀어냅니다.",
+    min: "30분",
+  },
+  {
+    step: "03",
+    title: "근육 깨우기",
+    desc: "제대로 쓰이지 않던 근육을 움직임을 통해 활성화합니다.",
+    min: "40분",
+  },
+  {
+    step: "04",
+    title: "루틴 정리",
+    desc: "집에서 혼자 이어갈 수 있는 움직임 루틴을 정리해드립니다.",
+    min: "20분",
+  },
 ];
 
 const INFO = [
-  { k: "시간", v: "50분" },
-  { k: "정원", v: "소수 정예 6명" },
+  { k: "시간", v: "2시간" },
+  { k: "형태", v: "1:1" },
   { k: "장소", v: "지성로 134, 5층" },
-  { k: "정가", v: "49,000원" },
-  { k: "론칭특가", v: "29,000원" },
+  { k: "가격", v: "250,000원" },
 ];
 
-// ⬇️ 수업 날짜. 회차가 끝나면 지우고 다음 날짜로 바꾸세요. (한 번에 한 날짜만 권장)
-const SESSIONS = [
-  "7월 25일 (토) 오전 11:00",
-];
-
-export default function BreathingClassPage() {
+export default function BodyResetSessionPage() {
   return (
     <>
       <Header />
@@ -61,17 +75,17 @@ export default function BreathingClassPage() {
         <section className="px-4 pt-12 pb-10 md:pt-20 md:pb-14">
           <div className="max-w-2xl mx-auto text-center">
             <span className="inline-block bg-[#7B2D8B] text-white text-xs font-semibold px-3 py-1 rounded-full mb-5">
-              7월 25일 (토) 오전 11시 · 선착순 6명
+              1:1 · 2시간 · 예약제
             </span>
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 leading-snug mb-4">
-              힘으로 푸는 게 아니라,
+              몇 년째 다녀봤는데도
               <br />
-              <span className="text-[#7B2D8B]">호흡</span>으로 깊은 긴장을 풀어냅니다
+              <span className="text-[#7B2D8B]">몸이 그대로</span>인 분들을 위한 세션입니다
             </h1>
             <p className="text-gray-600 leading-relaxed mb-8">
-              늘 어깨가 뭉치고, 풀어도 금방 다시 굳고, 잠이 얕은 분들을 위한 50분.
+              병원, 필라테스, PT — 다 해봤는데 불편함이 그대로라면
               <br className="hidden md:block" />
-              원장이 직접 짚어주는, 동탄 내몸에미소의 호흡 원데이 클래스입니다.
+              움직임 자체를 다시 살펴봐야 할 수 있습니다.
             </p>
             <a
               href="#apply"
@@ -86,7 +100,7 @@ export default function BreathingClassPage() {
         <section className="px-4 py-10 bg-white">
           <div className="max-w-2xl mx-auto">
             <h2 className="text-xl md:text-2xl font-bold text-gray-900 text-center mb-8">
-              이런 분들을 위한 클래스예요
+              이런 분들과 함께합니다
             </h2>
             <div className="space-y-3">
               {FOR_YOU.map((t) => (
@@ -99,11 +113,15 @@ export default function BreathingClassPage() {
           </div>
         </section>
 
-        {/* 50분 구성 */}
+        {/* 2시간 구성 */}
         <section className="px-4 py-12">
           <div className="max-w-2xl mx-auto">
-            <h2 className="text-xl md:text-2xl font-bold text-gray-900 text-center mb-2">50분, 이렇게 진행돼요</h2>
-            <p className="text-sm text-gray-500 text-center mb-8">배워서 끝나는 게 아니라, 그 자리에서 풀리는 걸 느낍니다</p>
+            <h2 className="text-xl md:text-2xl font-bold text-gray-900 text-center mb-2">
+              2시간, 이렇게 진행돼요
+            </h2>
+            <p className="text-sm text-gray-500 text-center mb-8">
+              원장이 처음부터 끝까지 직접 함께합니다
+            </p>
             <div className="space-y-4">
               {FLOW.map((f) => (
                 <div key={f.step} className="bg-white rounded-2xl border border-gray-100 p-5 flex items-start gap-4">
@@ -121,21 +139,19 @@ export default function BreathingClassPage() {
           </div>
         </section>
 
-        {/* 왜 호흡인가 */}
+        {/* 설명 */}
         <section className="px-4 py-12 bg-white">
           <div className="max-w-2xl mx-auto">
-            <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">왜 ‘근막이완 + 호흡’일까요?</h2>
+            <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">
+              왜 열심히 해도 그대로일까요
+            </h2>
             <p className="text-gray-600 leading-relaxed mb-3">
-              스트레칭이나 마사지로 잠깐 시원했다가 금방 다시 굳는다면, 표면이 아니라 더 깊은 곳이 긴장해 있는
-              경우가 많습니다. 깊은 근육은 힘으로 누른다고 풀리지 않아요.
-            </p>
-            <p className="text-gray-600 leading-relaxed mb-3">
-              이 클래스는 먼저 도구로 굳은 근막을 풀어줍니다. 근막이 풀려야 호흡이 제대로 깊이 들어가거든요.
-              이완된 몸에 깊은 호흡을 넣으면, 손이 닿지 않는 안쪽 긴장이 비로소 빠지기 시작합니다.
+              쓰여야 할 근육이 잠들어 있으면, 열심히 운동해도 다른 곳이 대신 버팁니다.
+              그 상태에서 계속 운동하면 버티던 곳이 지쳐 불편함이 생깁니다.
             </p>
             <p className="text-gray-600 leading-relaxed">
-              운동을 빡세게 하는 시간이 아니라, 몸을 이완시키고 숨을 깊게 쓰는 법을 익히는 50분입니다.
-              원장이 한 사람씩 직접 짚어드립니다.
+              호흡과 이완, 움직임으로 잠든 근육을 깨우는 2시간입니다.
+              원장이 처음부터 끝까지 직접 함께합니다.
             </p>
           </div>
         </section>
@@ -148,18 +164,18 @@ export default function BreathingClassPage() {
                 <div
                   key={i.k}
                   className={`rounded-2xl border p-5 text-center ${
-                    i.k === "론칭특가"
+                    i.k === "가격"
                       ? "bg-[#7B2D8B] border-[#7B2D8B]"
                       : "bg-white border-gray-100"
                   }`}
                 >
-                  <p className={`text-xs mb-1 ${i.k === "론칭특가" ? "text-purple-200" : "text-gray-400"}`}>{i.k}</p>
-                  <p className={`font-bold ${i.k === "론칭특가" ? "text-white text-lg" : i.k === "정가" ? "text-gray-400 line-through" : i.k === "장소" ? "text-gray-900 text-sm" : "text-gray-900"}`}>{i.v}</p>
+                  <p className={`text-xs mb-1 ${i.k === "가격" ? "text-purple-200" : "text-gray-400"}`}>{i.k}</p>
+                  <p className={`font-bold ${i.k === "가격" ? "text-white text-lg" : i.k === "장소" ? "text-gray-900 text-sm" : "text-gray-900"}`}>{i.v}</p>
                 </div>
               ))}
             </div>
             <p className="text-xs text-gray-400 text-center mt-4">
-              * 정원이 작아 신청 순서대로 일정을 안내드립니다.<br />현재는 동탄 센터 현장 수업으로 진행됩니다.
+              신청 후 원장이 직접 연락드려 일정을 잡습니다.
             </p>
           </div>
         </section>
@@ -169,14 +185,13 @@ export default function BreathingClassPage() {
           <div className="max-w-xl mx-auto">
             <h2 className="text-xl md:text-2xl font-bold text-gray-900 text-center mb-2">신청하기</h2>
             <p className="text-sm text-gray-500 text-center mb-6">
-              아래에서 참석할 날짜를 골라 신청해 주세요. 정원이 차면 마감됩니다.
+              신청 후 원장이 직접 연락드려 일정을 조율합니다
             </p>
             <LeadForm
-              program="호흡원데이"
+              program="바디리셋세션"
               source="class-breathing"
-              timeLabel="참석할 수업 날짜"
-              timePlaceholder="날짜를 선택하세요"
-              timeOptions={SESSIONS}
+              timeLabel="희망 요일·시간대"
+              timePlaceholder="선택 안 함"
             />
           </div>
         </section>
