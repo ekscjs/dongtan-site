@@ -79,14 +79,14 @@ export default function BodyResetSessionPage() {
               1:1 · 2시간 · 예약제
             </span>
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 leading-snug mb-4">
-              몇 년째 다녀봤는데도
+              운동보다
               <br />
-              <span className="text-[#7B2D8B]">몸이 그대로</span>인 분들을 위한 세션입니다
+              <span className="text-[#7B2D8B]">먼저 해야 할 것</span>이 있습니다
             </h1>
             <p className="text-gray-600 leading-relaxed mb-8">
-              병원, 필라테스, PT — 다 해봤는데 불편함이 그대로라면
+              쓰여야 할 근육이 잠들어 있으면, 열심히 해도 다른 곳이 대신 버팁니다.
               <br className="hidden md:block" />
-              움직임 자체를 다시 살펴봐야 할 수 있습니다.
+              그 근육을 먼저 깨우는 2시간입니다.
             </p>
             <a
               href="#apply"
