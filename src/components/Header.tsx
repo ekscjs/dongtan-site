@@ -2,6 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import KakaoButton from "@/components/KakaoButton";
 
 const navLinks = [
@@ -15,6 +16,7 @@ const navLinks = [
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const close = () => setMenuOpen(false);
+  const pathname = usePathname();
 
   // 메뉴 열렸을 때 배경 스크롤 잠금
   useEffect(() => {
@@ -35,12 +37,19 @@ export default function Header() {
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <Link key={link.href} href={link.href}
-              className="text-sm text-gray-600 hover:text-[#7B2D8B] transition-colors font-medium">
-              {link.label}
-            </Link>
-          ))}
+          {navLinks.map((link) => {
+            const isActive = pathname === link.href || pathname.startsWith(link.href + "/");
+            return (
+              <Link key={link.href} href={link.href}
+                className={`text-sm font-medium transition-colors relative ${
+                  isActive
+                    ? "text-[#7B2D8B] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-[#7B2D8B] after:rounded-full"
+                    : "text-gray-600 hover:text-[#7B2D8B]"
+                }`}>
+                {link.label}
+              </Link>
+            );
+          })}
           <KakaoButton className="bg-[#7B2D8B] text-white text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-[#9B4DAB] transition-colors">
             무료 상담
           </KakaoButton>
@@ -71,17 +80,22 @@ export default function Header() {
 
           {/* 메뉴 항목 */}
           <nav className="flex-1 flex flex-col px-6 pt-4">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={close}
-                className="text-2xl font-bold text-gray-900 py-5 border-b border-gray-100 flex items-center justify-between active:text-[#7B2D8B]"
-              >
-                {link.label}
-                <span className="text-gray-300 text-xl font-normal">›</span>
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href || pathname.startsWith(link.href + "/");
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={close}
+                  className={`text-2xl font-bold py-5 border-b border-gray-100 flex items-center justify-between ${
+                    isActive ? "text-[#7B2D8B]" : "text-gray-900 active:text-[#7B2D8B]"
+                  }`}
+                >
+                  {link.label}
+                  <span className={`text-xl font-normal ${isActive ? "text-[#7B2D8B]" : "text-gray-300"}`}>›</span>
+                </Link>
+              );
+            })}
           </nav>
 
           {/* 하단 고정 CTA */}
