@@ -125,9 +125,17 @@ export default function AdminPage() {
     e.preventDefault();
     setSaving(true);
     setMsg("");
-    // 예약글(publish_at 있음)은 임시저장해도 published 건드리지 않음
-    const isScheduled = form.publish_at && new Date(form.publish_at) > new Date();
-    const payload = asDraft && !isScheduled ? { ...form, published: false } : form;
+    const isFuture = form.publish_at && new Date(form.publish_at) > new Date();
+    let payload;
+    if (asDraft) {
+      // 임시저장: 예약글이면 published 건드리지 않음
+      payload = isFuture ? form : { ...form, published: false };
+    } else {
+      // 발행: 미래 날짜 있으면 예약, 없으면 즉시발행(publish_at 초기화)
+      payload = isFuture
+        ? { ...form, published: true }
+        : { ...form, published: true, publish_at: "" };
+    }
     try {
       const url = editId ? `/api/admin/posts/${editId}` : "/api/admin/posts";
       const method = editId ? "PUT" : "POST";
@@ -221,7 +229,6 @@ export default function AdminPage() {
                   if (!res.ok) return;
                   const { files } = await res.json();
                   if (!files.length) return alert("불러올 파일이 없습니다.");
-                  // 파일이 여러 개면 선택, 하나면 바로 적용
                   const file = files.length === 1 ? files[0] : files[
                     parseInt(prompt(files.map((f: {filename:string}, i: number) => `${i+1}. ${f.filename}`).join("\n") + "\n\n번호 입력:") ?? "1") - 1
                   ];
@@ -258,18 +265,15 @@ export default function AdminPage() {
                 onChange={(e) => {
                   const title = e.target.value;
                   setForm((f) => ({ ...f, title }));
-                  // 슬러그 자동 생성 (수동 수정 중이면 건드리지 않음)
                   setForm((f) => {
                     if (f.slug !== "" && f.slug !== slugify(f.title) && f.slug !== "") return f;
-                    return f; // 아래 useEffect에서 처리
+                    return f;
                   });
-                  // 한글이면 번역, 영어면 바로 slugify
                   if (hasKorean(title)) {
                     setSlugGenerating(true);
                     translateToSlug(title).then((slug) => {
                       setSlugGenerating(false);
                       setForm((f) => {
-                        // 사용자가 슬러그를 직접 수정하지 않은 경우에만 업데이트
                         if (f.slug === "" || hasKorean(f.title)) {
                           return { ...f, slug };
                         }
@@ -308,7 +312,7 @@ export default function AdminPage() {
                 />
               </div>
               <div className="flex-1">
-                <label className="block text-xs font-semibold text-gray-500 mb-1">예약 발행 일시 (비우면 즉시)</label>
+                <label className="block text-xs font-semibold text-gray-500 mb-1">예약 발행 일시 (비우면 즉시발행)</label>
                 <input
                   type="datetime-local"
                   value={form.publish_at}
@@ -359,7 +363,11 @@ export default function AdminPage() {
                 disabled={saving}
                 className="bg-[#7B2D8B] text-white rounded-lg px-6 py-2.5 text-sm font-semibold hover:bg-[#6a2678] disabled:opacity-50"
               >
-                {saving ? "저장 중..." : "발행"}
+                {saving
+                  ? "저장 중..."
+                  : form.publish_at && new Date(form.publish_at) > new Date()
+                  ? "📅 예약발행"
+                  : "발행"}
               </button>
               <button
                 type="button"
@@ -545,7 +553,7 @@ export default function AdminPage() {
                           onClick={() => handleDelete(post.id, post.title)}
                           className="text-xs text-red-400 hover:underline"
                         >
-                               삭제
+                          삭제
                         </button>
                       </div>
                     </td>
@@ -556,6 +564,6 @@ export default function AdminPage() {
           )}
         </div>
       </div>
-      </div>
+    </div>
   );
 }
