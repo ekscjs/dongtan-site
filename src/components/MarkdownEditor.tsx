@@ -21,6 +21,7 @@ const COLORS = [
 export default function MarkdownEditor({ value, onChange }: Props) {
   const [tab, setTab] = useState<"write" | "preview">("write");
   const [showImageModal, setShowImageModal] = useState(false);
+  const [imageMode, setImageMode] = useState<"single" | "pair">("single");
   const [droppedFile, setDroppedFile] = useState<File | null>(null);
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
@@ -42,7 +43,6 @@ export default function MarkdownEditor({ value, onChange }: Props) {
     onChange(historyRef.current[historyIndexRef.current]);
   }
 
-  // 모달 닫힐 때 textarea 포커스 + 커서 위치 복원
   useEffect(() => {
     if (!showImageModal) {
       setTimeout(() => {
@@ -111,7 +111,6 @@ export default function MarkdownEditor({ value, onChange }: Props) {
   return (
     <>
       <div className="border border-gray-200 rounded-xl overflow-hidden">
-        {/* 탭 + 툴바 */}
         <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50 px-3 py-1.5 gap-2 flex-wrap">
           <div className="flex gap-1">
             <button
@@ -157,7 +156,7 @@ export default function MarkdownEditor({ value, onChange }: Props) {
                 onMouseDown={(e) => e.preventDefault()}
                 onClick={handleUndo}
                 className={toolbarBtn}
-                title="되돌리기 (Ctrl+Z)"
+                title="되돌리기"
               >↩ 되돌리기</button>
               <div className="relative">
                 <button
@@ -215,17 +214,25 @@ export default function MarkdownEditor({ value, onChange }: Props) {
               <button
                 type="button"
                 onMouseDown={(e) => e.preventDefault()}
-                onClick={() => setShowImageModal(true)}
+                onClick={() => { setImageMode("single"); setShowImageModal(true); }}
                 className={`${toolbarBtn} flex items-center gap-1`}
                 title="이미지 업로드"
               >
                 🖼 이미지
               </button>
+              <button
+                type="button"
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => { setImageMode("pair"); setShowImageModal(true); }}
+                className={`${toolbarBtn} flex items-center gap-1`}
+                title="이미지 2장 나란히 배치"
+              >
+                🖼🖼 나란히
+              </button>
             </div>
           )}
         </div>
 
-        {/* 에디터 / 미리보기 */}
         {tab === "write" ? (
           <div className="relative">
             <textarea
@@ -266,12 +273,12 @@ export default function MarkdownEditor({ value, onChange }: Props) {
         )}
       </div>
 
-      {/* 이미지 업로드 + 블러 모달 */}
       {showImageModal && (
         <ImageUploader
           onInsert={(md) => insertAtCursor(md)}
           onClose={() => { setShowImageModal(false); setDroppedFile(null); }}
           initialFile={droppedFile ?? undefined}
+          mode={imageMode}
         />
       )}
     </>

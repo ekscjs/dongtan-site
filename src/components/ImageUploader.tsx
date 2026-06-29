@@ -6,11 +6,12 @@ interface Props {
   onInsert: (markdownText: string) => void;
   onClose: () => void;
   initialFile?: File;
+  mode?: "single" | "pair";
 }
 
 interface Rect { x: number; y: number; w: number; h: number; }
 
-export default function ImageUploader({ onInsert, onClose, initialFile }: Props) {
+export default function ImageUploader({ onInsert, onClose, initialFile, mode = "single" }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const overlayRef = useRef<HTMLCanvasElement>(null);
   const imgRef = useRef<HTMLImageElement | null>(null);
@@ -23,6 +24,10 @@ export default function ImageUploader({ onInsert, onClose, initialFile }: Props)
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState("");
   const [alt, setAlt] = useState("");
+  // pair 모드 전용
+  const [pairStage, setPairStage] = useState<1 | 2>(1);
+  const [firstUrl, setFirstUrl] = useState("");
+  const [firstAlt, setFirstAlt] = useState("");
 
   useEffect(() => {
     if (initialFile) loadFile(initialFile);
@@ -176,8 +181,30 @@ export default function ImageUploader({ onInsert, onClose, initialFile }: Props)
       const res = await fetch("/api/admin/upload", { method: "POST", body: formData });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
-      onInsert(`\n![${alt.trim() || "이미지"}](${data.url})\n`);
-      onClose();
+
+      if (mode === "pair" && pairStage === 1) {
+        // 1번째 이미지 저장 후 2번째 이미지 선택으로 이동
+        setFirstUrl(data.url);
+        setFirstAlt(alt.trim() || "이미지");
+        setPairStage(2);
+        setStep("pick");
+        setRects([]);
+        setFile(null);
+        setAlt("");
+        imgRef.current = null;
+      } else if (mode === "pair" && pairStage === 2) {
+        // 2장 모두 완성 → grid 마크다운 삽입
+        const a1 = firstAlt;
+        const u1 = firstUrl;
+        const a2 = alt.trim() || "이미지";
+        const u2 = data.url;
+        onInsert(`\n<grid>\n![${a1}](${u1})\n![${a2}](${u2})\n</grid>\n`);
+        onClose();
+      } else {
+        // 일반 1장
+        onInsert(`\n![${alt.trim() || "이미지"}](${data.url})\n`);
+        onClose();
+      }
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "업로드 실패");
       setStep("edit");
@@ -188,7 +215,11 @@ export default function ImageUploader({ onInsert, onClose, initialFile }: Props)
     <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-          <h2 className="font-bold text-gray-900">이미지 삽입</h2>
+          <h2 className="font-bold text-gray-900">
+            {mode === "pair"
+              ? pairStage === 1 ? "나란히 이미지 — 1번째" : "나란히 이미지 — 2번째"
+              : "이미지 삽입"}
+          </h2>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-700 text-xl">✕</button>
         </div>
 
@@ -258,7 +289,11 @@ export default function ImageUploader({ onInsert, onClose, initialFile }: Props)
                   onClick={handleUpload}
                   className="bg-[#7B2D8B] text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-[#6a2678]"
                 >
-                  ✓ 업로드 & 삽입
+                  {mode === "pair" && pairStage === 1
+                    ? "다음 →"
+                    : mode === "pair" && pairStage === 2
+                    ? "✓ 나란히 삽입"
+                    : "✓ 업로드 & 삽입"}
                 </button>
                 {rects.length > 0 && (
                   <button

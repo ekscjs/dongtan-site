@@ -98,6 +98,28 @@ export function markdownToHtml(md: string): string {
       continue;
     }
 
+    // 이미지 2열 그리드 블록
+    if (line.trim() === "<grid>") {
+      closeParagraph();
+      const gridLines: string[] = [];
+      i++;
+      while (i < lines.length && lines[i].trim() !== "</grid>") {
+        gridLines.push(lines[i]);
+        i++;
+      }
+      const gridImgs = gridLines
+        .map((l) =>
+          l.replace(
+            /!\[([^\]]*)\]\(([^)]+)\)/g,
+            '<img src="$2" alt="$1" class="rounded-xl w-full object-cover" />'
+          )
+        )
+        .join("");
+      out.push(`<div class="grid grid-cols-2 gap-3 my-6">${gridImgs}</div>`);
+      i++; // </grid> 스킵
+      continue;
+    }
+
     // 빈 줄
     if (line.trim() === "") {
       closeParagraph();
