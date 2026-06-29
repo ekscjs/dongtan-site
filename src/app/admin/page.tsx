@@ -153,7 +153,7 @@ export default function AdminPage() {
     const res = await fetch(`/api/admin/posts/${post.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...post, published: true }),
+      body: JSON.stringify({ ...post, published: true, publish_at: "" }),
     });
     if (res.ok) await fetchPosts();
     else alert("발행 실패");
