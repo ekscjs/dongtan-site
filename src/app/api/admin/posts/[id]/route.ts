@@ -19,9 +19,16 @@ export async function PUT(
   const body = await req.json();
   const { title, slug, content, excerpt, tag, published, publish_at } = body;
 
+  // 발행 즉시 처리: published=true인데 publish_at이 미래면 → 지금 시간으로 덮어씀
+  const now = new Date();
+  const resolvedPublishAt =
+    published && publish_at && new Date(publish_at) > now
+      ? now.toISOString()
+      : publish_at || null;
+
   const { data, error } = await supabase
     .from("posts")
-    .update({ title, slug, content, excerpt, tag, published, publish_at: publish_at || null })
+    .update({ title, slug, content, excerpt, tag, published, publish_at: resolvedPublishAt })
     .eq("id", id)
     .select()
     .single();
