@@ -175,9 +175,6 @@ export default function BodyResetSessionPage() {
                 </div>
               ))}
             </div>
-            <p className="text-xs text-gray-400 text-center mt-4">
-              신청 후 원장이 직접 연락드려 일정을 잡습니다.
-            </p>
           </div>
         </section>
 
