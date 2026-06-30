@@ -99,10 +99,19 @@ export default function AdminPage() {
     setPosts([]);
   }
 
+  useEffect(() => {
+    const onPop = () => {
+      setView((v) => (v === "form" ? "list" : v));
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+
   function openNew() {
     setForm(EMPTY_FORM);
     setEditId(null);
     setMsg("");
+    history.pushState({ view: "form" }, "");
     setView("form");
   }
 
@@ -118,6 +127,7 @@ export default function AdminPage() {
     });
     setEditId(post.id);
     setMsg("");
+    history.pushState({ view: "form" }, "");
     setView("form");
   }
 
