@@ -134,7 +134,7 @@ export default function AdminPage() {
       // 발행: 미래 날짜 있으면 예약, 없으면 즉시발행(publish_at 초기화)
       payload = isFuture
         ? { ...form, published: true }
-        : { ...form, published: true, publish_at: "" };
+        : { ...form, published: true, publish_at: new Date().toISOString() };
     }
     try {
       const url = editId ? `/api/admin/posts/${editId}` : "/api/admin/posts";
@@ -161,7 +161,7 @@ export default function AdminPage() {
     const res = await fetch(`/api/admin/posts/${post.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...post, published: true, publish_at: "" }),
+      body: JSON.stringify({ ...post, published: true, publish_at: new Date().toISOString() }),
     });
     if (res.ok) await fetchPosts();
     else alert("발행 실패");
@@ -531,7 +531,7 @@ export default function AdminPage() {
                       })()}
                     </td>
                     <td className="px-4 py-4 text-xs text-gray-400">
-                      {new Date(post.created_at).toLocaleDateString("ko-KR")}
+                      {new Date(post.publish_at && new Date(post.publish_at) <= new Date() ? post.publish_at : post.created_at).toLocaleDateString("ko-KR")}
                     </td>
                     <td className="px-4 py-4">
                       <div className="flex gap-2 justify-end">
