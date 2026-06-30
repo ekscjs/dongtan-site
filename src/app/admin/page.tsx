@@ -115,6 +115,11 @@ export default function AdminPage() {
     setView("form");
   }
 
+  function toLocalInput(utcStr: string): string {
+    const s = new Date(utcStr).toLocaleString("sv-SE", { timeZone: "Asia/Seoul" });
+    return s.slice(0, 16).replace(" ", "T");
+  }
+
   function openEdit(post: Post) {
     setForm({
       title: post.title,
@@ -123,7 +128,7 @@ export default function AdminPage() {
       content: post.content ?? "",
       tag: post.tag ?? "",
       published: post.published,
-      publish_at: post.publish_at ? post.publish_at.slice(0, 16) : "",
+      publish_at: post.publish_at ? toLocalInput(post.publish_at) : "",
     });
     setEditId(post.id);
     setMsg("");
@@ -136,14 +141,18 @@ export default function AdminPage() {
     setSaving(true);
     setMsg("");
     const isFuture = form.publish_at && new Date(form.publish_at) > new Date();
+    // datetime-local 입력값은 로컬시간(KST) → UTC ISO로 변환해서 저장
+    const publishAtISO = form.publish_at ? new Date(form.publish_at).toISOString() : "";
     let payload;
     if (asDraft) {
       // 임시저장: 예약글이면 published 건드리지 않음
-      payload = isFuture ? form : { ...form, published: false };
+      payload = isFuture
+        ? { ...form, publish_at: publishAtISO }
+        : { ...form, published: false, publish_at: publishAtISO };
     } else {
       // 발행: 미래 날짜 있으면 예약, 없으면 즉시발행(publish_at 초기화)
       payload = isFuture
-        ? { ...form, published: true }
+        ? { ...form, published: true, publish_at: publishAtISO }
         : { ...form, published: true, publish_at: new Date().toISOString() };
     }
     try {
@@ -541,7 +550,7 @@ export default function AdminPage() {
                       })()}
                     </td>
                     <td className="px-4 py-4 text-xs text-gray-400">
-                      {new Date(post.publish_at && new Date(post.publish_at) <= new Date() ? post.publish_at : post.created_at).toLocaleDateString("ko-KR")}
+                      {new Date(post.publish_at || post.created_at).toLocaleDateString("ko-KR")}
                     </td>
                     <td className="px-4 py-4">
                       <div className="flex gap-2 justify-end">
