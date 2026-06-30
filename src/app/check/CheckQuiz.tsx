@@ -387,7 +387,9 @@ export default function CheckQuiz() {
                       {(isToday || isDone) && (
                         <>
                           {d.imageUrl && (
-                            <Image src={d.imageUrl} alt={d.title} width={600} height={600} className="rounded-lg my-3 w-full h-auto" />
+                            <div className="relative w-full aspect-square bg-gray-100 rounded-lg my-3 overflow-hidden">
+                              <Image src={d.imageUrl} alt={d.title} fill className="object-cover transition-opacity duration-300 opacity-0 [&.loaded]:opacity-100" onLoad={(e) => e.currentTarget.classList.add("loaded")} />
+                            </div>
                           )}
                           <p className="text-sm text-gray-600 mt-1 leading-relaxed">{d.how}</p>
                           <p className="text-xs text-[#7B2D8B] mt-1 flex items-center gap-1"><ArrowRightIcon size={12} />{d.point}</p>
