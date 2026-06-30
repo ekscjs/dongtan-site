@@ -46,10 +46,16 @@ export default function ImageUploader({ onInsert, onClose, initialFile, mode = "
       const h = Math.round(img.height * scale);
       setCanvasSize({ w, h });
       setRects([]);
-      // 파일명으로 대체텍스트 자동 생성
-      const name = f.name.replace(/\.[^.]+$/, "").replace(/[-_]/g, " ");
-      setAlt(name);
+      setAlt("생성 중...");
       setStep("edit");
+
+      // AI로 alt 자동 생성
+      const fd = new FormData();
+      fd.append("file", f);
+      fetch("/api/admin/generate-alt", { method: "POST", body: fd })
+        .then((r) => r.json())
+        .then((data) => { if (data.alt) setAlt(data.alt); })
+        .catch(() => setAlt(""));
     };
     img.src = url;
   }, []);
