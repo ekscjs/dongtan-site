@@ -24,6 +24,7 @@ export default function ImageUploader({ onInsert, onClose, initialFile, mode = "
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState("");
   const [alt, setAlt] = useState("");
+  const [seoFilename, setSeoFilename] = useState("");
   // pair 모드 전용
   const [pairStage, setPairStage] = useState<1 | 2>(1);
   const [firstUrl, setFirstUrl] = useState("");
@@ -54,7 +55,10 @@ export default function ImageUploader({ onInsert, onClose, initialFile, mode = "
       fd.append("file", f);
       fetch("/api/admin/generate-alt", { method: "POST", body: fd })
         .then((r) => r.json())
-        .then((data) => { if (data.alt) setAlt(data.alt); })
+        .then((data) => {
+          if (data.alt) setAlt(data.alt);
+          if (data.filename) setSeoFilename(data.filename);
+        })
         .catch(() => setAlt(""));
     };
     img.src = url;
@@ -181,7 +185,8 @@ export default function ImageUploader({ onInsert, onClose, initialFile, mode = "
     );
 
     const formData = new FormData();
-    formData.append("file", blob, file.name.replace(/\.[^.]+$/, ".jpg"));
+    const uploadName = seoFilename ? `${seoFilename}.jpg` : file.name.replace(/\.[^.]+$/, ".jpg");
+    formData.append("file", blob, uploadName);
 
     try {
       const res = await fetch("/api/admin/upload", { method: "POST", body: formData });
@@ -197,6 +202,7 @@ export default function ImageUploader({ onInsert, onClose, initialFile, mode = "
         setRects([]);
         setFile(null);
         setAlt("");
+        setSeoFilename("");
         imgRef.current = null;
       } else if (mode === "pair" && pairStage === 2) {
         // 2장 모두 완성 → grid 마크다운 삽입

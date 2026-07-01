@@ -26,19 +26,28 @@ export async function POST(req: NextRequest) {
             },
             {
               type: "text",
-              text: `이 이미지를 보고 내몸에미소 건강센터 블로그에 맞는 SEO 대체텍스트(alt)를 한국어로 작성해주세요.
+              text: `이 이미지를 보고 내몸에미소 건강센터 블로그용 SEO 정보를 JSON으로 작성해주세요.
 규칙:
-- 25자 이내
-- 동탄·화성 지역명, 부위(허리·무릎·어깨 등), 동작·자세 키워드 포함
-- 텍스트만 출력, 따옴표 없이`,
+- alt: 한국어 25자 이내, 동탄·화성 지역명·부위(허리·무릎·어깨 등)·동작 키워드 포함
+- filename: 영어 소문자+하이픈만, 3~5단어, 동탄(dontan)·부위·동작 키워드 포함, 확장자 제외
+- JSON만 출력, 예: {"alt":"동탄 허리통증 재활운동 자세","filename":"dontan-lower-back-rehab-exercise"}`,
             },
           ],
         },
       ],
     });
 
-    const alt = (message.content[0] as { type: string; text: string }).text.trim();
-    return NextResponse.json({ alt });
+    const raw = (message.content[0] as { type: string; text: string }).text.trim();
+    let alt = "";
+    let filename = "";
+    try {
+      const json = JSON.parse(raw);
+      alt = json.alt || "";
+      filename = json.filename || "";
+    } catch {
+      alt = raw;
+    }
+    return NextResponse.json({ alt, filename });
   } catch (err) {
     console.error("generate-alt error:", err);
     return NextResponse.json({ error: "생성 실패" }, { status: 500 });

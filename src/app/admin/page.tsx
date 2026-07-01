@@ -143,6 +143,8 @@ export default function AdminPage() {
     const isFuture = form.publish_at && new Date(form.publish_at) > new Date();
     // datetime-local 입력값은 로컬시간(KST) → UTC ISO로 변환해서 저장
     const publishAtISO = form.publish_at ? new Date(form.publish_at).toISOString() : "";
+    // 수정 시 기존 publish_at 유지 (첫 발행 기준 날짜 보존)
+    const originalPublishAt = editId ? posts.find((p) => p.id === editId)?.publish_at ?? null : null;
     let payload;
     if (asDraft) {
       // 임시저장: 예약글이면 published 건드리지 않음
@@ -150,10 +152,10 @@ export default function AdminPage() {
         ? { ...form, publish_at: publishAtISO }
         : { ...form, published: false, publish_at: publishAtISO };
     } else {
-      // 발행: 미래 날짜 있으면 예약, 없으면 즉시발행(publish_at 초기화)
+      // 발행: 미래 날짜 있으면 예약, 없으면 기존 publish_at 유지(수정) or 현재시각(신규)
       payload = isFuture
         ? { ...form, published: true, publish_at: publishAtISO }
-        : { ...form, published: true, publish_at: new Date().toISOString() };
+        : { ...form, published: true, publish_at: originalPublishAt ?? new Date().toISOString() };
     }
     try {
       const url = editId ? `/api/admin/posts/${editId}` : "/api/admin/posts";
