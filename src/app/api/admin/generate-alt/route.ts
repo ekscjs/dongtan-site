@@ -38,14 +38,16 @@ export async function POST(req: NextRequest) {
     });
 
     const raw = (message.content[0] as { type: string; text: string }).text.trim();
+    // 코드블록 제거 (```json ... ``` 또는 ``` ... ```)
+    const cleaned = raw.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "").trim();
     let alt = "";
     let filename = "";
     try {
-      const json = JSON.parse(raw);
+      const json = JSON.parse(cleaned);
       alt = json.alt || "";
       filename = json.filename || "";
     } catch {
-      alt = raw;
+      alt = cleaned;
     }
     return NextResponse.json({ alt, filename });
   } catch (err) {
