@@ -38,16 +38,18 @@ export async function POST(req: NextRequest) {
     });
 
     const raw = (message.content[0] as { type: string; text: string }).text.trim();
-    // 코드블록 제거 (```json ... ``` 또는 ``` ... ```)
-    const cleaned = raw.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "").trim();
+    // JSON 객체 부분만 추출 (모델이 코드블록이나 부연설명을 앞뒤에 붙이는 경우 대비)
+    const match = raw.match(/\{[\s\S]*?\}/);
     let alt = "";
     let filename = "";
-    try {
-      const json = JSON.parse(cleaned);
-      alt = json.alt || "";
-      filename = json.filename || "";
-    } catch {
-      alt = cleaned;
+    if (match) {
+      try {
+        const json = JSON.parse(match[0]);
+        alt = json.alt || "";
+        filename = json.filename || "";
+      } catch {
+        alt = "";
+      }
     }
     return NextResponse.json({ alt, filename });
   } catch (err) {
