@@ -26,6 +26,7 @@ export default function MarkdownEditor({ value, onChange }: Props) {
   const [editImg, setEditImg] = useState<{ match: string; url: string; alt: string } | null>(null);
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [modalKey, setModalKey] = useState(0);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const cursorPosRef = useRef<number>(0);
   const historyRef = useRef<string[]>([value]);
@@ -127,6 +128,7 @@ export default function MarkdownEditor({ value, onChange }: Props) {
     cursorPosRef.current = el.selectionStart;
     setEditImg({ match: found[0], alt: found[1], url: found[2] });
     setImageMode("single");
+    setModalKey((k) => k + 1);
     setShowImageModal(true);
   }
 
@@ -239,7 +241,7 @@ export default function MarkdownEditor({ value, onChange }: Props) {
               <button
                 type="button"
                 onMouseDown={(e) => e.preventDefault()}
-                onClick={() => { setEditImg(null); setImageMode("single"); setShowImageModal(true); }}
+                onClick={() => { setEditImg(null); setImageMode("single"); setModalKey((k) => k + 1); setShowImageModal(true); }}
                 className={`${toolbarBtn} flex items-center gap-1`}
                 title="이미지 업로드"
               >
@@ -248,7 +250,7 @@ export default function MarkdownEditor({ value, onChange }: Props) {
               <button
                 type="button"
                 onMouseDown={(e) => e.preventDefault()}
-                onClick={() => { setEditImg(null); setImageMode("pair"); setShowImageModal(true); }}
+                onClick={() => { setEditImg(null); setImageMode("pair"); setModalKey((k) => k + 1); setShowImageModal(true); }}
                 className={`${toolbarBtn} flex items-center gap-1`}
                 title="이미지 2장 나란히 배치"
               >
@@ -287,6 +289,7 @@ export default function MarkdownEditor({ value, onChange }: Props) {
                 if (el) cursorPosRef.current = el.selectionStart;
                 setEditImg(null);
                 setDroppedFile(file);
+                setModalKey((k) => k + 1);
                 setShowImageModal(true);
               }}
             />
@@ -310,6 +313,7 @@ export default function MarkdownEditor({ value, onChange }: Props) {
 
       {showImageModal && (
         <ImageUploader
+          key={modalKey}
           onInsert={(md) => {
             if (editImg) {
               const newVal = value.replace(editImg.match, md.trim());
