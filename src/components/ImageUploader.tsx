@@ -6,18 +6,22 @@ interface Props {
   onInsert: (markdownText: string) => void;
   onClose: () => void;
   initialFile?: File;
+  initialUrl?: string;
+  initialAlt?: string;
   mode?: "single" | "pair";
 }
 
 interface Rect { x: number; y: number; w: number; h: number; }
 
-export default function ImageUploader({ onInsert, onClose, initialFile, mode = "single" }: Props) {
+export default function ImageUploader({ onInsert, onClose, initialFile, initialUrl, initialAlt, mode = "single" }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const overlayRef = useRef<HTMLCanvasElement>(null);
-  const imgRef = useRef<HTMLImageElement | null>(null);
+  const baseRef = useRef<HTMLCanvasElement | null>(null); // 현재 편집 기준 이미지(표시 스케일)
   const [step, setStep] = useState<"pick" | "edit" | "uploading">("pick");
   const [canvasSize, setCanvasSize] = useState({ w: 0, h: 0 });
+  const [tool, setTool] = useState<"mosaic" | "crop">("mosaic");
   const [rects, setRects] = useState<Rect[]>([]);
+  const [pendingCrop, setPendingCrop] = useState<Rect | null>(null);
   const [drawing, setDrawing] = useState(false);
   const [startPos, setStartPos] = useState({ x: 0, y: 0 });
   const [blockSize] = useState(20);
@@ -32,24 +36,34 @@ export default function ImageUploader({ onInsert, onClose, initialFile, mode = "
 
   useEffect(() => {
     if (initialFile) loadFile(initialFile);
+    else if (initialUrl) loadUrl(initialUrl, initialAlt || "");
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // 원본 이미지 → base 캔버스(표시 스케일)로 세팅
+  function setupBase(img: HTMLImageElement) {
+    const maxW = 660;
+    const scale = img.width > maxW ? maxW / img.width : 1;
+    const w = Math.round(img.width * scale);
+    const h = Math.round(img.height * scale);
+    const base = document.createElement("canvas");
+    base.width = w; base.height = h;
+    base.getContext("2d")!.drawImage(img, 0, 0, w, h);
+    baseRef.current = base;
+    setRects([]);
+    setPendingCrop(null);
+    setTool("mosaic");
+    setCanvasSize({ w, h });
+    setStep("edit");
+  }
 
   const loadFile = useCallback((f: File) => {
     setFile(f);
     const url = URL.createObjectURL(f);
     const img = new Image();
     img.onload = () => {
-      imgRef.current = img;
-      const maxW = 660;
-      const scale = img.width > maxW ? maxW / img.width : 1;
-      const w = Math.round(img.width * scale);
-      const h = Math.round(img.height * scale);
-      setCanvasSize({ w, h });
-      setRects([]);
+      setupBase(img);
       setAlt("생성 중...");
-      setStep("edit");
-
       // AI로 alt 자동 생성
       const fd = new FormData();
       fd.append("file", f);
@@ -64,20 +78,39 @@ export default function ImageUploader({ onInsert, onClose, initialFile, mode = "
     img.src = url;
   }, []);
 
-  // 캔버스에 이미지 다시 그리기
+  // 이미 업로드된 이미지(URL)를 다시 불러와 편집
+  const loadUrl = useCallback((url: string, altText: string) => {
+    setFile(null);
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => {
+      setupBase(img);
+      setAlt(altText);
+      setSeoFilename("");
+    };
+    img.onerror = () => {
+      setError("이미지를 불러올 수 없습니다. URL을 확인해주세요.");
+      setStep("pick");
+    };
+    img.src = url;
+  }, []);
+
+  // base + 모자이크 다시 그리기
   const redraw = useCallback((currentRects: Rect[]) => {
     const canvas = canvasRef.current;
-    const img = imgRef.current;
-    if (!canvas || !img) return;
+    const base = baseRef.current;
+    if (!canvas || !base) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    ctx.drawImage(base, 0, 0);
     for (const r of currentRects) applyMosaic(ctx, r, blockSize);
   }, [blockSize]);
 
+  // canvasSize/step 바뀔 때(로드·크롭·회전) 기준 이미지 다시 그림
   useEffect(() => {
     if (step === "edit") redraw(rects);
-  }, [step, redraw]); // eslint-disable-line
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [canvasSize, step]);
 
   function applyMosaic(ctx: CanvasRenderingContext2D, rect: Rect, bs: number) {
     const { x, y, w, h } = rect;
@@ -112,11 +145,12 @@ export default function ImageUploader({ onInsert, onClose, initialFile, mode = "
     if (!ctx) return;
     ctx.clearRect(0, 0, overlay.width, overlay.height);
     if (rect) {
-      ctx.strokeStyle = "#7B2D8B";
+      const isCrop = tool === "crop";
+      ctx.strokeStyle = isCrop ? "#16a34a" : "#7B2D8B";
       ctx.lineWidth = 2;
       ctx.setLineDash([6, 3]);
       ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
-      ctx.fillStyle = "rgba(123,45,139,0.15)";
+      ctx.fillStyle = isCrop ? "rgba(22,163,74,0.12)" : "rgba(123,45,139,0.15)";
       ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
     }
   }
@@ -155,8 +189,13 @@ export default function ImageUploader({ onInsert, onClose, initialFile, mode = "
       w: Math.abs(pos.x - startPos.x),
       h: Math.abs(pos.y - startPos.y),
     };
-    drawOverlay(null);
-    if (r.w > 5 && r.h > 5) {
+    if (r.w <= 5 || r.h <= 5) { drawOverlay(null); return; }
+
+    if (tool === "crop") {
+      setPendingCrop(r);
+      drawOverlay(r); // 선택 영역 유지 표시
+    } else {
+      drawOverlay(null);
       const newRects = [...rects, r];
       setRects(newRects);
       const canvas = canvasRef.current;
@@ -173,9 +212,51 @@ export default function ImageUploader({ onInsert, onClose, initialFile, mode = "
     redraw(newRects);
   }
 
+  // 회전 90°
+  function handleRotate() {
+    const base = baseRef.current;
+    if (!base) return;
+    const nc = document.createElement("canvas");
+    nc.width = base.height;
+    nc.height = base.width;
+    const ctx = nc.getContext("2d")!;
+    ctx.translate(nc.width / 2, nc.height / 2);
+    ctx.rotate(Math.PI / 2);
+    ctx.drawImage(base, -base.width / 2, -base.height / 2);
+    baseRef.current = nc;
+    setRects([]);
+    setPendingCrop(null);
+    drawOverlay(null);
+    setCanvasSize({ w: nc.width, h: nc.height });
+  }
+
+  // 크롭 적용
+  function handleApplyCrop() {
+    const base = baseRef.current;
+    if (!base || !pendingCrop) return;
+    const x = Math.max(0, Math.min(pendingCrop.x, base.width));
+    const y = Math.max(0, Math.min(pendingCrop.y, base.height));
+    const w = Math.min(pendingCrop.w, base.width - x);
+    const h = Math.min(pendingCrop.h, base.height - y);
+    if (w < 10 || h < 10) { setPendingCrop(null); drawOverlay(null); return; }
+    const nc = document.createElement("canvas");
+    nc.width = w; nc.height = h;
+    nc.getContext("2d")!.drawImage(base, x, y, w, h, 0, 0, w, h);
+    baseRef.current = nc;
+    setRects([]);
+    setPendingCrop(null);
+    drawOverlay(null);
+    setCanvasSize({ w, h });
+  }
+
+  function handleCancelCrop() {
+    setPendingCrop(null);
+    drawOverlay(null);
+  }
+
   async function handleUpload() {
     const canvas = canvasRef.current;
-    if (!canvas || !file) return;
+    if (!canvas) return;
     setStep("uploading");
     setError("");
 
@@ -185,7 +266,9 @@ export default function ImageUploader({ onInsert, onClose, initialFile, mode = "
     );
 
     const formData = new FormData();
-    const uploadName = seoFilename ? `${seoFilename}.jpg` : file.name.replace(/\.[^.]+$/, ".jpg");
+    const uploadName = seoFilename
+      ? `${seoFilename}.jpg`
+      : file ? file.name.replace(/\.[^.]+$/, ".jpg") : `image-${Date.now()}.jpg`;
     formData.append("file", blob, uploadName);
 
     try {
@@ -194,18 +277,17 @@ export default function ImageUploader({ onInsert, onClose, initialFile, mode = "
       if (!res.ok) throw new Error(data.error);
 
       if (mode === "pair" && pairStage === 1) {
-        // 1번째 이미지 저장 후 2번째 이미지 선택으로 이동
         setFirstUrl(data.url);
         setFirstAlt(alt.trim() || "이미지");
         setPairStage(2);
         setStep("pick");
         setRects([]);
+        setPendingCrop(null);
         setFile(null);
         setAlt("");
         setSeoFilename("");
-        imgRef.current = null;
+        baseRef.current = null;
       } else if (mode === "pair" && pairStage === 2) {
-        // 2장 모두 완성 → grid 마크다운 삽입
         const a1 = firstAlt;
         const u1 = firstUrl;
         const a2 = alt.trim() || "이미지";
@@ -213,7 +295,6 @@ export default function ImageUploader({ onInsert, onClose, initialFile, mode = "
         onInsert(`\n<grid>\n![${a1}](${u1})\n![${a2}](${u2})\n</grid>\n`);
         onClose();
       } else {
-        // 일반 1장
         onInsert(`\n![${alt.trim() || "이미지"}](${data.url})\n`);
         onClose();
       }
@@ -223,6 +304,11 @@ export default function ImageUploader({ onInsert, onClose, initialFile, mode = "
     }
   }
 
+  const toolBtn = (active: boolean) =>
+    `px-3 py-1.5 rounded-lg text-sm font-semibold border transition-colors ${
+      active ? "bg-[#7B2D8B] text-white border-[#7B2D8B]" : "bg-white text-gray-600 border-gray-200 hover:bg-gray-50"
+    }`;
+
   return (
     <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
@@ -230,7 +316,7 @@ export default function ImageUploader({ onInsert, onClose, initialFile, mode = "
           <h2 className="font-bold text-gray-900">
             {mode === "pair"
               ? pairStage === 1 ? "나란히 이미지 — 1번째" : "나란히 이미지 — 2번째"
-              : "이미지 삽입"}
+              : initialUrl ? "이미지 수정" : "이미지 삽입"}
           </h2>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-700 text-xl">✕</button>
         </div>
@@ -244,8 +330,8 @@ export default function ImageUploader({ onInsert, onClose, initialFile, mode = "
               onDrop={(e) => {
                 e.preventDefault();
                 e.currentTarget.classList.remove("border-[#7B2D8B]", "bg-purple-50");
-                const file = e.dataTransfer.files?.[0];
-                if (file && file.type.startsWith("image/")) loadFile(file);
+                const f = e.dataTransfer.files?.[0];
+                if (f && f.type.startsWith("image/")) loadFile(f);
               }}
             >
               <span className="text-4xl">📷</span>
@@ -262,8 +348,20 @@ export default function ImageUploader({ onInsert, onClose, initialFile, mode = "
 
           {step === "edit" && (
             <div className="space-y-3">
+              {/* 도구 툴바 */}
+              <div className="flex items-center gap-2 flex-wrap">
+                <button type="button" onClick={() => { setTool("mosaic"); handleCancelCrop(); }} className={toolBtn(tool === "mosaic")}>🔲 모자이크</button>
+                <button type="button" onClick={() => setTool("crop")} className={toolBtn(tool === "crop")}>✂ 자르기</button>
+                <button type="button" onClick={handleRotate} className="px-3 py-1.5 rounded-lg text-sm font-semibold border border-gray-200 bg-white text-gray-600 hover:bg-gray-50">↻ 회전</button>
+                {tool === "mosaic" && rects.length > 0 && (
+                  <button type="button" onClick={handleUndo} className="px-3 py-1.5 rounded-lg text-sm border border-gray-200 text-gray-500 hover:bg-gray-50">모자이크 취소</button>
+                )}
+              </div>
+
               <p className="text-xs text-gray-400">
-                블러 처리가 필요한 부분을 마우스로 드래그하세요. 없으면 바로 삽입하면 됩니다.
+                {tool === "crop"
+                  ? "남길 부분을 드래그로 선택한 뒤 '이 영역으로 자르기'를 누르세요."
+                  : "얼굴 등 가릴 부분을 마우스로 드래그하세요. 없으면 바로 삽입하면 됩니다."}
               </p>
 
               <div className="relative border border-gray-200 rounded-xl overflow-hidden" style={{ width: canvasSize.w }}>
@@ -272,13 +370,20 @@ export default function ImageUploader({ onInsert, onClose, initialFile, mode = "
                   ref={overlayRef}
                   width={canvasSize.w}
                   height={canvasSize.h}
-                  className="absolute inset-0 cursor-crosshair"
+                  className={`absolute inset-0 ${tool === "crop" ? "cursor-crosshair" : "cursor-crosshair"}`}
                   onMouseDown={onMouseDown}
                   onMouseMove={onMouseMove}
                   onMouseUp={onMouseUp}
-                  onMouseLeave={() => { setDrawing(false); drawOverlay(null); }}
+                  onMouseLeave={() => { if (tool === "mosaic") { setDrawing(false); drawOverlay(null); } }}
                 />
               </div>
+
+              {tool === "crop" && pendingCrop && (
+                <div className="flex gap-2">
+                  <button onClick={handleApplyCrop} className="bg-[#16a34a] text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-[#15803d]">✂ 이 영역으로 자르기</button>
+                  <button onClick={handleCancelCrop} className="border border-gray-200 text-gray-500 px-4 py-2 rounded-lg text-sm hover:bg-gray-50">선택 취소</button>
+                </div>
+              )}
 
               <div>
                 <label className="block text-xs font-semibold text-gray-600 mb-1">
@@ -305,18 +410,10 @@ export default function ImageUploader({ onInsert, onClose, initialFile, mode = "
                     ? "다음 →"
                     : mode === "pair" && pairStage === 2
                     ? "✓ 나란히 삽입"
-                    : "✓ 업로드 & 삽입"}
+                    : initialUrl ? "✓ 수정 완료" : "✓ 업로드 & 삽입"}
                 </button>
-                {rects.length > 0 && (
-                  <button
-                    onClick={handleUndo}
-                    className="border border-gray-200 text-gray-600 px-4 py-2 rounded-lg text-sm hover:bg-gray-50"
-                  >
-                    실행 취소
-                  </button>
-                )}
                 <button
-                  onClick={() => { setStep("pick"); setRects([]); }}
+                  onClick={() => { setStep("pick"); setRects([]); setPendingCrop(null); baseRef.current = null; }}
                   className="border border-gray-200 text-gray-500 px-4 py-2 rounded-lg text-sm hover:bg-gray-50"
                 >
                   다른 이미지 선택

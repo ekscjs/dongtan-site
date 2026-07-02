@@ -23,6 +23,7 @@ export default function MarkdownEditor({ value, onChange }: Props) {
   const [showImageModal, setShowImageModal] = useState(false);
   const [imageMode, setImageMode] = useState<"single" | "pair">("single");
   const [droppedFile, setDroppedFile] = useState<File | null>(null);
+  const [editImg, setEditImg] = useState<{ match: string; url: string; alt: string } | null>(null);
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -103,6 +104,30 @@ export default function MarkdownEditor({ value, onChange }: Props) {
       el.focus();
       el.setSelectionRange(lineStart + newLine.length, lineStart + newLine.length);
     }, 0);
+  }
+
+  // 본문에 이미 넣은 이미지를 커서 위치 기준으로 찾아 편집창 열기
+  function openImageEdit() {
+    const el = textareaRef.current;
+    if (!el) return;
+    const pos = el.selectionStart;
+    const re = /!\[([^\]]*)\]\(([^)]+)\)/g;
+    let m: RegExpExecArray | null;
+    let found: RegExpExecArray | null = null;
+    let lastBefore: RegExpExecArray | null = null;
+    while ((m = re.exec(value))) {
+      if (m.index <= pos && pos <= m.index + m[0].length) { found = m; break; }
+      if (m.index <= pos) lastBefore = m;
+    }
+    if (!found) found = lastBefore;
+    if (!found) {
+      alert("본문에서 수정할 이미지를 찾지 못했어요. 수정할 이미지 줄에 커서를 두고 다시 눌러주세요.");
+      return;
+    }
+    cursorPosRef.current = el.selectionStart;
+    setEditImg({ match: found[0], alt: found[1], url: found[2] });
+    setImageMode("single");
+    setShowImageModal(true);
   }
 
   const toolbarBtn =
@@ -214,7 +239,7 @@ export default function MarkdownEditor({ value, onChange }: Props) {
               <button
                 type="button"
                 onMouseDown={(e) => e.preventDefault()}
-                onClick={() => { setImageMode("single"); setShowImageModal(true); }}
+                onClick={() => { setEditImg(null); setImageMode("single"); setShowImageModal(true); }}
                 className={`${toolbarBtn} flex items-center gap-1`}
                 title="이미지 업로드"
               >
@@ -223,11 +248,20 @@ export default function MarkdownEditor({ value, onChange }: Props) {
               <button
                 type="button"
                 onMouseDown={(e) => e.preventDefault()}
-                onClick={() => { setImageMode("pair"); setShowImageModal(true); }}
+                onClick={() => { setEditImg(null); setImageMode("pair"); setShowImageModal(true); }}
                 className={`${toolbarBtn} flex items-center gap-1`}
                 title="이미지 2장 나란히 배치"
               >
                 🖼🖼 나란히
+              </button>
+              <button
+                type="button"
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={openImageEdit}
+                className={`${toolbarBtn} flex items-center gap-1`}
+                title="본문에 넣은 이미지 수정 — 자르기·회전·모자이크 (커서를 이미지 줄에 두고 클릭)"
+              >
+                ✎ 사진수정
               </button>
             </div>
           )}
@@ -251,6 +285,7 @@ export default function MarkdownEditor({ value, onChange }: Props) {
                 if (!file || !file.type.startsWith("image/")) return;
                 const el = textareaRef.current;
                 if (el) cursorPosRef.current = el.selectionStart;
+                setEditImg(null);
                 setDroppedFile(file);
                 setShowImageModal(true);
               }}
@@ -275,9 +310,20 @@ export default function MarkdownEditor({ value, onChange }: Props) {
 
       {showImageModal && (
         <ImageUploader
-          onInsert={(md) => insertAtCursor(md)}
-          onClose={() => { setShowImageModal(false); setDroppedFile(null); }}
+          onInsert={(md) => {
+            if (editImg) {
+              const newVal = value.replace(editImg.match, md.trim());
+              pushHistory(newVal);
+              onChange(newVal);
+              setEditImg(null);
+            } else {
+              insertAtCursor(md);
+            }
+          }}
+          onClose={() => { setShowImageModal(false); setDroppedFile(null); setEditImg(null); }}
           initialFile={droppedFile ?? undefined}
+          initialUrl={editImg?.url}
+          initialAlt={editImg?.alt}
           mode={imageMode}
         />
       )}
