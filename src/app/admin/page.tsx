@@ -100,8 +100,10 @@ export default function AdminPage() {
   }
 
   useEffect(() => {
-    const onPop = () => {
-      setView((v) => (v === "form" ? "list" : v));
+    const onPop = (e: PopStateEvent) => {
+      // history state의 view 값을 그대로 반영 — 방향(뒤로/앞으로) 상관없이
+      // 해당 히스토리 항목이 form이었으면 form으로, 아니면 list로 복원
+      setView((e.state?.view === "form" ? "form" : "list"));
     };
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
