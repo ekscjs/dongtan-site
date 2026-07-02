@@ -10,7 +10,7 @@ export async function GET() {
     .select("*")
     .eq("published", true)
     .or(`publish_at.is.null,publish_at.lte.${now}`)
-    .order("created_at", { ascending: false });
+    .order("publish_at", { ascending: false, nullsFirst: false });
 
   if (error) {
     return NextResponse.json([], { status: 500 });
