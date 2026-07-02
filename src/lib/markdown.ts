@@ -98,46 +98,29 @@ export function markdownToHtml(md: string): string {
       continue;
     }
 
+    // HTML 블록 패스스루 (div, section, figure, aside, table)
+    if (/^<(div|section|figure|aside|table)\b/i.test(line.trim())) {
+      closeParagraph();
+      const tag = line.trim().match(/^<(\w+)/i)![1].toLowerCase();
+      const htmlLines: string[] = [line];
+      let depth = (line.match(new RegExp(`<${tag}[\\s>]`, "gi")) || []).length
+               - (line.match(new RegExp(`</${tag}>`, "gi")) || []).length;
+      i++;
+      while (i < lines.length && depth > 0) {
+        const l = lines[i];
+        htmlLines.push(l);
+        depth += (l.match(new RegExp(`<${tag}[\\s>]`, "gi")) || []).length;
+        depth -= (l.match(new RegExp(`</${tag}>`, "gi")) || []).length;
+        i++;
+      }
+      out.push(htmlLines.join("\n"));
+      continue;
+    }
+
     // 이미지 2열 그리드 블록
     if (line.trim() === "<grid>") {
       closeParagraph();
       const gridLines: string[] = [];
       i++;
       while (i < lines.length && lines[i].trim() !== "</grid>") {
-        gridLines.push(lines[i]);
-        i++;
-      }
-      const gridImgs = gridLines
-        .map((l) =>
-          l.replace(
-            /!\[([^\]]*)\]\(([^)]+)\)/g,
-            '<img src="$2" alt="$1" class="rounded-xl w-full object-cover" />'
-          )
-        )
-        .join("");
-      out.push(`<div class="grid grid-cols-2 gap-3 my-6">${gridImgs}</div>`);
-      i++; // </grid> 스킵
-      continue;
-    }
-
-    // 빈 줄
-    if (line.trim() === "") {
-      closeParagraph();
-      i++;
-      continue;
-    }
-
-    // 일반 문단
-    if (!inParagraph) {
-      out.push('<p class="text-gray-700 leading-relaxed my-4">');
-      inParagraph = true;
-    } else {
-      out.push("<br />");
-    }
-    out.push(inlineFormat(line));
-    i++;
-  }
-
-  closeParagraph();
-  return out.join("");
-}
+        gridLines.push(lines[i]
