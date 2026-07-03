@@ -1,14 +1,16 @@
 import sharp, { type OverlayOptions } from "sharp";
-import { readFileSync } from "fs";
+import { Resvg } from "@resvg/resvg-js";
 import { join } from "path";
 
 /**
  * 업로드 이미지 자동 브랜딩 — 하단 로고 푸터(항상) + 제목 오버레이(옵션).
  * 블로그팀/scripts/brand_image.mjs(brand_image.py Node 포트)와 동일한 스타일.
  *
- * 폰트는 시스템에 설치된 이름(font-family)으로 찾지 않고 파일을 base64로 직접 SVG에 임베드한다.
- * 서버 프로세스(Next dev/Vercel 등)가 OS 폰트 목록을 못 찾는 환경이 있어(로컬 Windows에서 실측),
- * @font-face + data URI로 박아 넣어야 어떤 배포 환경에서도 한글이 항상 그려진다.
+ * 텍스트가 들어간 레이어는 sharp(libvips/librsvg)가 아니라 @resvg/resvg-js로 직접
+ * PNG 래스터화한다. sharp의 SVG 로더는 플랫폼(Vercel Linux)에서 @font-face 임베드
+ * 폰트를 지원하지 않아 텍스트가 통째로 사라지는 문제가 실측되었다(로컬 Windows에서는
+ * 정상 렌더링됨) — resvg는 fontFiles 옵션으로 폰트 파일을 직접 지정해 시스템
+ * fontconfig 유무와 무관하게 모든 플랫폼에서 동일하게 렌더링된다.
  */
 
 const PRIMARY = "#2C5F5A";
@@ -16,15 +18,7 @@ const CREAM = "#F5EFE6";
 const WHITE = "#FFFFFF";
 const MAXW = 1600;
 const FONT = "NotoSansKR";
-
-let fontDataUri: string | null = null;
-function getFontFace(): string {
-  if (!fontDataUri) {
-    const bytes = readFileSync(join(process.cwd(), "src", "lib", "fonts", "NotoSansKR-VF.ttf"));
-    fontDataUri = `data:font/ttf;base64,${bytes.toString("base64")}`;
-  }
-  return `<style>@font-face { font-family: '${FONT}'; src: url(${fontDataUri}) format('truetype'); }</style>`;
-}
+const FONT_PATH = join(process.cwd(), "src", "lib", "fonts", "NotoSansKR-VF.ttf");
 
 function escapeXml(s: string) {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -47,6 +41,14 @@ function wrapTitle(title: string, fontSize: number, maxWidth: number) {
   }
   if (cur) lines.push(cur);
   return lines;
+}
+
+// SVG(텍스트 포함)를 resvg로 직접 래스터화 — 플랫폼 무관하게 폰트 파일을 강제 사용
+function renderSvgToPng(svg: string): Buffer {
+  const resvg = new Resvg(svg, {
+    font: { fontFiles: [FONT_PATH], loadSystemFonts: false, defaultFontFamily: FONT },
+  });
+  return resvg.render().asPng();
 }
 
 export interface BrandImageOptions {
@@ -78,12 +80,11 @@ export async function brandImage(input: Buffer, opts: BrandImageOptions = {}): P
   const footTextW = estWidth(footText, footFontSize);
   const footSvg = `
     <svg width="${w}" height="${totalH}" xmlns="http://www.w3.org/2000/svg">
-      ${getFontFace()}
       <rect x="0" y="${h}" width="${w}" height="${footH}" fill="${CREAM}"/>
       <text x="${w - footTextW - w * 0.03}" y="${h + footH / 2 + footFontSize * 0.35}"
             font-family="${FONT}" font-size="${footFontSize}" font-weight="700" fill="${PRIMARY}">${escapeXml(footText)}</text>
     </svg>`;
-  layers.push({ input: Buffer.from(footSvg), top: 0, left: 0 });
+  layers.push({ input: renderSvgToPng(footSvg), top: 0, left: 0 });
 
   // 상단 제목 오버레이 — 옵션
   if (opts.title) {
@@ -109,7 +110,6 @@ export async function brandImage(input: Buffer, opts: BrandImageOptions = {}): P
     }
     const titleSvg = `
       <svg width="${w}" height="${totalH}" xmlns="http://www.w3.org/2000/svg">
-        ${getFontFace()}
         <defs>
           <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
             ${gradientStops}
@@ -118,7 +118,7 @@ export async function brandImage(input: Buffer, opts: BrandImageOptions = {}): P
         <rect x="0" y="0" width="${w}" height="${bandH}" fill="url(#g)"/>
         ${textEls}
       </svg>`;
-    layers.push({ input: Buffer.from(titleSvg), top: 0, left: 0 });
+    layers.push({ input: renderSvgToPng(titleSvg), top: 0, left: 0 });
   }
 
   const composed = sharp({ create: { width: w, height: totalH, channels: 3, background: CREAM } }).composite(layers);
