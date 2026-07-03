@@ -7,7 +7,11 @@ import ImageUploader from "./ImageUploader";
 interface Props {
   value: string;
   onChange: (value: string) => void;
+  /** 글 제목 — 본문에 이미지가 하나도 없을 때 첫 업로드(썸네일)에 자동으로 오버레이된다 */
+  postTitle?: string;
 }
+
+const IMAGE_MD_RE = /!\[[^\]]*\]\([^)]+\)/;
 
 const COLORS = [
   { label: "빨강", value: "#e53e3e" },
@@ -18,7 +22,7 @@ const COLORS = [
   { label: "회색", value: "#718096" },
 ];
 
-export default function MarkdownEditor({ value, onChange }: Props) {
+export default function MarkdownEditor({ value, onChange, postTitle }: Props) {
   const [tab, setTab] = useState<"write" | "preview">("write");
   const [showImageModal, setShowImageModal] = useState(false);
   const [imageMode, setImageMode] = useState<"single" | "pair">("single");
@@ -292,6 +296,7 @@ export default function MarkdownEditor({ value, onChange }: Props) {
                 const el = textareaRef.current;
                 if (el) cursorPosRef.current = el.selectionStart;
                 setEditImg(null);
+                setImageMode("single");
                 setDroppedFile(file);
                 setModalKey((k) => k + 1);
                 setShowImageModal(true);
@@ -334,6 +339,11 @@ export default function MarkdownEditor({ value, onChange }: Props) {
           initialUrl={editImg?.url}
           initialAlt={editImg?.alt}
           mode={imageMode}
+          titleForOverlay={
+            !editImg && imageMode === "single" && postTitle && !IMAGE_MD_RE.test(value)
+              ? postTitle
+              : undefined
+          }
         />
       )}
     </>

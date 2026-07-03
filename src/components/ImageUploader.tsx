@@ -9,11 +9,33 @@ interface Props {
   initialUrl?: string;
   initialAlt?: string;
   mode?: "single" | "pair";
+  /** 있으면 이 글의 첫 썸네일 업로드로 취급 — 16:9 자동 크롭 + 제목 오버레이 자동 적용 */
+  titleForOverlay?: string;
 }
 
 interface Rect { x: number; y: number; w: number; h: number; }
 
-export default function ImageUploader({ onInsert, onClose, initialFile, initialUrl, initialAlt, mode = "single" }: Props) {
+// 중앙 기준으로 16:9에 맞게 자르기 (가로/세로 중 넘치는 쪽만 잘라냄)
+function cropTo169(base: HTMLCanvasElement): HTMLCanvasElement {
+  const targetRatio = 16 / 9;
+  const bw = base.width;
+  const bh = base.height;
+  const curRatio = bw / bh;
+  let sx = 0, sy = 0, sw = bw, sh = bh;
+  if (curRatio > targetRatio) {
+    sw = Math.round(bh * targetRatio);
+    sx = Math.round((bw - sw) / 2);
+  } else if (curRatio < targetRatio) {
+    sh = Math.round(bw / targetRatio);
+    sy = Math.round((bh - sh) / 2);
+  }
+  const nc = document.createElement("canvas");
+  nc.width = sw; nc.height = sh;
+  nc.getContext("2d")!.drawImage(base, sx, sy, sw, sh, 0, 0, sw, sh);
+  return nc;
+}
+
+export default function ImageUploader({ onInsert, onClose, initialFile, initialUrl, initialAlt, mode = "single", titleForOverlay }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const overlayRef = useRef<HTMLCanvasElement>(null);
   const baseRef = useRef<HTMLCanvasElement | null>(null); // 현재 편집 기준 이미지(표시 스케일)
@@ -47,14 +69,15 @@ export default function ImageUploader({ onInsert, onClose, initialFile, initialU
     const scale = img.width > maxW ? maxW / img.width : 1;
     const w = Math.round(img.width * scale);
     const h = Math.round(img.height * scale);
-    const base = document.createElement("canvas");
+    let base = document.createElement("canvas");
     base.width = w; base.height = h;
     base.getContext("2d")!.drawImage(img, 0, 0, w, h);
+    if (titleForOverlay) base = cropTo169(base); // 썸네일 — 16:9 자동 크롭
     baseRef.current = base;
     setRects([]);
     setPendingCrop(null);
     setTool("mosaic");
-    setCanvasSize({ w, h });
+    setCanvasSize({ w: base.width, h: base.height });
     setStep("edit");
   }
 
@@ -311,6 +334,7 @@ export default function ImageUploader({ onInsert, onClose, initialFile, initialU
       ? `${seoFilename}.jpg`
       : file ? file.name.replace(/\.[^.]+$/, ".jpg") : `image-${Date.now()}.jpg`;
     formData.append("file", blob, uploadName);
+    if (titleForOverlay) formData.append("title", titleForOverlay);
 
     try {
       const res = await fetch("/api/admin/upload", { method: "POST", body: formData });
@@ -389,6 +413,11 @@ export default function ImageUploader({ onInsert, onClose, initialFile, initialU
 
           {step === "edit" && (
             <div className="space-y-3">
+              {titleForOverlay && (
+                <p className="text-xs bg-blue-50 text-blue-700 rounded-lg px-3 py-2">
+                  썸네일로 인식되어 16:9 자동 크롭 + 제목(&quot;{titleForOverlay}&quot;) 오버레이가 자동 적용됩니다.
+                </p>
+              )}
               {/* 도구 툴바 */}
               <div className="flex items-center gap-2 flex-wrap">
                 <button type="button" onClick={() => { setTool("mosaic"); handleCancelCrop(); }} className={toolBtn(tool === "mosaic")}>🔲 모자이크</button>

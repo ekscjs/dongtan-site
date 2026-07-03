@@ -371,6 +371,7 @@ export default function AdminPage() {
               <MarkdownEditor
                 value={form.content}
                 onChange={(v) => setForm((f) => ({ ...f, content: v }))}
+                postTitle={form.title}
               />
             </div>
 
