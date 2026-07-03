@@ -154,10 +154,13 @@ export default function AdminPage() {
         ? { ...form, publish_at: publishAtISO }
         : { ...form, published: false, publish_at: publishAtISO };
     } else {
-      // 발행: 미래 날짜 있으면 예약, 없으면 기존 publish_at 유지(수정) or 현재시각(신규)
+      // 발행: 미래 날짜 있으면 예약, 기존 글 수정이면 publish_at 그대로 유지(null이었으면 null 그대로),
+      // 신규 글 최초 발행일 때만 현재시각으로 설정
       payload = isFuture
         ? { ...form, published: true, publish_at: publishAtISO }
-        : { ...form, published: true, publish_at: originalPublishAt ?? new Date().toISOString() };
+        : editId
+        ? { ...form, published: true, publish_at: originalPublishAt }
+        : { ...form, published: true, publish_at: new Date().toISOString() };
     }
     try {
       const url = editId ? `/api/admin/posts/${editId}` : "/api/admin/posts";
