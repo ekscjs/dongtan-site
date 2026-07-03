@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
   // 바이너리가 깨지는 사례가 있어(0xFF 등 상위 바이트가 U+FFFD로 치환됨), Blob으로 감싸서 전달한다.
   const { data, error } = await supabase.storage
     .from("blog-images")
-    .upload(filename, new Blob([buffer], { type: contentType }), {
+    .upload(filename, new Blob([new Uint8Array(buffer)], { type: contentType }), {
       contentType,
       upsert: false,
     });
