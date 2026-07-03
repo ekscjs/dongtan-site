@@ -35,6 +35,7 @@ export default function ImageUploader({ onInsert, onClose, initialFile, initialU
   const [firstAlt, setFirstAlt] = useState("");
 
   useEffect(() => {
+    console.log("[img-uploader] mount, initialFile:", initialFile?.name, "initialUrl:", initialUrl);
     if (initialFile) loadFile(initialFile);
     else if (initialUrl) loadUrl(initialUrl, initialAlt || "");
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -58,15 +59,18 @@ export default function ImageUploader({ onInsert, onClose, initialFile, initialU
   }
 
   const loadFile = useCallback((f: File) => {
+    console.log("[img-uploader] loadFile called:", f.name, f.type, f.size);
     setFile(f);
     const url = URL.createObjectURL(f);
     const img = new Image();
     img.onload = () => {
+      console.log("[img-uploader] img.onload fired, natural size:", img.width, img.height);
       setupBase(img);
       setAlt("생성 중...");
       // AI로 alt 자동 생성 — 원본 대신 편집용으로 리사이즈된(최대 660px) 이미지를 보내서
       // 실제 카메라 사진(수 MB)에서도 빠르고 안정적으로 응답받게 함
       const sendForAlt = (blob: Blob) => {
+        console.log("[img-uploader] sending to generate-alt, blob size:", blob.size);
         const fd = new FormData();
         fd.append("file", blob, "resized.jpg");
         const controller = new AbortController();
@@ -74,11 +78,12 @@ export default function ImageUploader({ onInsert, onClose, initialFile, initialU
         fetch("/api/admin/generate-alt", { method: "POST", body: fd, signal: controller.signal })
           .then((r) => r.json())
           .then((data) => {
+            console.log("[img-uploader] generate-alt response:", data);
             if (data.alt) setAlt(data.alt);
             if (data.filename) setSeoFilename(data.filename);
             if (!data.alt) setAlt("");
           })
-          .catch(() => setAlt(""))
+          .catch((err) => { console.log("[img-uploader] generate-alt FAILED:", err); setAlt(""); })
           .finally(() => clearTimeout(timeout));
       };
       const base = baseRef.current;
@@ -87,6 +92,9 @@ export default function ImageUploader({ onInsert, onClose, initialFile, initialU
       } else {
         sendForAlt(f);
       }
+    };
+    img.onerror = (err) => {
+      console.log("[img-uploader] img.onload ERROR — image failed to decode:", err);
     };
     img.src = url;
   }, []);

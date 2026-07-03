@@ -284,13 +284,18 @@ export default function MarkdownEditor({ value, onChange }: Props) {
                 e.preventDefault();
                 setIsDragging(false);
                 const file = e.dataTransfer.files?.[0];
-                if (!file || !file.type.startsWith("image/")) return;
+                console.log("[img-drop] file:", file?.name, file?.type, file?.size);
+                if (!file || !file.type.startsWith("image/")) {
+                  console.log("[img-drop] rejected — no file or not image type");
+                  return;
+                }
                 const el = textareaRef.current;
                 if (el) cursorPosRef.current = el.selectionStart;
                 setEditImg(null);
                 setDroppedFile(file);
                 setModalKey((k) => k + 1);
                 setShowImageModal(true);
+                console.log("[img-drop] modal opened with file");
               }}
             />
             {isDragging && (
