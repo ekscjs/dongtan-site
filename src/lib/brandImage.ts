@@ -11,14 +11,20 @@ import { join } from "path";
  * 폰트를 지원하지 않아 텍스트가 통째로 사라지는 문제가 실측되었다(로컬 Windows에서는
  * 정상 렌더링됨) — resvg는 fontFiles 옵션으로 폰트 파일을 직접 지정해 시스템
  * fontconfig 유무와 무관하게 모든 플랫폼에서 동일하게 렌더링된다.
+ *
+ * 폰트는 가변 폰트(Variable Font)가 아니라 정적 Bold 폰트 파일을 쓴다 — resvg가
+ * 가변 폰트의 font-weight/font-variation-settings(wght 축)를 반영하지 않아
+ * 항상 가장 얇은 인스턴스로만 그려지는 문제가 실측되었다(굵기 400/700 렌더링 결과
+ * 완전히 동일). 파이썬 버전(brand_image.py)도 같은 이유로 Bold 전용 폰트 파일을
+ * 별도로 썼다.
  */
 
 const PRIMARY = "#2C5F5A";
 const CREAM = "#F5EFE6";
 const WHITE = "#FFFFFF";
 const MAXW = 1600;
-const FONT = "NotoSansKR";
-const FONT_PATH = join(process.cwd(), "src", "lib", "fonts", "NotoSansKR-VF.ttf");
+const FONT = "NotoSansKR-Bold";
+const FONT_PATH = join(process.cwd(), "src", "lib", "fonts", "NotoSansKR-Bold.ttf");
 
 function escapeXml(s: string) {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
