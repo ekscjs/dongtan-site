@@ -58,6 +58,42 @@ export default function ImageUploader({ onInsert, onClose, initialFile, initialU
     setStep("edit");
   }
 
+  // 현재 편집 중인(리사이즈된) 캔버스를 기준으로 AI alt·SEO 파일명 생성
+  function generateAltFromBase(fallbackFile?: File) {
+    console.log("[img-uploader] generateAltFromBase called");
+    setAlt("생성 중...");
+    const sendForAlt = (blob: Blob) => {
+      console.log("[img-uploader] sending to generate-alt, blob size:", blob.size);
+      const fd = new FormData();
+      fd.append("file", blob, "resized.jpg");
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 20000);
+      fetch("/api/admin/generate-alt", { method: "POST", body: fd, signal: controller.signal })
+        .then((r) => r.json())
+        .then((data) => {
+          console.log("[img-uploader] generate-alt response:", data);
+          if (data.alt) setAlt(data.alt);
+          if (data.filename) setSeoFilename(data.filename);
+          if (!data.alt) setAlt("");
+        })
+        .catch((err) => { console.log("[img-uploader] generate-alt FAILED:", err); setAlt(""); })
+        .finally(() => clearTimeout(timeout));
+    };
+    const base = baseRef.current;
+    if (base) {
+      try {
+        base.toBlob((b) => (b ? sendForAlt(b) : fallbackFile && sendForAlt(fallbackFile)), "image/jpeg", 0.85);
+      } catch (err) {
+        // 캔버스가 CORS로 오염된 경우(toBlob이 동기적으로 throw) 등 — 원본 파일이 있으면 그걸로 폴백
+        console.log("[img-uploader] base.toBlob threw (tainted canvas?):", err);
+        if (fallbackFile) sendForAlt(fallbackFile);
+        else setAlt("");
+      }
+    } else if (fallbackFile) {
+      sendForAlt(fallbackFile);
+    }
+  }
+
   const loadFile = useCallback((f: File) => {
     console.log("[img-uploader] loadFile called:", f.name, f.type, f.size);
     setFile(f);
@@ -66,32 +102,9 @@ export default function ImageUploader({ onInsert, onClose, initialFile, initialU
     img.onload = () => {
       console.log("[img-uploader] img.onload fired, natural size:", img.width, img.height);
       setupBase(img);
-      setAlt("생성 중...");
       // AI로 alt 자동 생성 — 원본 대신 편집용으로 리사이즈된(최대 660px) 이미지를 보내서
       // 실제 카메라 사진(수 MB)에서도 빠르고 안정적으로 응답받게 함
-      const sendForAlt = (blob: Blob) => {
-        console.log("[img-uploader] sending to generate-alt, blob size:", blob.size);
-        const fd = new FormData();
-        fd.append("file", blob, "resized.jpg");
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 20000);
-        fetch("/api/admin/generate-alt", { method: "POST", body: fd, signal: controller.signal })
-          .then((r) => r.json())
-          .then((data) => {
-            console.log("[img-uploader] generate-alt response:", data);
-            if (data.alt) setAlt(data.alt);
-            if (data.filename) setSeoFilename(data.filename);
-            if (!data.alt) setAlt("");
-          })
-          .catch((err) => { console.log("[img-uploader] generate-alt FAILED:", err); setAlt(""); })
-          .finally(() => clearTimeout(timeout));
-      };
-      const base = baseRef.current;
-      if (base) {
-        base.toBlob((b) => (b ? sendForAlt(b) : sendForAlt(f)), "image/jpeg", 0.85);
-      } else {
-        sendForAlt(f);
-      }
+      generateAltFromBase(f);
     };
     img.onerror = (err) => {
       console.log("[img-uploader] img.onload ERROR — image failed to decode:", err);
@@ -106,8 +119,15 @@ export default function ImageUploader({ onInsert, onClose, initialFile, initialU
     img.crossOrigin = "anonymous";
     img.onload = () => {
       setupBase(img);
-      setAlt(altText);
       setSeoFilename("");
+      if (altText.trim()) {
+        // 기존 alt가 있으면 그대로 사용
+        setAlt(altText);
+      } else {
+        // alt가 비어있던 이미지(예: 블로그팀 카드)는 여기서도 AI로 채워준다
+        console.log("[img-uploader] loadUrl: alt empty, calling AI");
+        generateAltFromBase();
+      }
     };
     img.onerror = () => {
       setError("이미지를 불러올 수 없습니다. URL을 확인해주세요.");
