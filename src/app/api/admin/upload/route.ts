@@ -44,9 +44,11 @@ export async function POST(req: NextRequest) {
   const contentType = isPng ? "image/png" : "image/jpeg";
   const filename = `${Date.now()}.${ext}`;
 
+  // Buffer를 그대로 넘기면 배포 환경에 따라 fetch body가 UTF-8 문자열처럼 취급되어
+  // 바이너리가 깨지는 사례가 있어(0xFF 등 상위 바이트가 U+FFFD로 치환됨), Blob으로 감싸서 전달한다.
   const { data, error } = await supabase.storage
     .from("blog-images")
-    .upload(filename, buffer, {
+    .upload(filename, new Blob([buffer], { type: contentType }), {
       contentType,
       upsert: false,
     });
