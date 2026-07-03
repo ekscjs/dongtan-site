@@ -339,11 +339,8 @@ export default function MarkdownEditor({ value, onChange, postTitle }: Props) {
           initialUrl={editImg?.url}
           initialAlt={editImg?.alt}
           mode={imageMode}
-          titleForOverlay={
-            !editImg && imageMode === "single" && postTitle && !IMAGE_MD_RE.test(value)
-              ? postTitle
-              : undefined
-          }
+          postTitle={postTitle}
+          autoThumbnail={!editImg && imageMode === "single" && !!postTitle?.trim() && !IMAGE_MD_RE.test(value)}
         />
       )}
     </>

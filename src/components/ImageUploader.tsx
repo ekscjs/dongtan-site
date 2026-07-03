@@ -9,8 +9,10 @@ interface Props {
   initialUrl?: string;
   initialAlt?: string;
   mode?: "single" | "pair";
-  /** 있으면 이 글의 첫 썸네일 업로드로 취급 — 16:9 자동 크롭 + 제목 오버레이 자동 적용 */
-  titleForOverlay?: string;
+  /** 글 제목 — 썸네일 지정 시 오버레이에 사용 */
+  postTitle?: string;
+  /** true면 "썸네일로 지정" 체크박스가 기본 체크된 상태로 시작(본문에 이미지가 아직 없을 때) */
+  autoThumbnail?: boolean;
 }
 
 interface Rect { x: number; y: number; w: number; h: number; }
@@ -35,10 +37,14 @@ function cropTo169(base: HTMLCanvasElement): HTMLCanvasElement {
   return nc;
 }
 
-export default function ImageUploader({ onInsert, onClose, initialFile, initialUrl, initialAlt, mode = "single", titleForOverlay }: Props) {
+export default function ImageUploader({ onInsert, onClose, initialFile, initialUrl, initialAlt, mode = "single", postTitle, autoThumbnail }: Props) {
+  // 썸네일 지정이 의미 있는 경우: 단일 이미지 신규 삽입(수정·나란히 배치 제외) + 글 제목이 있을 때
+  const thumbnailEligible = mode === "single" && !initialUrl && !!postTitle?.trim();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const overlayRef = useRef<HTMLCanvasElement>(null);
   const baseRef = useRef<HTMLCanvasElement | null>(null); // 현재 편집 기준 이미지(표시 스케일)
+  const originalBaseRef = useRef<HTMLCanvasElement | null>(null); // 썸네일 크롭 이전의 원본(리사이즈만 된) 이미지
+  const [wantThumbnail, setWantThumbnail] = useState(() => thumbnailEligible && !!autoThumbnail);
   const [step, setStep] = useState<"pick" | "edit" | "uploading">("pick");
   const [canvasSize, setCanvasSize] = useState({ w: 0, h: 0 });
   const [tool, setTool] = useState<"mosaic" | "crop">("mosaic");
@@ -69,16 +75,31 @@ export default function ImageUploader({ onInsert, onClose, initialFile, initialU
     const scale = img.width > maxW ? maxW / img.width : 1;
     const w = Math.round(img.width * scale);
     const h = Math.round(img.height * scale);
-    let base = document.createElement("canvas");
+    const base = document.createElement("canvas");
     base.width = w; base.height = h;
     base.getContext("2d")!.drawImage(img, 0, 0, w, h);
-    if (titleForOverlay) base = cropTo169(base); // 썸네일 — 16:9 자동 크롭
-    baseRef.current = base;
+    originalBaseRef.current = base;
+    const initialWant = thumbnailEligible && !!autoThumbnail;
+    baseRef.current = initialWant ? cropTo169(base) : base;
+    setWantThumbnail(initialWant);
     setRects([]);
     setPendingCrop(null);
     setTool("mosaic");
-    setCanvasSize({ w: base.width, h: base.height });
+    setCanvasSize({ w: baseRef.current.width, h: baseRef.current.height });
     setStep("edit");
+  }
+
+  // "썸네일로 지정" 체크박스 토글 — 원본 기준으로 16:9 크롭을 다시 적용/해제
+  function toggleThumbnail(next: boolean) {
+    const orig = originalBaseRef.current;
+    if (!orig) return;
+    const nb = next ? cropTo169(orig) : orig;
+    baseRef.current = nb;
+    setWantThumbnail(next);
+    setRects([]);
+    setPendingCrop(null);
+    drawOverlay(null);
+    setCanvasSize({ w: nb.width, h: nb.height });
   }
 
   // 현재 편집 중인(리사이즈된) 캔버스를 기준으로 AI alt·SEO 파일명 생성
@@ -334,7 +355,7 @@ export default function ImageUploader({ onInsert, onClose, initialFile, initialU
       ? `${seoFilename}.jpg`
       : file ? file.name.replace(/\.[^.]+$/, ".jpg") : `image-${Date.now()}.jpg`;
     formData.append("file", blob, uploadName);
-    if (titleForOverlay) formData.append("title", titleForOverlay);
+    if (wantThumbnail && postTitle?.trim()) formData.append("title", postTitle.trim());
 
     try {
       const res = await fetch("/api/admin/upload", { method: "POST", body: formData });
@@ -413,10 +434,19 @@ export default function ImageUploader({ onInsert, onClose, initialFile, initialU
 
           {step === "edit" && (
             <div className="space-y-3">
-              {titleForOverlay && (
-                <p className="text-xs bg-blue-50 text-blue-700 rounded-lg px-3 py-2">
-                  썸네일로 인식되어 16:9 자동 크롭 + 제목(&quot;{titleForOverlay}&quot;) 오버레이가 자동 적용됩니다.
-                </p>
+              {thumbnailEligible && (
+                <label className="flex items-start gap-2 bg-blue-50 rounded-lg px-3 py-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={wantThumbnail}
+                    onChange={(e) => toggleThumbnail(e.target.checked)}
+                    className="mt-0.5"
+                  />
+                  <span className="text-xs text-blue-700">
+                    <span className="font-semibold">이 사진을 썸네일로 지정</span> — 16:9 자동 크롭 + 제목(&quot;{postTitle}&quot;) 오버레이가 적용됩니다.
+                    {wantThumbnail && <span className="block text-blue-400 mt-0.5">체크를 바꾸면 자르기·회전 등 이전 편집은 초기화됩니다.</span>}
+                  </span>
+                </label>
               )}
               {/* 도구 툴바 */}
               <div className="flex items-center gap-2 flex-wrap">
