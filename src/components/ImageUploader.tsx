@@ -64,16 +64,29 @@ export default function ImageUploader({ onInsert, onClose, initialFile, initialU
     img.onload = () => {
       setupBase(img);
       setAlt("생성 중...");
-      // AI로 alt 자동 생성
-      const fd = new FormData();
-      fd.append("file", f);
-      fetch("/api/admin/generate-alt", { method: "POST", body: fd })
-        .then((r) => r.json())
-        .then((data) => {
-          if (data.alt) setAlt(data.alt);
-          if (data.filename) setSeoFilename(data.filename);
-        })
-        .catch(() => setAlt(""));
+      // AI로 alt 자동 생성 — 원본 대신 편집용으로 리사이즈된(최대 660px) 이미지를 보내서
+      // 실제 카메라 사진(수 MB)에서도 빠르고 안정적으로 응답받게 함
+      const sendForAlt = (blob: Blob) => {
+        const fd = new FormData();
+        fd.append("file", blob, "resized.jpg");
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 20000);
+        fetch("/api/admin/generate-alt", { method: "POST", body: fd, signal: controller.signal })
+          .then((r) => r.json())
+          .then((data) => {
+            if (data.alt) setAlt(data.alt);
+            if (data.filename) setSeoFilename(data.filename);
+            if (!data.alt) setAlt("");
+          })
+          .catch(() => setAlt(""))
+          .finally(() => clearTimeout(timeout));
+      };
+      const base = baseRef.current;
+      if (base) {
+        base.toBlob((b) => (b ? sendForAlt(b) : sendForAlt(f)), "image/jpeg", 0.85);
+      } else {
+        sendForAlt(f);
+      }
     };
     img.src = url;
   }, []);
