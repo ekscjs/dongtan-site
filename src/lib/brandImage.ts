@@ -31,16 +31,23 @@ function estWidth(str: string, fontSize: number) {
   return w;
 }
 
-function wrapTitle(title: string, fontSize: number, maxWidth: number) {
+// 단어(공백) 단위로만 줄바꿈 — 한글 단어 중간에서 끊지 않는다. maxLines를 넘으면
+// 잘라내고 마지막 줄 끝에 말줄임표(…)를 붙인다.
+function wrapTitle(title: string, fontSize: number, maxWidth: number, maxLines: number) {
+  const words = title.split(/\s+/).filter(Boolean);
   const lines: string[] = [];
   let cur = "";
-  for (const tok of title.split(" ")) {
-    const candidate = (cur + " " + tok).trim();
+  for (const tok of words) {
+    const candidate = cur ? `${cur} ${tok}` : tok;
     if (estWidth(candidate, fontSize) <= maxWidth) cur = candidate;
     else { if (cur) lines.push(cur); cur = tok; }
   }
   if (cur) lines.push(cur);
-  return lines;
+
+  if (lines.length <= maxLines) return lines;
+  const truncated = lines.slice(0, maxLines);
+  truncated[maxLines - 1] = `${truncated[maxLines - 1]}…`;
+  return truncated;
 }
 
 // SVG(텍스트 포함)를 resvg로 직접 래스터화 — 플랫폼 무관하게 폰트 파일을 강제 사용
@@ -86,21 +93,22 @@ export async function brandImage(input: Buffer, opts: BrandImageOptions = {}): P
     </svg>`;
   layers.push({ input: renderSvgToPng(footSvg), top: 0, left: 0 });
 
-  // 상단 제목 오버레이 — 옵션
+  // 상단 제목 오버레이 — 옵션 (최대 2줄, 단어 단위 줄바꿈)
   if (opts.title) {
-    const bandH = Math.floor(h * 0.34);
-    const titleFontSize = Math.max(30, Math.floor(w / 22));
-    const lines = wrapTitle(opts.title, titleFontSize, w * 0.88);
+    const titleFontSize = Math.max(34, Math.floor(w / 16));
+    const lines = wrapTitle(opts.title, titleFontSize, w * 0.88, 2);
     const lineHeight = titleFontSize * 1.25;
+    const topPad = h * 0.03;
+    const bandH = Math.min(h, Math.round(topPad + lines.length * lineHeight + titleFontSize * 0.35));
     let gradientStops = "";
     const steps = 20;
     for (let i = 0; i <= steps; i++) {
       const yPct = (i / steps) * 100;
-      const alpha = 0.59 * (1 - i / steps);
-      gradientStops += `<stop offset="${yPct}%" stop-color="rgb(20,30,28)" stop-opacity="${alpha.toFixed(3)}"/>`;
+      const alpha = Math.max(0.18, 0.82 * (1 - i / steps));
+      gradientStops += `<stop offset="${yPct}%" stop-color="rgb(10,16,15)" stop-opacity="${alpha.toFixed(3)}"/>`;
     }
     let textEls = "";
-    let ty = h * 0.03 + titleFontSize;
+    let ty = topPad + titleFontSize;
     for (const ln of lines) {
       const tx = w * 0.04;
       textEls += `
