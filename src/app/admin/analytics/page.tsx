@@ -9,6 +9,8 @@ type SourcePoint = { source: string; count: number };
 type PagePoint = { page: string; count: number };
 type NewVsReturn = { new: number; return: number };
 type SearchQuery = { keys: string[]; clicks: number; impressions: number; ctr: number; position: number };
+type ConversionPoint = { date: string; pageviews: number; leads: number; rate: number };
+type ConversionTotals = { pageviews: number; leads: number; rate: number };
 
 type AnalyticsData = {
   summary: Summary;
@@ -19,6 +21,10 @@ type AnalyticsData = {
   exitPages: PagePoint[];
   newVsReturn: NewVsReturn;
   slugToTitle: Record<string, string>;
+  conversionChart: ConversionPoint[];
+  conversionTotals: ConversionTotals;
+  kakaoChart: DailyPoint[];
+  kakaoTotal: number;
 };
 
 type SearchData = {
@@ -307,6 +313,10 @@ export default function AnalyticsPage() {
     label: pageLabel(p.page, slugToTitle),
     count: p.count,
   }));
+  const conversionChart = data?.conversionChart ?? [];
+  const conversionTotals = data?.conversionTotals ?? { pageviews: 0, leads: 0, rate: 0 };
+  const kakaoChart = data?.kakaoChart ?? [];
+  const kakaoTotal = data?.kakaoTotal ?? 0;
 
   const totalVisitors = (data?.newVsReturn.new ?? 0) + (data?.newVsReturn.return ?? 0);
   const newPct = totalVisitors ? Math.round(((data?.newVsReturn.new ?? 0) / totalVisitors) * 100) : 0;
@@ -414,6 +424,85 @@ export default function AnalyticsPage() {
             <p className="text-xs text-gray-400 mb-3">세션의 마지막 페이지 기준</p>
             {exitPageData.length ? <BarChart data={exitPageData} /> : <p className="text-xs text-gray-400">데이터 없음</p>}
           </div>
+        </div>
+
+        {/* ── 신청 전환율 (leads × page_views) ── */}
+        <div className="bg-white rounded-2xl shadow p-6 mb-6">
+          <h2 className="text-sm font-semibold text-gray-700 mb-4">
+            신청 전환율 <span className="text-xs font-normal text-gray-400">(페이지뷰 대비 신청 건수, 최근 30일)</span>
+          </h2>
+          {conversionTotals.pageviews === 0 && conversionTotals.leads === 0 ? (
+            <p className="text-xs text-gray-400">데이터 없음</p>
+          ) : (
+            <>
+              <div className="grid grid-cols-3 gap-4 mb-5">
+                <div className="bg-[#FAF5FB] rounded-xl p-4 text-center">
+                  <p className="text-xs text-gray-500 mb-1">페이지뷰</p>
+                  <p className="text-2xl font-bold text-gray-900">{conversionTotals.pageviews.toLocaleString()}</p>
+                </div>
+                <div className="bg-[#FAF5FB] rounded-xl p-4 text-center">
+                  <p className="text-xs text-gray-500 mb-1">신청 건수</p>
+                  <p className="text-2xl font-bold text-gray-900">{conversionTotals.leads.toLocaleString()}</p>
+                </div>
+                <div className="bg-[#FAF5FB] rounded-xl p-4 text-center">
+                  <p className="text-xs text-gray-500 mb-1">전환율</p>
+                  <p className="text-2xl font-bold text-[#7B2D8B]">{conversionTotals.rate}%</p>
+                </div>
+              </div>
+              <div className="max-h-72 overflow-y-auto overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead className="sticky top-0 bg-white">
+                    <tr className="border-b border-gray-100">
+                      <th className="text-left py-2 px-3 text-xs text-gray-500 font-semibold">날짜</th>
+                      <th className="text-right py-2 px-3 text-xs text-gray-500 font-semibold">페이지뷰</th>
+                      <th className="text-right py-2 px-3 text-xs text-gray-500 font-semibold">신청</th>
+                      <th className="text-right py-2 px-3 text-xs text-gray-500 font-semibold">전환율</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[...conversionChart].reverse().map((d, i) => (
+                      <tr key={d.date} className={"border-b border-gray-50 " + (i % 2 === 0 ? "" : "bg-gray-50/50")}>
+                        <td className="py-2 px-3 text-gray-800 font-medium">{d.date}</td>
+                        <td className="py-2 px-3 text-right text-gray-600">{d.pageviews.toLocaleString()}</td>
+                        <td className="py-2 px-3 text-right text-gray-600">{d.leads.toLocaleString()}</td>
+                        <td className="py-2 px-3 text-right">
+                          <span className={"text-xs font-semibold " + (d.rate >= 5 ? "text-green-600" : d.rate > 0 ? "text-[#7B2D8B]" : "text-gray-400")}>
+                            {d.rate}%
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* ── 카카오 상담 버튼 클릭 ── */}
+        <div className="bg-white rounded-2xl shadow p-6 mb-6">
+          <h2 className="text-sm font-semibold text-gray-700 mb-4">
+            카카오 상담 버튼 클릭 <span className="text-xs font-normal text-gray-400">(최근 30일)</span>
+          </h2>
+          {kakaoChart.length === 0 ? (
+            <p className="text-xs text-gray-400">아직 데이터가 없습니다. kakao_clicks 테이블을 생성하면 표시됩니다.</p>
+          ) : (
+            <>
+              <div className="grid grid-cols-2 gap-4 mb-5">
+                <div className="bg-[#FAF5FB] rounded-xl p-4 text-center">
+                  <p className="text-xs text-gray-500 mb-1">클릭 수</p>
+                  <p className="text-2xl font-bold text-gray-900">{kakaoTotal.toLocaleString()}</p>
+                </div>
+                <div className="bg-[#FAF5FB] rounded-xl p-4 text-center">
+                  <p className="text-xs text-gray-500 mb-1">페이지뷰 대비 클릭률</p>
+                  <p className="text-2xl font-bold text-[#7B2D8B]">
+                    {conversionTotals.pageviews > 0 ? (Math.round((kakaoTotal / conversionTotals.pageviews) * 1000) / 10) : 0}%
+                  </p>
+                </div>
+              </div>
+              <LineChart data={kakaoChart} mode="month" />
+            </>
+          )}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">

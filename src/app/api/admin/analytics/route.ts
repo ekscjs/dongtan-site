@@ -94,6 +94,18 @@ export async function GET(req: NextRequest) {
         .not("visitor_id", "is", null),
     ]);
 
+    // 신청(leads) 날짜별 건수 (최근 30일) — page_views와 조인해 전환율 계산
+    const leadsRes = await supabaseAdmin
+      .from("leads")
+      .select("created_at")
+      .gte("created_at", fmt(monthStart));
+
+    // 카카오 상담 버튼 클릭 (최근 30일)
+    const kakaoRes = await supabaseAdmin
+      .from("kakao_clicks")
+      .select("created_at")
+      .gte("created_at", fmt(monthStart));
+
     // 날짜별 방문자 집계
     const dailyMap: Record<string, Set<string>> = {};
     for (const row of dailyRes.data ?? []) {
@@ -123,6 +135,52 @@ export async function GET(req: NextRequest) {
     const dailyChart = Object.entries(dailyVisitors)
       .sort(([a], [b]) => a.localeCompare(b))
       .map(([date, visitors]) => ({ date, count: visitors.size }));
+
+    // 날짜별 페이지뷰 총량 (신청 전환율 분모 — 방문자 수가 아닌 페이지뷰 수 기준)
+    const pageviewCountsByDate: Record<string, number> = {};
+    for (const row of dailyWithVisitor.data ?? []) {
+      const date = row.created_at.slice(0, 10);
+      pageviewCountsByDate[date] = (pageviewCountsByDate[date] ?? 0) + 1;
+    }
+
+    // 날짜별 신청(leads) 건수
+    const leadsCountsByDate: Record<string, number> = {};
+    for (const row of leadsRes.data ?? []) {
+      const date = row.created_at.slice(0, 10);
+      leadsCountsByDate[date] = (leadsCountsByDate[date] ?? 0) + 1;
+    }
+
+    // leads × page_views 조인 → 날짜별 전환율
+    const conversionDates = new Set([
+      ...Object.keys(pageviewCountsByDate),
+      ...Object.keys(leadsCountsByDate),
+    ]);
+    const conversionChart = Array.from(conversionDates)
+      .sort((a, b) => a.localeCompare(b))
+      .map((date) => {
+        const pageviews = pageviewCountsByDate[date] ?? 0;
+        const leads = leadsCountsByDate[date] ?? 0;
+        const rate = pageviews > 0 ? Math.round((leads / pageviews) * 1000) / 10 : 0;
+        return { date, pageviews, leads, rate };
+      });
+    const conversionTotals = {
+      pageviews: Object.values(pageviewCountsByDate).reduce((s, n) => s + n, 0),
+      leads: Object.values(leadsCountsByDate).reduce((s, n) => s + n, 0),
+    };
+    const conversionRate = conversionTotals.pageviews > 0
+      ? Math.round((conversionTotals.leads / conversionTotals.pageviews) * 1000) / 10
+      : 0;
+
+    // 카카오 상담 버튼 클릭 — 날짜별 집계
+    const kakaoCountsByDate: Record<string, number> = {};
+    for (const row of kakaoRes.data ?? []) {
+      const date = row.created_at.slice(0, 10);
+      kakaoCountsByDate[date] = (kakaoCountsByDate[date] ?? 0) + 1;
+    }
+    const kakaoChart = Object.entries(kakaoCountsByDate)
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([date, count]) => ({ date, count }));
+    const kakaoTotal = Object.values(kakaoCountsByDate).reduce((s, n) => s + n, 0);
 
     // 월별 방문자 집계 (연간 차트)
     const monthlyVisitors: Record<string, Set<string>> = {};
@@ -208,6 +266,10 @@ export async function GET(req: NextRequest) {
       exitPages,
       newVsReturn: { new: newCount, return: returnCount },
       slugToTitle,
+      conversionChart,
+      conversionTotals: { ...conversionTotals, rate: conversionRate },
+      kakaoChart,
+      kakaoTotal,
     });
   } catch (err) {
     console.error("[analytics]", err);

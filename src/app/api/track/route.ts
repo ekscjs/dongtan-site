@@ -20,13 +20,25 @@ function detectSource(referrer: string | null): string {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { page, referrer, visitor_id, session_id, is_new_visitor, event, properties } = body;
+    const { page, referrer, visitor_id, session_id, is_new_visitor, event, properties, type } = body;
 
     // 이벤트 트래킹 분기 (event 필드가 있으면 events 테이블에 저장)
     if (event && typeof event === "string") {
       await supabaseAdmin.from("events").insert({
         event_name: event,
         properties: properties ?? {},
+      });
+      return NextResponse.json({ ok: true });
+    }
+
+    // 카카오 상담 버튼 클릭 (kakao_clicks 테이블 — page_views와 동일한 패턴)
+    if (type === "kakao_click") {
+      await supabaseAdmin.from("kakao_clicks").insert({
+        page: page || "unknown",
+        referrer: referrer || null,
+        source: detectSource(referrer ?? null),
+        visitor_id: visitor_id || null,
+        session_id: session_id || null,
       });
       return NextResponse.json({ ok: true });
     }
