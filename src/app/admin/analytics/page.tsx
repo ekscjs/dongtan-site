@@ -200,7 +200,15 @@ function LineChart({ data, mode }: { data: DailyPoint[]; mode: ChartMode }) {
           </g>
         ))}
         {xLabelIndices.map((i) => (
-          <text key={i} x={pts[i].x} y={H - 8} textAnchor="middle" fontSize="11" fill="#6B7280" fontWeight="500">
+          <text
+            key={i}
+            x={pts[i].x}
+            y={H - 8}
+            textAnchor={i === 0 ? "start" : i === pts.length - 1 ? "end" : "middle"}
+            fontSize="11"
+            fill="#6B7280"
+            fontWeight="500"
+          >
             {pts[i].label}
           </text>
         ))}
