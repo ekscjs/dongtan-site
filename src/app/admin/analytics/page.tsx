@@ -161,10 +161,17 @@ function LineChart({ data, mode }: { data: DailyPoint[]; mode: ChartMode }) {
 
   const yTicks = [0, Math.round(max / 2), max];
 
-  // 연간은 전부 표시, 월간은 6개만
-  const xLabelIndices = mode === "year"
+  // 월간/연간 모두 라벨은 최대 7개까지만 균등 간격으로 표시
+  const MAX_LABELS = 7;
+  const xLabelIndices = pts.length <= MAX_LABELS
     ? pts.map((_, i) => i)
-    : [0, 5, 10, 15, 20, 25, pts.length - 1].filter((i) => i < pts.length);
+    : Array.from(
+        new Set(
+          Array.from({ length: MAX_LABELS }, (_, i) =>
+            Math.round((i / (MAX_LABELS - 1)) * (pts.length - 1))
+          )
+        )
+      );
 
   return (
     <div className="w-full overflow-x-auto">
@@ -375,6 +382,38 @@ export default function AnalyticsPage() {
             </div>
           </div>
           <LineChart data={chartData} mode={chartMode} />
+        </div>
+
+        {/* ── 방문자 상세 내역 (월간/연간 토글에 따라 변경) ── */}
+        <div className="bg-white rounded-2xl shadow p-6 mb-6">
+          <h2 className="text-sm font-semibold text-gray-700 mb-4">
+            방문자 상세 내역{" "}
+            <span className="text-xs font-normal text-gray-400">
+              {chartMode === "month" ? "(최근 30일)" : "(월별 누적)"}
+            </span>
+          </h2>
+          {chartData.length === 0 ? (
+            <p className="text-xs text-gray-400">데이터 없음</p>
+          ) : (
+            <div className="max-h-72 overflow-y-auto overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="sticky top-0 bg-white">
+                  <tr className="border-b border-gray-100">
+                    <th className="text-left py-2 px-3 text-xs text-gray-500 font-semibold">날짜</th>
+                    <th className="text-right py-2 px-3 text-xs text-gray-500 font-semibold">방문자 수</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[...chartData].reverse().map((d, i) => (
+                    <tr key={d.date} className={"border-b border-gray-50 " + (i % 2 === 0 ? "" : "bg-gray-50/50")}>
+                      <td className="py-2 px-3 text-gray-800 font-medium">{d.date}</td>
+                      <td className="py-2 px-3 text-right text-gray-600">{d.count.toLocaleString()}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
