@@ -3,10 +3,11 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import type { Post } from "@/lib/supabase";
 
-const INITIAL_COUNT = 6;
+const INITIAL_COUNT = 10;
 const LOAD_MORE_COUNT = 6;
 
 const CATEGORIES = ["전체", "임상노트", "몸 이야기"] as const;
@@ -24,9 +25,13 @@ function formatDate(post: Post) {
   return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, "0")}`;
 }
 
-export default function BlogPage() {
+function BlogPageContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const initialCount = Number(searchParams.get("count")) || INITIAL_COUNT;
+
   const [posts, setPosts] = useState<Post[]>([]);
-  const [visible, setVisible] = useState(INITIAL_COUNT);
+  const [visible, setVisible] = useState(initialCount);
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState<Category>("전체");
 
@@ -56,7 +61,11 @@ export default function BlogPage() {
             {CATEGORIES.map((c) => (
               <button
                 key={c}
-                onClick={() => { setCategory(c); setVisible(INITIAL_COUNT); }}
+                onClick={() => {
+                  setCategory(c);
+                  setVisible(INITIAL_COUNT);
+                  router.replace("/blog", { scroll: false });
+                }}
                 className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${
                   category === c
                     ? "bg-[#7B2D8B] text-white"
@@ -102,7 +111,11 @@ export default function BlogPage() {
               {visible < filtered.length && (
                 <div className="text-center mt-12">
                   <button
-                    onClick={() => setVisible((v) => v + LOAD_MORE_COUNT)}
+                    onClick={() => {
+                      const next = visible + LOAD_MORE_COUNT;
+                      setVisible(next);
+                      router.replace(`/blog?count=${next}`, { scroll: false });
+                    }}
                     className="border-2 border-[#7B2D8B] text-[#7B2D8B] font-bold px-8 py-3 rounded-full text-sm hover:bg-[#7B2D8B] hover:text-white transition-all"
                   >
                     더보기 ({filtered.length - visible}개 남음)
@@ -115,5 +128,13 @@ export default function BlogPage() {
       </main>
       <Footer />
     </>
+  );
+}
+
+export default function BlogPage() {
+  return (
+    <Suspense>
+      <BlogPageContent />
+    </Suspense>
   );
 }
