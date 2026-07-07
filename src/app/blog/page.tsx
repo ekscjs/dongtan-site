@@ -9,6 +9,7 @@ import type { Post } from "@/lib/supabase";
 
 const INITIAL_COUNT = 10;
 const LOAD_MORE_COUNT = 6;
+const SCROLL_KEY = "blog-scroll-y";
 
 const CATEGORIES = ["전체", "임상노트", "몸 이야기"] as const;
 type Category = (typeof CATEGORIES)[number];
@@ -43,6 +44,28 @@ function BlogPageContent() {
         setLoading(false);
       });
   }, []);
+
+  // 뒤로가기 시 브라우저 기본 스크롤 복원이 비동기 로딩과 경합해 맨 위로
+  // 튀는 문제가 있어, 직접 복원하기로 하고 브라우저 자동 복원은 꺼둔다.
+  useEffect(() => {
+    const prev = window.history.scrollRestoration;
+    window.history.scrollRestoration = "manual";
+    return () => { window.history.scrollRestoration = prev; };
+  }, []);
+
+  useEffect(() => {
+    if (loading) return;
+    const saved = sessionStorage.getItem(SCROLL_KEY);
+    if (saved == null) return;
+    sessionStorage.removeItem(SCROLL_KEY);
+    requestAnimationFrame(() => {
+      window.scrollTo(0, Number(saved));
+    });
+  }, [loading]);
+
+  const saveScrollPosition = () => {
+    sessionStorage.setItem(SCROLL_KEY, String(window.scrollY));
+  };
 
   const filtered = category === "전체"
     ? posts
@@ -86,7 +109,7 @@ function BlogPageContent() {
               <div className="space-y-8">
                 {filtered.slice(0, visible).map((post) => (
                   <article key={post.id}>
-                    <Link href={`/blog/${post.slug}`} className="block border-b border-gray-100 pb-8 group active:opacity-60 transition-opacity duration-100">
+                    <Link href={`/blog/${post.slug}`} onClick={saveScrollPosition} className="block border-b border-gray-100 pb-8 group active:opacity-60 transition-opacity duration-100">
                       <div className="flex items-center gap-3 mb-3">
                         <span className={`text-xs font-semibold px-3 py-1 rounded-full ${
                           getCategory(post.tag ?? null) === "임상노트"
