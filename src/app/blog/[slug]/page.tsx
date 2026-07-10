@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
@@ -120,7 +121,7 @@ export default async function BlogPostPage({
     dateModified: post.created_at,
     ...(firstImg ? { image: [firstImg] } : {}),
     mainEntityOfPage: `${SITE}/blog/${post.slug}`,
-    author: { "@type": "Organization", name: "내몸에미소" },
+    author: { "@type": "Person", name: "박미소", jobTitle: "원장", url: `${SITE}/about` },
     publisher: {
       "@type": "Organization",
       name: "내몸에미소",
@@ -182,6 +183,31 @@ export default async function BlogPostPage({
           <article
             dangerouslySetInnerHTML={{ __html: html }}
           />
+
+          {/* 저자 정보 */}
+          <div className="mt-12 pt-8 border-t border-gray-100">
+            <Link
+              href="/about"
+              className="flex items-center gap-4 p-5 rounded-2xl bg-[#FAF5FB] hover:bg-[#F5EBF7] transition-colors"
+            >
+              <Image
+                src="/director.jpg"
+                alt="내몸에미소 박미소 원장"
+                width={56}
+                height={56}
+                className="rounded-full object-cover shrink-0 w-14 h-14"
+              />
+              <div className="min-w-0">
+                <p className="text-sm font-bold text-gray-900">글쓴이: 박미소 원장</p>
+                <p className="text-xs text-gray-500 mt-0.5 line-clamp-1">
+                  직접 아파봤기 때문에, 어디서 막히는지 압니다.
+                </p>
+              </div>
+              <span className="ml-auto text-xs text-[#7B2D8B] font-semibold shrink-0">
+                센터 소개 더 보기 →
+              </span>
+            </Link>
+          </div>
 
           {/* 이전/다음 글 네비게이션 */}
           <div className="mt-16 pt-8 border-t border-gray-100">

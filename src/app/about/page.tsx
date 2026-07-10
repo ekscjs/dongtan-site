@@ -9,9 +9,30 @@ export const metadata: Metadata = {
   description: "내몸에미소 박미소 원장의 이야기. 직접 아파봤기 때문에, 어디서 막히는지 압니다.",
 };
 
+const SITE = "https://www.bodymiso.com";
+
+const personLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "박미소",
+  jobTitle: "원장",
+  url: `${SITE}/about`,
+  image: `${SITE}/director.jpg`,
+  worksFor: { "@type": "Organization", name: "내몸에미소", url: SITE },
+  sameAs: [
+    "http://pf.kakao.com/_XGxbMG",
+    "https://share.google/VbU2JEdmnxyE49qRK",
+    "https://map.naver.com/p/entry/place/1101035370",
+  ],
+};
+
 export default function AboutPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personLd) }}
+      />
       <Header />
       <main>
 
