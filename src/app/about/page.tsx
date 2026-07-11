@@ -69,8 +69,12 @@ export default function AboutPage() {
                   height={280}
                   className="rounded-2xl object-cover shadow-md"
                 />
-                <p className="text-center text-sm text-gray-500 mt-2 font-medium">박미소 원장</p>
-                <p className="text-center text-xs text-gray-400 mt-1">현 기능성 운동 센터 대표 원장 · 스포츠/식이/시니어 지도사 · 평생교육사</p>
+                <p className="text-sm text-gray-500 mt-2 font-medium">박미소 원장</p>
+                <p className="text-xs text-gray-400 mt-1 leading-relaxed">
+                  기능성 운동 센터 대표<br />
+                  스포츠/식이/시니어 지도사<br />
+                  평생교육사
+                </p>
               </div>
               <div>
               <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">박미소 원장 이야기</h2>
