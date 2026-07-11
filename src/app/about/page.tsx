@@ -24,6 +24,12 @@ const personLd = {
     "https://share.google/VbU2JEdmnxyE49qRK",
     "https://map.naver.com/p/entry/place/1101035370",
   ],
+  hasCredential: [
+    { "@type": "EducationalOccupationalCredential", credentialCategory: "스포츠지도사" },
+    { "@type": "EducationalOccupationalCredential", credentialCategory: "식이지도사" },
+    { "@type": "EducationalOccupationalCredential", credentialCategory: "시니어지도사" },
+    { "@type": "EducationalOccupationalCredential", credentialCategory: "평생교육사" },
+  ],
 };
 
 export default function AboutPage() {
@@ -64,6 +70,7 @@ export default function AboutPage() {
                   className="rounded-2xl object-cover shadow-md"
                 />
                 <p className="text-center text-sm text-gray-500 mt-2 font-medium">박미소 원장</p>
+                <p className="text-center text-xs text-gray-400 mt-1">현 기능성 운동 센터 대표 원장 · 스포츠/식이/시니어 지도사 · 평생교육사</p>
               </div>
               <div>
               <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">박미소 원장 이야기</h2>
