@@ -45,6 +45,7 @@ export default function AdminPage() {
   useEffect(() => { document.title = "🔧 관리자 — 내몸에미소"; }, []);
   const [view, setView] = useState<View>("loading");
   const [password, setPassword] = useState("");
+  const [showLoginPw, setShowLoginPw] = useState(false);
   const [loginError, setLoginError] = useState("");
   const [posts, setPosts] = useState<Post[]>([]);
   const [form, setForm] = useState(EMPTY_FORM);
@@ -60,6 +61,9 @@ export default function AdminPage() {
   const [pwSaving, setPwSaving] = useState(false);
   const [pwMsg, setPwMsg] = useState("");
   const [pwError, setPwError] = useState("");
+  const [showPwCurrent, setShowPwCurrent] = useState(false);
+  const [showPwNew, setShowPwNew] = useState(false);
+  const [showPwConfirm, setShowPwConfirm] = useState(false);
 
   const fetchPosts = useCallback(async () => {
     const res = await fetch("/api/admin/posts");
@@ -114,6 +118,9 @@ export default function AdminPage() {
     setPwConfirm("");
     setPwError("");
     setPwMsg("");
+    setShowPwCurrent(false);
+    setShowPwNew(false);
+    setShowPwConfirm(false);
   }
 
   async function handlePasswordChange(e: React.FormEvent) {
@@ -265,14 +272,24 @@ export default function AdminPage() {
           <h1 className="text-2xl font-bold text-gray-900 mb-2">관리자</h1>
           <p className="text-sm text-gray-400 mb-6">내몸에미소 블로그 관리</p>
           <form onSubmit={handleLogin} className="space-y-4">
-            <input
-              type="password"
-              placeholder="비밀번호"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#7B2D8B]"
-              required
-            />
+            <div className="relative">
+              <input
+                type={showLoginPw ? "text" : "password"}
+                placeholder="비밀번호"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full border border-gray-200 rounded-lg px-4 py-3 pr-10 text-sm focus:outline-none focus:border-[#7B2D8B]"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowLoginPw((v) => !v)}
+                className="absolute top-1/2 -translate-y-1/2 right-1 p-2 text-lg leading-none"
+                aria-label={showLoginPw ? "비밀번호 숨기기" : "비밀번호 보기"}
+              >
+                {showLoginPw ? "🙈" : "👁"}
+              </button>
+            </div>
             {loginError && <p className="text-red-500 text-sm">{loginError}</p>}
             <button
               type="submit"
@@ -660,30 +677,60 @@ export default function AdminPage() {
           <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-sm">
             <h2 className="text-xl font-bold text-gray-900 mb-6">비밀번호 변경</h2>
             <form onSubmit={handlePasswordChange} className="space-y-4">
-              <input
-                type="password"
-                placeholder="현재 비밀번호"
-                value={pwCurrent}
-                onChange={(e) => setPwCurrent(e.target.value)}
-                className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#7B2D8B]"
-                required
-              />
-              <input
-                type="password"
-                placeholder="새 비밀번호 (6자 이상)"
-                value={pwNew}
-                onChange={(e) => setPwNew(e.target.value)}
-                className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#7B2D8B]"
-                required
-              />
-              <input
-                type="password"
-                placeholder="새 비밀번호 확인"
-                value={pwConfirm}
-                onChange={(e) => setPwConfirm(e.target.value)}
-                className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#7B2D8B]"
-                required
-              />
+              <div className="relative">
+                <input
+                  type={showPwCurrent ? "text" : "password"}
+                  placeholder="현재 비밀번호"
+                  value={pwCurrent}
+                  onChange={(e) => setPwCurrent(e.target.value)}
+                  className="w-full border border-gray-200 rounded-lg px-4 py-3 pr-10 text-sm focus:outline-none focus:border-[#7B2D8B]"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPwCurrent((v) => !v)}
+                  className="absolute top-1/2 -translate-y-1/2 right-1 p-2 text-lg leading-none"
+                  aria-label={showPwCurrent ? "비밀번호 숨기기" : "비밀번호 보기"}
+                >
+                  {showPwCurrent ? "🙈" : "👁"}
+                </button>
+              </div>
+              <div className="relative">
+                <input
+                  type={showPwNew ? "text" : "password"}
+                  placeholder="새 비밀번호 (6자 이상)"
+                  value={pwNew}
+                  onChange={(e) => setPwNew(e.target.value)}
+                  className="w-full border border-gray-200 rounded-lg px-4 py-3 pr-10 text-sm focus:outline-none focus:border-[#7B2D8B]"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPwNew((v) => !v)}
+                  className="absolute top-1/2 -translate-y-1/2 right-1 p-2 text-lg leading-none"
+                  aria-label={showPwNew ? "비밀번호 숨기기" : "비밀번호 보기"}
+                >
+                  {showPwNew ? "🙈" : "👁"}
+                </button>
+              </div>
+              <div className="relative">
+                <input
+                  type={showPwConfirm ? "text" : "password"}
+                  placeholder="새 비밀번호 확인"
+                  value={pwConfirm}
+                  onChange={(e) => setPwConfirm(e.target.value)}
+                  className="w-full border border-gray-200 rounded-lg px-4 py-3 pr-10 text-sm focus:outline-none focus:border-[#7B2D8B]"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPwConfirm((v) => !v)}
+                  className="absolute top-1/2 -translate-y-1/2 right-1 p-2 text-lg leading-none"
+                  aria-label={showPwConfirm ? "비밀번호 숨기기" : "비밀번호 보기"}
+                >
+                  {showPwConfirm ? "🙈" : "👁"}
+                </button>
+              </div>
               {pwError && <p className="text-red-500 text-sm">{pwError}</p>}
               {pwMsg && <p className="text-green-600 text-sm">{pwMsg}</p>}
               <div className="flex gap-2 pt-2">
