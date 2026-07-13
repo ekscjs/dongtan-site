@@ -141,7 +141,7 @@ function BlogPageContent() {
                     }}
                     className="border-2 border-[#7B2D8B] text-[#7B2D8B] font-bold px-8 py-3 rounded-full text-sm hover:bg-[#7B2D8B] hover:text-white transition-all"
                   >
-                    더보기 ({filtered.length - visible}개 남음)
+                    더보기
                   </button>
                 </div>
               )}

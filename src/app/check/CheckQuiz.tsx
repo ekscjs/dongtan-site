@@ -215,8 +215,8 @@ export default function CheckQuiz() {
                     <p className="text-xs font-semibold text-[#9B4DAB] mb-1">1분 자가진단</p>
                     <h2 className="text-lg font-bold text-gray-900 mb-1">체형 유형 진단</h2>
                     <p className="text-sm text-gray-500">
-                      거북목 / 골반 / 허리 / 전신 — 내 몸 유형을 파악하고<br />
-                      7일 교정 루틴을 받아보세요
+                      거북목 / 골반 / 허리 / 전신<br />
+                      내 몸 유형을 파악하고 7일 교정 루틴을 받아보세요
                     </p>
                   </div>
                   <span className="text-gray-300 text-xl shrink-0">›</span>
@@ -236,8 +236,8 @@ export default function CheckQuiz() {
                     <p className="text-xs font-semibold text-[#9B4DAB] mb-1">통증지도</p>
                     <h2 className="text-lg font-bold text-gray-900 mb-1">통증 부위 체크</h2>
                     <p className="text-sm text-gray-500">
-                      목·어깨·허리·골반·무릎·발목 중<br />
-                      아픈 부위를 클릭하면 원인 분석을 해드려요
+                      목·어깨·허리·골반·무릎·발목<br />
+                      아픈 곳을 클릭하면 원인 분석을 해드려요
                     </p>
                   </div>
                   <span className="text-gray-300 text-xl shrink-0">›</span>
