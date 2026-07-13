@@ -52,6 +52,13 @@ export default function AdminPage() {
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState("");
   const [slugGenerating, setSlugGenerating] = useState(false);
+  const [pwModalOpen, setPwModalOpen] = useState(false);
+  const [pwCurrent, setPwCurrent] = useState("");
+  const [pwNew, setPwNew] = useState("");
+  const [pwConfirm, setPwConfirm] = useState("");
+  const [pwSaving, setPwSaving] = useState(false);
+  const [pwMsg, setPwMsg] = useState("");
+  const [pwError, setPwError] = useState("");
 
   const fetchPosts = useCallback(async () => {
     const res = await fetch("/api/admin/posts");
@@ -97,6 +104,45 @@ export default function AdminPage() {
     setView("login");
     setPassword("");
     setPosts([]);
+  }
+
+  function closePwModal() {
+    setPwModalOpen(false);
+    setPwCurrent("");
+    setPwNew("");
+    setPwConfirm("");
+    setPwError("");
+    setPwMsg("");
+  }
+
+  async function handlePasswordChange(e: React.FormEvent) {
+    e.preventDefault();
+    setPwError("");
+    setPwMsg("");
+    if (pwNew !== pwConfirm) {
+      setPwError("새 비밀번호가 일치하지 않습니다.");
+      return;
+    }
+    setPwSaving(true);
+    try {
+      const res = await fetch("/api/admin/password", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ currentPassword: pwCurrent, newPassword: pwNew }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setPwMsg("비밀번호가 변경되었습니다.");
+        setPwCurrent(""); setPwNew(""); setPwConfirm("");
+        setTimeout(() => closePwModal(), 1200);
+      } else {
+        setPwError(data.error ?? "변경 실패");
+      }
+    } catch {
+      setPwError("오류가 발생했습니다.");
+    } finally {
+      setPwSaving(false);
+    }
   }
 
   useEffect(() => {
@@ -453,6 +499,12 @@ export default function AdminPage() {
               + 새 글
             </button>
             <button
+              onClick={() => setPwModalOpen(true)}
+              className="border border-gray-200 text-gray-500 rounded-lg px-4 py-2 text-sm hover:bg-gray-100"
+            >
+              비밀번호 변경
+            </button>
+            <button
               onClick={handleLogout}
               className="border border-gray-200 text-gray-500 rounded-lg px-4 py-2 text-sm hover:bg-gray-100"
             >
@@ -591,6 +643,58 @@ export default function AdminPage() {
           )}
         </div>
       </div>
+
+      {pwModalOpen && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center px-4 z-50">
+          <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-sm">
+            <h2 className="text-xl font-bold text-gray-900 mb-6">비밀번호 변경</h2>
+            <form onSubmit={handlePasswordChange} className="space-y-4">
+              <input
+                type="password"
+                placeholder="현재 비밀번호"
+                value={pwCurrent}
+                onChange={(e) => setPwCurrent(e.target.value)}
+                className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#7B2D8B]"
+                required
+              />
+              <input
+                type="password"
+                placeholder="새 비밀번호 (6자 이상)"
+                value={pwNew}
+                onChange={(e) => setPwNew(e.target.value)}
+                className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#7B2D8B]"
+                required
+              />
+              <input
+                type="password"
+                placeholder="새 비밀번호 확인"
+                value={pwConfirm}
+                onChange={(e) => setPwConfirm(e.target.value)}
+                className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#7B2D8B]"
+                required
+              />
+              {pwError && <p className="text-red-500 text-sm">{pwError}</p>}
+              {pwMsg && <p className="text-green-600 text-sm">{pwMsg}</p>}
+              <div className="flex gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={closePwModal}
+                  className="flex-1 border border-gray-200 text-gray-500 rounded-lg py-3 text-sm font-semibold hover:bg-gray-100"
+                >
+                  취소
+                </button>
+                <button
+                  type="submit"
+                  disabled={pwSaving}
+                  className="flex-1 bg-[#7B2D8B] text-white rounded-lg py-3 text-sm font-semibold hover:bg-[#6a2678] disabled:opacity-50"
+                >
+                  {pwSaving ? "변경 중..." : "변경"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
