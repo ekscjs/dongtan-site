@@ -52,6 +52,7 @@ export default function AdminPage() {
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState("");
   const [slugGenerating, setSlugGenerating] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(20);
   const [pwModalOpen, setPwModalOpen] = useState(false);
   const [pwCurrent, setPwCurrent] = useState("");
   const [pwNew, setPwNew] = useState("");
@@ -571,7 +572,7 @@ export default function AdminPage() {
                 </tr>
               </thead>
               <tbody>
-                {posts.map((post, i) => (
+                {posts.slice(0, visibleCount).map((post, i) => (
                   <tr
                     key={post.id}
                     className={`border-b border-gray-50 ${i % 2 === 0 ? "" : "bg-gray-50/50"}`}
@@ -640,6 +641,16 @@ export default function AdminPage() {
                 ))}
               </tbody>
             </table>
+          )}
+          {visibleCount < posts.length && (
+            <div className="text-center py-6">
+              <button
+                onClick={() => setVisibleCount((c) => c + 20)}
+                className="border-2 border-[#7B2D8B] text-[#7B2D8B] font-bold px-8 py-2.5 rounded-full text-sm hover:bg-[#7B2D8B] hover:text-white transition-all"
+              >
+                더보기 ({posts.length - visibleCount}개 남음)
+              </button>
+            </div>
           )}
         </div>
       </div>

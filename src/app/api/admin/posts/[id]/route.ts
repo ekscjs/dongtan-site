@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { revalidatePath } from "next/cache";
 import { supabase } from "@/lib/supabase";
 
 async function checkAuth() {
@@ -27,6 +28,9 @@ export async function PUT(
     .single();
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+
+  revalidatePath("/api/posts");
+  revalidatePath("/blog");
   return NextResponse.json(data);
 }
 
@@ -43,5 +47,8 @@ export async function DELETE(
   const { error } = await supabase.from("posts").delete().eq("id", id);
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+
+  revalidatePath("/api/posts");
+  revalidatePath("/blog");
   return NextResponse.json({ ok: true });
 }

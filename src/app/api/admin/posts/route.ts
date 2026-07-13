@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { revalidatePath } from "next/cache";
 import { supabase } from "@/lib/supabase";
 
 async function checkAuth() {
@@ -36,5 +37,8 @@ export async function POST(req: NextRequest) {
     .single();
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+
+  revalidatePath("/api/posts");
+  revalidatePath("/blog");
   return NextResponse.json(data);
 }
