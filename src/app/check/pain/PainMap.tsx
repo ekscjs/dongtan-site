@@ -362,8 +362,7 @@ function ResultView({
           AI 분석 결과, 정확한 평가는<br />움직임 검사까지 해야 합니다.
         </p>
         <p className="text-purple-200 text-sm mb-5">
-          센터에서는 이 결과를 바탕으로 실제 움직임을 확인하고<br />
-          맞춤 운동 방향을 안내해 드립니다.
+          센터에서는 이 결과를 바탕으로 실제 움직임을 확인하고 맞춤 운동 방향을 안내해 드립니다.
         </p>
         <div className="bg-white rounded-xl p-4 mb-5 text-left">
           <p className="text-xs font-semibold text-gray-500 mb-2">센터 1회 체험 포함</p>
