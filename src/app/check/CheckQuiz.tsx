@@ -259,7 +259,7 @@ export default function CheckQuiz() {
                     <p className="text-sm font-semibold text-[#9B4DAB] mb-1">미소AI</p>
                     <h2 className="text-lg font-bold text-gray-900 mb-1">미소AI에게 물어보기</h2>
                     <p className="text-sm text-gray-500">
-                      동탄에서 실제 트레이닝한 회원 사례로 쓴 글 중에서 답을 찾아드려요
+                      동탄에서 실제 관리한 회원 사례로 쓴 글 중에서 답을 찾아드려요
                     </p>
                   </div>
                   <span className="text-gray-300 text-xl shrink-0">›</span>

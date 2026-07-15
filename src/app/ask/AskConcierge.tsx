@@ -92,7 +92,7 @@ export default function AskConcierge() {
               <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
                 어떤 증상이<br />궁금하세요?
               </h1>
-              <p className="text-sm text-gray-500 mb-6">증상을 편하게 적어주시면, 동탄에서 실제 트레이닝한 회원 사례로 쓴 글 중에서 답을 찾아드려요</p>
+              <p className="text-sm text-gray-500 mb-6">증상을 편하게 적어주시면, 동탄에서 실제 관리한 회원 사례로 쓴 글 중에서 답을 찾아드려요</p>
 
               <form
                 onSubmit={(e) => {
