@@ -101,7 +101,18 @@ function BlogPageContent() {
           </div>
 
           {loading ? (
-            <p className="text-gray-400 text-center py-20">불러오는 중...</p>
+            <div className="space-y-8 animate-pulse">
+              {[1, 2, 3, 4, 5].map((i) => (
+                <div key={i} className="border-b border-gray-100 pb-8">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="h-6 w-16 bg-gray-100 rounded-full" />
+                    <div className="h-4 w-16 bg-gray-100 rounded" />
+                  </div>
+                  <div className="h-7 bg-gray-200 rounded w-3/4 mb-2" />
+                  <div className="h-4 bg-gray-100 rounded w-full" />
+                </div>
+              ))}
+            </div>
           ) : filtered.length === 0 ? (
             <p className="text-gray-400 text-center py-20">아직 게시된 글이 없습니다.</p>
           ) : (
