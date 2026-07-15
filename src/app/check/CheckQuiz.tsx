@@ -197,7 +197,7 @@ export default function CheckQuiz() {
         <main className="min-h-screen bg-[#FAF5FB] pt-8 pb-12 md:pt-12 md:pb-20 px-4">
           <div className="max-w-xl mx-auto">
             <p className="text-sm font-semibold text-[#9B4DAB] uppercase tracking-widest mb-3">몸 상태 체크</p>
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
               어떤 방식으로<br />확인해볼까요?
             </h1>
             <p className="text-sm text-gray-500 mb-8">셋 다 무료 · 1~3분이면 완료됩니다</p>
@@ -303,13 +303,13 @@ export default function CheckQuiz() {
           <p className="text-sm font-semibold text-[#9B4DAB] uppercase tracking-widest mb-4">
             {isRetest ? "7일 뒤 재확인" : "통증·체형 셀프체크"}
           </p>
-          <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-8">{questions[step].q}</h2>
+          <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-8">{questions[step].q}</h2>
           <div className="space-y-3">
             {questions[step].options.map((opt, i) => (
               <button
                 key={i}
                 onClick={() => answer(i)}
-                className="w-full text-left px-5 py-4 rounded-xl border border-gray-200 text-gray-700 font-medium text-sm md:text-base hover:border-[#7B2D8B] hover:text-[#7B2D8B] hover:bg-[#FAF5FB] transition-colors"
+                className="w-full text-left px-5 py-4 rounded-xl border border-gray-200 text-gray-700 font-medium text-sm md:text-base lg:text-lg hover:border-[#7B2D8B] hover:text-[#7B2D8B] hover:bg-[#FAF5FB] transition-colors"
               >
                 {opt.label}
               </button>
@@ -331,7 +331,7 @@ export default function CheckQuiz() {
             <span className="inline-block bg-[#FAF5FB] text-[#7B2D8B] text-xs font-semibold px-3 py-1 rounded-full mb-3">
               위험도 {saved.risk.label}
             </span>
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">당신은 {t.name}</h2>
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">당신은 {t.name}</h2>
             <p className="text-[#7B2D8B] font-semibold mb-5">{t.oneLiner}</p>
           </div>
           <p className="text-gray-600 leading-relaxed mb-3">{t.why}</p>
@@ -372,7 +372,7 @@ export default function CheckQuiz() {
             <p className="text-sm font-semibold text-[#9B4DAB] uppercase tracking-widest">{t.name}</p>
             <span className="text-xs text-gray-400">{done.length} / 7일</span>
           </div>
-          <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">7일 교정 루틴</h2>
+          <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-4">7일 교정 루틴</h2>
           <div className="w-full bg-gray-200 rounded-full h-2 mb-1">
             <div className="bg-[#7B2D8B] h-2 rounded-full transition-all duration-500" style={{ width: `${(done.length / 7) * 100}%` }} />
           </div>
@@ -402,7 +402,7 @@ export default function CheckQuiz() {
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center justify-between">
-                        <p className={`font-bold text-sm md:text-base ${isLocked ? "text-gray-400" : "text-gray-900"}`}>
+                        <p className={`font-bold text-sm md:text-base lg:text-lg ${isLocked ? "text-gray-400" : "text-gray-900"}`}>
                           Day {d.day}. {d.title}
                         </p>
                         <span className="text-xs text-gray-400 shrink-0 ml-2">{Math.round(d.durationSec / 60 * 10) / 10}분</span>

@@ -171,10 +171,10 @@ export default async function BlogPostPage({
             <span className="text-xs text-gray-400">{formatDate(post.created_at)}</span>
           </div>
 
-          <h1 className="text-3xl font-bold text-gray-900 mb-4 leading-snug">{post.title}</h1>
+          <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4 leading-snug">{post.title}</h1>
 
           {post.excerpt && (
-            <p className="text-gray-500 text-lg mb-10 leading-relaxed border-l-4 border-[#7B2D8B] pl-4">
+            <p className="text-gray-500 text-lg lg:text-xl mb-10 leading-relaxed border-l-4 border-[#7B2D8B] pl-4">
               {post.excerpt}
             </p>
           )}

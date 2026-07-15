@@ -76,7 +76,7 @@ function BlogPageContent() {
       <Header />
       <main className="pt-12 pb-12 md:pt-16 md:pb-20 px-4">
         <div className="max-w-3xl mx-auto">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">블로그</h1>
+          <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">블로그</h1>
           <p className="text-gray-500 mb-8">실제 케이스와 경험을 바탕으로, 몸에 대한 이야기를 기록합니다</p>
 
           {/* 카테고리 필터 */}

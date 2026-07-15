@@ -46,11 +46,11 @@ export default function AboutPage() {
         <section className="bg-[#FAF5FB] pt-8 pb-12 md:pt-12 md:pb-20 px-4">
           <div className="max-w-3xl mx-auto">
             <p className="text-[#9B4DAB] font-semibold text-sm mb-4 tracking-widest uppercase">센터 소개</p>
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight mb-6">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mb-6">
               직접 아파봤기 때문에,<br />
               <span className="text-[#7B2D8B]">어디서 막히는지 압니다.</span>
             </h1>
-            <p className="text-base md:text-lg text-gray-600 leading-relaxed">
+            <p className="text-base md:text-lg lg:text-xl text-gray-600 leading-relaxed">
               내몸에미소는 병원과 헬스장 사이 어딘가에서 막막해진 분들을 위한 곳입니다.
             </p>
           </div>
@@ -77,8 +77,8 @@ export default function AboutPage() {
                 </p>
               </div>
               <div>
-              <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">박미소 원장 이야기</h2>
-              <div className="space-y-5 text-gray-600 leading-relaxed text-sm md:text-base">
+              <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-4">박미소 원장 이야기</h2>
+              <div className="space-y-5 text-gray-600 leading-relaxed text-sm md:text-base lg:text-lg">
                 <p>
                   어릴 때부터 몸이 많이 약했습니다. 만성 질환과 여러 가지 건강 문제로 일상이 힘들었고,
                   병원을 다녀도 나아지지 않아 진통제와 소염제를 입에 달고 살았습니다.
@@ -100,7 +100,7 @@ export default function AboutPage() {
             </div>
 
             <div className="border-l-4 border-[#7B2D8B] pl-6 py-2">
-              <p className="text-gray-700 font-medium leading-relaxed text-sm md:text-base">
+              <p className="text-gray-700 font-medium leading-relaxed text-sm md:text-base lg:text-lg">
                 "누구나 건강하고 행복한 삶을 누릴 자격이 있습니다.<br />
                 운동에 두려움이 있거나, 단순한 체중 감량이 아닌 건강한 몸을 원하신다면<br />
                 언제든지 찾아오세요."
@@ -114,7 +114,7 @@ export default function AboutPage() {
         {/* 접근 방식 */}
         <section className="bg-[#FAF5FB] py-12 md:py-20 px-4">
           <div className="max-w-3xl mx-auto">
-            <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-10">내몸에미소가 다른 이유</h2>
+            <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-10">내몸에미소가 다른 이유</h2>
             <div className="space-y-6">
               {[
                 {
@@ -138,8 +138,8 @@ export default function AboutPage() {
                     {item.num}
                   </div>
                   <div>
-                    <h3 className="font-bold text-gray-900 mb-1 text-sm md:text-base">{item.title}</h3>
-                    <p className="text-gray-600 text-sm md:text-base leading-relaxed">{item.desc}</p>
+                    <h3 className="font-bold text-gray-900 mb-1 text-sm md:text-base lg:text-lg">{item.title}</h3>
+                    <p className="text-gray-600 text-sm md:text-base lg:text-lg leading-relaxed">{item.desc}</p>
                   </div>
                 </div>
               ))}
@@ -150,7 +150,7 @@ export default function AboutPage() {
         {/* 오시는 길 */}
         <section className="py-12 md:py-20 px-4">
           <div className="max-w-3xl mx-auto">
-            <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-6">오시는 길</h2>
+            <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-6">오시는 길</h2>
             <div className="rounded-2xl overflow-hidden shadow-sm mb-4">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m5!3m3!1m2!1s0x357b45afc4a27497%3A0xb295dc65b7af4820!2z64K0IOuquOyXkCDrr7jshow!5e0!3m2!1sko!2skr!4v1782537380013!5m2!1sko!2skr"
@@ -191,8 +191,8 @@ export default function AboutPage() {
         {/* CTA */}
         <section className="bg-[#7B2D8B] py-10 md:py-16 px-4">
           <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-xl md:text-2xl font-bold text-white mb-3">먼저 이야기를 들어드립니다</h2>
-            <p className="text-purple-200 mb-8 text-sm md:text-base">무료 상담으로 시작합니다.</p>
+            <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-white mb-3">먼저 이야기를 들어드립니다</h2>
+            <p className="text-purple-200 mb-8 text-sm md:text-base lg:text-lg">무료 상담으로 시작합니다.</p>
             <KakaoButton className="inline-block bg-white text-[#7B2D8B] font-bold px-10 py-4 rounded-full text-base hover:bg-gray-100 transition-colors">
               카카오로 상담하기
             </KakaoButton>

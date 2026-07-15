@@ -114,7 +114,7 @@ export default function ProgramsPage() {
         <section className="bg-[#FAF5FB] pt-8 pb-12 md:pt-12 md:pb-20 px-4">
           <div className="max-w-3xl mx-auto text-center">
             <p className="text-[#9B4DAB] font-semibold text-sm mb-4 tracking-widest uppercase">동탄 기능개선 · 재활 · 체형교정</p>
-            <h1 className="text-2xl md:text-4xl font-bold text-gray-900 mb-4 break-keep">
+            <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 break-keep">
               동탄에서 통증·재활·체형교정,<br />
               <span className="text-[#7B2D8B]">원인부터 해결합니다</span>
             </h1>
@@ -129,7 +129,7 @@ export default function ProgramsPage() {
           <div className="max-w-3xl mx-auto grid grid-cols-3 gap-4 text-center">
             {stats.map((s, i) => (
               <div key={i}>
-                <p className="text-2xl md:text-3xl font-bold text-[#7B2D8B]">{s.value}</p>
+                <p className="text-2xl md:text-3xl lg:text-4xl font-bold text-[#7B2D8B]">{s.value}</p>
                 <p className="text-sm text-gray-500 mt-1">{s.label}</p>
               </div>
             ))}
@@ -174,7 +174,7 @@ export default function ProgramsPage() {
               <div className="w-12 h-12 rounded-full bg-[#FAF5FB] flex items-center justify-center mb-4">
                 <PIcon className="text-[#7B2D8B]" size={24} />
               </div>
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">{p.title}</h2>
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">{p.title}</h2>
               <p className="text-[#7B2D8B] font-semibold mb-4">{p.short}</p>
               <p className="text-gray-600 mb-8 leading-relaxed">{p.desc}</p>
 
@@ -183,7 +183,7 @@ export default function ProgramsPage() {
                 {p.targets.map((t, j) => (
                   <div key={j} className="flex items-center gap-3 bg-white rounded-xl px-5 py-4 shadow-sm border border-gray-100">
                     <CheckIcon className="text-[#7B2D8B] shrink-0" size={16} />
-                    <p className="text-gray-700 text-sm md:text-base">{t}</p>
+                    <p className="text-gray-700 text-sm md:text-base lg:text-lg">{t}</p>
                   </div>
                 ))}
               </div>
@@ -215,7 +215,7 @@ export default function ProgramsPage() {
         {/* 비포에프터 */}
         <section className="py-12 md:py-20 px-4">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4">실제 변화 사례</h2>
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 text-center mb-4">실제 변화 사례</h2>
             <p className="text-gray-500 text-center mb-12">내몸에미소 실제 회원분들의 변화입니다</p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {beforeAfterImages.map((img, i) => (
@@ -236,7 +236,7 @@ export default function ProgramsPage() {
         {/* 가격 */}
         <section className="bg-[#FAF5FB] py-12 md:py-20 px-4">
           <div className="max-w-3xl mx-auto">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-10">가격 안내</h2>
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 text-center mb-10">가격 안내</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12">
               {pricing.map((item, i) => (
                 <div key={i} className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
@@ -252,8 +252,8 @@ export default function ProgramsPage() {
         {/* CTA */}
         <section className="bg-[#7B2D8B] py-10 md:py-16 px-4">
           <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-xl md:text-2xl font-bold text-white mb-3">어떤 프로그램이 맞는지 모르겠다면</h2>
-            <p className="text-purple-200 mb-8 text-sm md:text-base">무료 상담으로 먼저 파악합니다.</p>
+            <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-white mb-3">어떤 프로그램이 맞는지 모르겠다면</h2>
+            <p className="text-purple-200 mb-8 text-sm md:text-base lg:text-lg">무료 상담으로 먼저 파악합니다.</p>
             <KakaoButton className="inline-block bg-white text-[#7B2D8B] font-bold px-10 py-4 rounded-full text-base hover:bg-gray-100 transition-colors">
               카카오로 상담하기
             </KakaoButton>

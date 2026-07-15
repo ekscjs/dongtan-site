@@ -32,7 +32,7 @@ export default function ReviewsPage() {
       <Header />
       <main className="pt-8 pb-12 md:pt-12 md:pb-20 px-4">
         <div className="max-w-5xl mx-auto">
-          <h1 className="text-4xl font-bold text-gray-900 text-center mb-4">회원 후기</h1>
+          <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 text-center mb-4">회원 후기</h1>
           <p className="text-gray-500 text-center mb-16">실제 회원분들의 변화입니다</p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">

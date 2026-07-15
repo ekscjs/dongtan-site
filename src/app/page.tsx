@@ -96,17 +96,17 @@ export default function Home() {
             <p className="text-[#9B4DAB] font-semibold text-sm mb-4 tracking-widest uppercase">
               동탄 기능개선 · 재활 · 체형교정 전문
             </p>
-            <h1 className="text-2xl md:text-5xl font-bold text-gray-900 leading-tight mb-6">
+            <h1 className="text-2xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-6">
               여기저기 다녀봤는데,
               <br />
               <span className="text-[#7B2D8B]">왜 계속 아프고 불편할까요?</span>
             </h1>
-            <p className="text-base md:text-lg text-gray-600 mb-10 leading-relaxed break-keep">
+            <p className="text-base md:text-lg lg:text-xl text-gray-600 mb-10 leading-relaxed break-keep">
               허리, 무릎, 어깨 — 통증의 원인은 대부분 움직임에 있습니다.
               <br className="hidden sm:block" />{" "}
               내몸에미소가 원인부터 찾아드립니다.
             </p>
-            <KakaoButton className="group inline-flex items-center gap-2 bg-[#7B2D8B] text-white font-bold px-8 py-4 rounded-full text-base md:text-lg hover:bg-[#9B4DAB] transition-all hover:scale-[1.03]">
+            <KakaoButton className="group inline-flex items-center gap-2 bg-[#7B2D8B] text-white font-bold px-8 py-4 rounded-full text-base md:text-lg lg:text-xl hover:bg-[#9B4DAB] transition-all hover:scale-[1.03]">
               카카오로 상담하기
               <ArrowRightIcon size={18} className="transition-transform group-hover:translate-x-1" />
             </KakaoButton>
@@ -118,7 +118,7 @@ export default function Home() {
           <div className="max-w-3xl mx-auto grid grid-cols-3 gap-4 text-center">
             {stats.map((s, i) => (
               <div key={i}>
-                <p className="text-2xl md:text-3xl font-bold text-[#7B2D8B]">{s.value}</p>
+                <p className="text-2xl md:text-3xl lg:text-4xl font-bold text-[#7B2D8B]">{s.value}</p>
                 <p className="text-sm text-gray-500 mt-1">{s.label}</p>
               </div>
             ))}
@@ -127,16 +127,16 @@ export default function Home() {
 
         <section className="py-12 md:py-20 px-4">
           <div className="max-w-5xl mx-auto">
-            <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-4">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center text-gray-900 mb-4">
               이런 분들이 찾아오십니다
             </h2>
-            <p className="text-center text-gray-500 mb-12 text-sm md:text-base">
+            <p className="text-center text-gray-500 mb-12 text-sm md:text-base lg:text-lg">
               아주 아프지 않아도, 불편함을 느끼고 있다면 충분합니다
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {symptoms.map((s, i) => (
                 <div key={i} className="bg-gray-50 rounded-2xl px-6 py-5 border-l-4 border-[#7B2D8B]">
-                  <p className="text-gray-700 font-medium leading-relaxed text-sm md:text-base tracking-tight">
+                  <p className="text-gray-700 font-medium leading-relaxed text-sm md:text-base lg:text-lg tracking-tight">
                     {s.text}
                   </p>
                 </div>
@@ -147,20 +147,20 @@ export default function Home() {
 
         <section className="bg-[#FAF5FB] py-12 md:py-20 px-4">
           <div className="max-w-5xl mx-auto">
-            <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-4">전문 프로그램</h2>
-            <p className="text-center text-gray-500 mb-12 text-sm md:text-base">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center text-gray-900 mb-4">전문 프로그램</h2>
+            <p className="text-center text-gray-500 mb-12 text-sm md:text-base lg:text-lg">
               문제의 원인을 먼저 파악하고, 그에 맞는 방법으로 해결합니다
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {programs.map((p, i) => (
                 <div key={i} className={`bg-white rounded-2xl p-8 border-t-4 ${p.color} shadow-sm`}>
-                  <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-3">{p.title}</h3>
-                  <p className="text-gray-600 leading-relaxed text-sm md:text-base">{p.desc}</p>
+                  <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 mb-3">{p.title}</h3>
+                  <p className="text-gray-600 leading-relaxed text-sm md:text-base lg:text-lg">{p.desc}</p>
                 </div>
               ))}
             </div>
             <div className="text-center mt-10">
-              <Link href="/programs" className="text-[#7B2D8B] font-semibold hover:underline text-sm md:text-base">
+              <Link href="/programs" className="text-[#7B2D8B] font-semibold hover:underline text-sm md:text-base lg:text-lg">
                 동탄 재활·체형교정 프로그램 자세히 보기 →
               </Link>
             </div>
@@ -169,7 +169,7 @@ export default function Home() {
 
         <section className="py-12 md:py-20 px-4">
           <div className="max-w-3xl mx-auto">
-            <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-12">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center text-gray-900 mb-12">
               이렇게 시작합니다
             </h2>
             <div className="space-y-8">
@@ -179,8 +179,8 @@ export default function Home() {
                     <span className="text-white font-bold text-base">{s.step}</span>
                   </div>
                   <div className="pt-2">
-                    <h3 className="text-base md:text-lg font-bold text-gray-900 mb-1">{s.title}</h3>
-                    <p className="text-gray-500 text-sm md:text-base leading-relaxed">{s.desc}</p>
+                    <h3 className="text-base md:text-lg lg:text-xl font-bold text-gray-900 mb-1">{s.title}</h3>
+                    <p className="text-gray-500 text-sm md:text-base lg:text-lg leading-relaxed">{s.desc}</p>
                   </div>
                 </div>
               ))}
@@ -193,7 +193,7 @@ export default function Home() {
             <p className="text-center text-sm font-semibold text-[#9B4DAB] uppercase tracking-widest mb-3">
               센터 & 수업 시간
             </p>
-            <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-10">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center text-gray-900 mb-10">
               이렇게 운동합니다
             </h2>
           </div>
@@ -233,8 +233,8 @@ export default function Home() {
         <section className="bg-[#FAF5FB] py-10 md:py-16 px-4">
           <div className="max-w-2xl mx-auto text-center">
             <p className="text-[#9B4DAB] font-semibold text-sm mb-3 tracking-widest uppercase">실제 회원 후기</p>
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">직접 확인해보세요</h2>
-            <p className="text-gray-500 mb-8 text-sm md:text-base">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">직접 확인해보세요</h2>
+            <p className="text-gray-500 mb-8 text-sm md:text-base lg:text-lg">
               네이버 플레이스에 실제 회원분들의 후기가 쌓여 있습니다
             </p>
             <a
@@ -251,7 +251,7 @@ export default function Home() {
 
         <section className="py-10 md:py-16 px-4">
           <div className="max-w-3xl mx-auto">
-            <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-10">오시는 길</h2>
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center text-gray-900 mb-10">오시는 길</h2>
             <div className="rounded-2xl overflow-hidden shadow-sm mb-4">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m5!3m3!1m2!1s0x357b45afc4a27497%3A0xb295dc65b7af4820!2z64K0IOuquOyXkCDrr7jshow!5e0!3m2!1sko!2skr!4v1782537380013!5m2!1sko!2skr"
@@ -304,15 +304,15 @@ export default function Home() {
 
         <section className="bg-[#7B2D8B] py-12 md:py-20 px-4">
           <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4">
               몸이 달라지는 걸 직접 느껴보세요
             </h2>
-            <p className="text-purple-200 mb-8 text-base md:text-lg">
+            <p className="text-purple-200 mb-8 text-base md:text-lg lg:text-xl">
               어떤 프로그램이 맞는지 모르겠다면 체크부터 해보세요.
             </p>
             <Link
               href="/check"
-              className="group inline-flex items-center gap-2 bg-white text-[#7B2D8B] font-bold px-10 py-4 rounded-full text-base md:text-lg hover:bg-gray-100 transition-all hover:scale-[1.03]"
+              className="group inline-flex items-center gap-2 bg-white text-[#7B2D8B] font-bold px-10 py-4 rounded-full text-base md:text-lg lg:text-xl hover:bg-gray-100 transition-all hover:scale-[1.03]"
             >
               내 몸 상태 체크하기
               <ArrowRightIcon size={18} className="transition-transform group-hover:translate-x-1" />

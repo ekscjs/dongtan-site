@@ -78,7 +78,7 @@ export default function BodyResetSessionPage() {
             <span className="inline-block bg-[#7B2D8B] text-white text-xs font-semibold px-3 py-1 rounded-full mb-5">
               1:1 · 2시간 · 예약제
             </span>
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 leading-snug mb-4">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-snug mb-4">
               운동보다
               <br />
               <span className="text-[#7B2D8B]">먼저 해야 할 것</span>이 있습니다
@@ -100,14 +100,14 @@ export default function BodyResetSessionPage() {
         {/* 이런 분들 */}
         <section className="px-4 py-10 bg-white">
           <div className="max-w-2xl mx-auto">
-            <h2 className="text-xl md:text-2xl font-bold text-gray-900 text-center mb-8">
+            <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 text-center mb-8">
               이런 분들과 함께합니다
             </h2>
             <div className="space-y-3">
               {FOR_YOU.map((t) => (
                 <div key={t} className="flex items-start gap-3 bg-[#FAF5FB] rounded-xl px-5 py-4">
                   <CheckIcon className="text-[#7B2D8B] shrink-0 mt-0.5" size={16} />
-                  <p className="text-gray-700 text-sm md:text-base">{t}</p>
+                  <p className="text-gray-700 text-sm md:text-base lg:text-lg">{t}</p>
                 </div>
               ))}
             </div>
@@ -117,7 +117,7 @@ export default function BodyResetSessionPage() {
         {/* 2시간 구성 */}
         <section className="px-4 py-12">
           <div className="max-w-2xl mx-auto">
-            <h2 className="text-xl md:text-2xl font-bold text-gray-900 text-center mb-2">
+            <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 text-center mb-2">
               2시간, 이렇게 진행돼요
             </h2>
             <p className="text-sm text-gray-500 text-center mb-8">
@@ -143,7 +143,7 @@ export default function BodyResetSessionPage() {
         {/* 설명 */}
         <section className="px-4 py-12 bg-white">
           <div className="max-w-2xl mx-auto">
-            <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">
+            <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-4">
               왜 열심히 해도 그대로일까요
             </h2>
             <p className="text-gray-600 leading-relaxed mb-3">
@@ -181,7 +181,7 @@ export default function BodyResetSessionPage() {
         {/* 신청 */}
         <section id="apply" className="px-4 py-12 bg-white scroll-mt-20">
           <div className="max-w-xl mx-auto">
-            <h2 className="text-xl md:text-2xl font-bold text-gray-900 text-center mb-2">신청하기</h2>
+            <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 text-center mb-2">신청하기</h2>
             <p className="text-sm text-gray-500 text-center mb-6">
               신청 후 원장이 직접 연락드려 일정을 조율합니다
             </p>
