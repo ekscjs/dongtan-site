@@ -574,7 +574,13 @@ function RelatedContent({ type }: { type: TypeKey }) {
         const matched = all.filter((p) =>
           kw.some((k) => `${p.title} ${p.tag ?? ""}`.includes(k))
         );
-        setPosts((matched.length ? matched : all).slice(0, 3));
+        // 임상노트(실제 회원 사례) 태그가 붙은 글을 우선 노출
+        const sorted = [...matched].sort((a, b) => {
+          const aClinical = a.tag?.includes("임상노트") ? 1 : 0;
+          const bClinical = b.tag?.includes("임상노트") ? 1 : 0;
+          return bClinical - aClinical;
+        });
+        setPosts((sorted.length ? sorted : all).slice(0, 3));
       } catch {
         if (alive) setPosts([]);
       }

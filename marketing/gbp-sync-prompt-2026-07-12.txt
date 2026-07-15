@@ -1,0 +1,27 @@
+dongtan-site(bodymiso.com) 프로젝트에 "블로그 발행 → 요약 → 구글 비즈니스 프로필(GBP) 자동 포스팅" 기능의 1단계(GBP 인증정보가 아직 없는 상태에서 준비 가능한 부분)를 만들어줘.
+
+배경:
+- posts 테이블(Supabase)에 블로그 글이 저장됨. published=true + publish_at 지난 글이 실제 노출되는 글.
+- 이미 ANTHROPIC_API_KEY가 .env.local에 있고, src/app/api/admin/generate-alt/route.ts에서 @anthropic-ai/sdk 사용 패턴 있음. 그 패턴 참고.
+- 구글 비즈니스 프로필 API 인증(OAuth client_id/secret/refresh_token)은 아직 승인 대기 중이라 없음. 이번 작업은 그 부분만 빼고 나머지를 전부 완성해두는 것.
+
+해야 할 일:
+
+1. posts 테이블에 gbp_posted_at 컬럼 추가
+   - migrate.mjs 파일의 패턴(ALTER TABLE ... ADD COLUMN IF NOT EXISTS, RPC 없으면 안내 출력)을 참고해서 posts 테이블에 gbp_posted_at timestamptz 컬럼을 추가하는 로직을 만들어줘. 기존 migrate.mjs에 추가하거나 별도 파일로 만들어도 됨. 실행해서 컬럼이 정상 추가됐는지 확인까지 해줘.
+
+2. gbp-sync.mjs 스크립트 작성 (dongtan-site 루트, publish-drafts.mjs와 같은 위치)
+   - .env.local 로드 방식은 publish-drafts.mjs의 loadEnv() 패턴 그대로 재사용
+   - Supabase에서 published=true AND (publish_at IS NULL OR publish_at <= now()) AND gbp_posted_at IS NULL 인 posts를 publish_at 오름차순으로 조회 (한 번 실행에 최대 3개까지만 처리하도록 제한)
+   - 각 글마다 Anthropic API(@anthropic-ai/sdk, ANTHROPIC_API_KEY, model은 generate-alt와 같은 claude-haiku-4-5-20251001 사용)를 호출해서 그 글 content를 바탕으로 구글 비즈니스 프로필 "최신 소식(Local Post)" 게시글용 한국어 요약을 생성. 조건:
+     - 1500자 이내 (Google Local Post 글자수 제한)
+     - 매번 다른 표현 사용 (예: "~하는 분" 나열, "순서가 잘못된" 같은 상투적 문구 금지 — 블로그팀/guide/DECISIONS.md와 같은 원칙)
+     - 과장된 의료 효과 주장 금지, 실제 블로그 글 내용 기반으로만 작성
+     - 글 마지막에 "자세히 보기" 형태로 원문 링크(https://www.bodymiso.com/blog/{slug}) 포함
+   - GBP API 실제 호출 부분은 아직 만들지 말고 postToGoogleBusinessProfile(post, summary) 라는 이름의 async 함수를 만들어서 내부에 "// TODO: GBP OAuth 인증정보 발급되면 여기에 Business Profile API localPosts.create 호출 추가" 주석만 남겨두고, 지금은 콘솔에 생성된 요약 내용을 출력만 하도록 해줘 (실제 gbp_posted_at 업데이트는 하지 말 것 — 아직 실제로 포스팅 안 됐으니까)
+   - 스크립트 맨 위에 사용법 주석 추가 (publish-drafts.mjs 스타일처럼): node gbp-sync.mjs 로 실행하면 대상 글과 생성된 요약이 콘솔에 출력됨
+
+3. 작업 끝나면 git commit (push는 하지 말고 commit까지만):
+   git add -A && git commit -m "feat: GBP 자동포스팅 1단계 - 요약 생성 스크립트 (GBP API 연동은 인증정보 발급 후 추가)"
+
+완료되면 어떤 글이 대상으로 잡혔고 요약이 어떻게 나왔는지 결과를 보여줘.

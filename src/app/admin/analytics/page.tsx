@@ -653,6 +653,25 @@ export default function AnalyticsPage() {
                 </div>
               </div>
 
+              {/* 공유/루틴/클래스 이벤트 */}
+              <div className="grid grid-cols-3 gap-4">
+                <div className="bg-[#FAF5FB] rounded-xl p-4 text-center">
+                  <p className="text-xs text-gray-500 mb-1">결과 공유</p>
+                  <p className="text-3xl font-bold text-[#7B2D8B]">{events.counts["result_share"] ?? 0}</p>
+                  <p className="text-xs text-gray-400 mt-1">회</p>
+                </div>
+                <div className="bg-[#FAF5FB] rounded-xl p-4 text-center">
+                  <p className="text-xs text-gray-500 mb-1">루틴 시작</p>
+                  <p className="text-3xl font-bold text-[#7B2D8B]">{events.counts["routine_start"] ?? 0}</p>
+                  <p className="text-xs text-gray-400 mt-1">명</p>
+                </div>
+                <div className="bg-[#FAF5FB] rounded-xl p-4 text-center">
+                  <p className="text-xs text-gray-500 mb-1">클래스 홍보 클릭</p>
+                  <p className="text-3xl font-bold text-[#7B2D8B]">{events.counts["class_promo_click"] ?? 0}</p>
+                  <p className="text-xs text-gray-400 mt-1">회</p>
+                </div>
+              </div>
+
               {/* 체형진단 유형 분포 */}
               {Object.keys(events.typeBreakdown).length > 0 && (
                 <div>
