@@ -196,7 +196,7 @@ export default function CheckQuiz() {
         <Header />
         <main className="min-h-screen bg-[#FAF5FB] pt-8 pb-12 md:pt-12 md:pb-20 px-4">
           <div className="max-w-xl mx-auto">
-            <p className="text-xs font-semibold text-[#9B4DAB] uppercase tracking-widest mb-3">몸 상태 체크</p>
+            <p className="text-sm font-semibold text-[#9B4DAB] uppercase tracking-widest mb-3">몸 상태 체크</p>
             <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
               어떤 방식으로<br />확인해볼까요?
             </h1>
@@ -213,7 +213,7 @@ export default function CheckQuiz() {
                     <UserIcon className="text-[#7B2D8B] group-hover:text-white" size={24} />
                   </div>
                   <div className="flex-1">
-                    <p className="text-xs font-semibold text-[#9B4DAB] mb-1">1분 셀프체크</p>
+                    <p className="text-sm font-semibold text-[#9B4DAB] mb-1">1분 셀프체크</p>
                     <h2 className="text-lg font-bold text-gray-900 mb-1">체형 유형 확인</h2>
                     <p className="text-sm text-gray-500">
                       거북목 / 골반 / 허리 / 전신<br />
@@ -234,7 +234,7 @@ export default function CheckQuiz() {
                     <ActivityIcon className="text-[#7B2D8B] group-hover:text-white" size={24} />
                   </div>
                   <div className="flex-1">
-                    <p className="text-xs font-semibold text-[#9B4DAB] mb-1">통증지도</p>
+                    <p className="text-sm font-semibold text-[#9B4DAB] mb-1">통증지도</p>
                     <h2 className="text-lg font-bold text-gray-900 mb-1">통증 부위 체크</h2>
                     <p className="text-sm text-gray-500">
                       목·어깨·허리·골반·무릎·발목<br />
@@ -256,7 +256,7 @@ export default function CheckQuiz() {
                     <MessageSquareIcon className="text-[#7B2D8B] group-hover:text-white" size={24} />
                   </div>
                   <div className="flex-1">
-                    <p className="text-xs font-semibold text-[#9B4DAB] mb-1">미소AI</p>
+                    <p className="text-sm font-semibold text-[#9B4DAB] mb-1">미소AI</p>
                     <h2 className="text-lg font-bold text-gray-900 mb-1">미소AI에게 물어보기</h2>
                     <p className="text-sm text-gray-500">
                       동탄에서 실제 트레이닝한 회원 사례로 쓴 글 중에서 답을 찾아드려요
@@ -300,7 +300,7 @@ export default function CheckQuiz() {
           </div>
         </div>
         <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-          <p className="text-xs font-semibold text-[#9B4DAB] uppercase tracking-widest mb-4">
+          <p className="text-sm font-semibold text-[#9B4DAB] uppercase tracking-widest mb-4">
             {isRetest ? "7일 뒤 재확인" : "통증·체형 셀프체크"}
           </p>
           <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-8">{questions[step].q}</h2>
@@ -368,7 +368,7 @@ export default function CheckQuiz() {
       <Shell>
         <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
           <div className="flex items-center justify-between mb-1">
-            <p className="text-xs font-semibold text-[#9B4DAB] uppercase tracking-widest">{t.name}</p>
+            <p className="text-sm font-semibold text-[#9B4DAB] uppercase tracking-widest">{t.name}</p>
             <span className="text-xs text-gray-400">{done.length} / 7일</span>
           </div>
           <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">7일 교정 루틴</h2>
@@ -662,7 +662,7 @@ function ClassPromo() {
       onClick={() => track("class_promo_click", { from: "check_result" })}
       className="mt-5 block rounded-2xl p-6 bg-white border border-gray-100 hover:border-[#7B2D8B] transition-colors"
     >
-      <p className="text-xs font-semibold text-[#9B4DAB] uppercase tracking-widest mb-1">바디 리셋 세션</p>
+      <p className="text-sm font-semibold text-[#9B4DAB] uppercase tracking-widest mb-1">바디 리셋 세션</p>
       <p className="font-bold text-gray-900 mb-1">운동보다 먼저 해야 할 것 · 2시간</p>
       <p className="text-sm text-gray-500">
         잠든 근육을 깨우는 2시간 1:1 세션 →
@@ -712,7 +712,7 @@ function CrossPromo({ to }: { to: "pain" | "quiz" }) {
         href="/check/pain"
         className="mt-5 block bg-white rounded-2xl p-5 border border-gray-100 hover:border-[#7B2D8B] transition-colors group"
       >
-        <p className="text-xs font-semibold text-[#9B4DAB] mb-1">통증지도도 해볼까요?</p>
+        <p className="text-sm font-semibold text-[#9B4DAB] mb-1">통증지도도 해볼까요?</p>
         <p className="font-bold text-gray-900 mb-1">아픈 부위 클릭 → 원인 분석</p>
         <p className="text-sm text-gray-500">
           목·어깨·허리·골반·무릎·발목 중 불편한 곳을 골라보세요 →
@@ -725,7 +725,7 @@ function CrossPromo({ to }: { to: "pain" | "quiz" }) {
       href="/check"
       className="mt-5 block bg-white rounded-2xl p-5 border border-gray-100 hover:border-[#7B2D8B] transition-colors group"
     >
-      <p className="text-xs font-semibold text-[#9B4DAB] mb-1">체형 유형 확인도 해볼까요?</p>
+      <p className="text-sm font-semibold text-[#9B4DAB] mb-1">체형 유형 확인도 해볼까요?</p>
       <p className="font-bold text-gray-900 mb-1">1분 셀프체크 → 7일 교정 루틴</p>
       <p className="text-sm text-gray-500">
         거북목·골반·허리·전신 — 내 몸 유형을 확인하고 루틴을 받아보세요 →

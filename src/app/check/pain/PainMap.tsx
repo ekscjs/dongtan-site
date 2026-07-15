@@ -171,7 +171,7 @@ function ChecklistView({
 
       {/* 질문 카드 */}
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-        <p className="text-xs font-semibold text-[#9B4DAB] uppercase tracking-widest mb-1">통증 체크리스트</p>
+        <p className="text-sm font-semibold text-[#9B4DAB] uppercase tracking-widest mb-1">통증 체크리스트</p>
         <h2 className="text-xl font-bold text-gray-900 mb-5">
           {area.label} — 해당되는 항목을 모두 선택하세요
         </h2>
@@ -275,7 +275,7 @@ function ResultView({
     <div className="space-y-5">
       {/* 종합 결과 헤더 */}
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-        <p className="text-xs font-semibold text-[#9B4DAB] uppercase tracking-widest mb-1">통증지도 분석 결과</p>
+        <p className="text-sm font-semibold text-[#9B4DAB] uppercase tracking-widest mb-1">통증지도 분석 결과</p>
         <h2 className="text-2xl font-bold text-gray-900 mb-3">
           {selected.map((k) => painAreas[k].label).join("·")} 체크 완료
         </h2>
@@ -397,7 +397,7 @@ function ResultView({
         href="/check"
         className="block bg-white rounded-2xl p-5 border border-gray-100 hover:border-[#7B2D8B] transition-colors"
       >
-        <p className="text-xs font-semibold text-[#9B4DAB] mb-1">체형 유형 확인도 해볼까요?</p>
+        <p className="text-sm font-semibold text-[#9B4DAB] mb-1">체형 유형 확인도 해볼까요?</p>
         <p className="font-bold text-gray-900 mb-1">1분 셀프체크 → 7일 교정 루틴</p>
         <p className="text-sm text-gray-500">
           거북목·골반·허리·전신 — 내 몸 유형을 확인하고 루틴을 받아보세요 →
@@ -458,7 +458,7 @@ export default function PainMap() {
           {view === "map" && (
             <>
               <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                <p className="text-xs font-semibold text-[#9B4DAB] uppercase tracking-widest mb-1">통증지도</p>
+                <p className="text-sm font-semibold text-[#9B4DAB] uppercase tracking-widest mb-1">통증지도</p>
                 <h1 className="text-2xl font-bold text-gray-900 mb-2">
                   아픈 부위를 선택하세요
                 </h1>

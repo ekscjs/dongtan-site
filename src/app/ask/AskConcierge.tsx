@@ -88,7 +88,7 @@ export default function AskConcierge() {
         <div className="max-w-xl mx-auto">
           {!result ? (
             <>
-              <p className="text-xs font-semibold text-[#9B4DAB] uppercase tracking-widest mb-3">미소AI</p>
+              <p className="text-sm font-semibold text-[#9B4DAB] uppercase tracking-widest mb-3">미소AI</p>
               <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
                 어떤 증상이<br />궁금하세요?
               </h1>

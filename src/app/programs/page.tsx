@@ -139,7 +139,7 @@ export default function ProgramsPage() {
         {/* 공식 인증 */}
         <section className="py-10 px-4 bg-[#FAF5FB] border-b border-gray-100">
           <div className="max-w-3xl mx-auto">
-            <p className="text-center text-xs font-semibold text-[#9B4DAB] tracking-widest uppercase mb-6">공식 인증 현황</p>
+            <p className="text-center text-sm font-semibold text-[#9B4DAB] tracking-widest uppercase mb-6">공식 인증 현황</p>
             <div className="grid grid-cols-2 gap-4">
               {certs.map((c, i) => (
                 <div key={i} className="bg-white rounded-xl px-5 py-4 border border-purple-100 flex flex-col gap-1">

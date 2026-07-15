@@ -163,7 +163,7 @@ export default function Home() {
 
         <section className="py-12 md:py-20 px-4">
           <div className="max-w-5xl mx-auto">
-            <p className="text-center text-xs font-semibold text-[#9B4DAB] uppercase tracking-widest mb-3">
+            <p className="text-center text-sm font-semibold text-[#9B4DAB] uppercase tracking-widest mb-3">
               센터 & 수업 시간
             </p>
             <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-10">
