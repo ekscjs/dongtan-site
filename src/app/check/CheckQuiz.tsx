@@ -212,8 +212,8 @@ export default function CheckQuiz() {
                     <UserIcon className="text-[#7B2D8B] group-hover:text-white" size={24} />
                   </div>
                   <div className="flex-1">
-                    <p className="text-xs font-semibold text-[#9B4DAB] mb-1">1분 자가진단</p>
-                    <h2 className="text-lg font-bold text-gray-900 mb-1">체형 유형 진단</h2>
+                    <p className="text-xs font-semibold text-[#9B4DAB] mb-1">1분 셀프체크</p>
+                    <h2 className="text-lg font-bold text-gray-900 mb-1">체형 유형 확인</h2>
                     <p className="text-sm text-gray-500">
                       거북목 / 골반 / 허리 / 전신<br />
                       내 몸 유형을 파악하고 7일 교정 루틴을 받아보세요
@@ -270,7 +270,7 @@ export default function CheckQuiz() {
       <Shell>
         <div className="mb-8">
           <div className="flex justify-between text-xs text-gray-400 mb-2">
-            <span>{isRetest ? "재진단 " : ""}{step + 1} / {questions.length}</span>
+            <span>{isRetest ? "재확인 " : ""}{step + 1} / {questions.length}</span>
             <span>{progress}%</span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-1.5">
@@ -279,7 +279,7 @@ export default function CheckQuiz() {
         </div>
         <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
           <p className="text-xs font-semibold text-[#9B4DAB] uppercase tracking-widest mb-4">
-            {isRetest ? "7일 뒤 재진단" : "통증·체형 자가진단"}
+            {isRetest ? "7일 뒤 재확인" : "통증·체형 셀프체크"}
           </p>
           <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-8">{questions[step].q}</h2>
           <div className="space-y-3">
@@ -321,7 +321,7 @@ export default function CheckQuiz() {
             내 유형 7일 교정 루틴 시작하기 →
           </button>
           <button onClick={resetAll} className="w-full text-sm text-gray-400 hover:text-gray-600 underline">
-            다시 진단하기
+            다시 확인하기
           </button>
         </div>
         <ShareCard type={saved.type} riskLabel={saved.risk.label} />
@@ -423,13 +423,13 @@ export default function CheckQuiz() {
                 onClick={startRetest}
                 className="bg-[#7B2D8B] text-white font-bold py-3 px-8 rounded-full hover:bg-[#6a2578] transition-colors"
               >
-                7일 뒤 재진단하기 →
+                7일 뒤 재확인하기 →
               </button>
             </div>
           )}
 
           <button onClick={resetAll} className="w-full text-sm text-gray-500 hover:text-gray-800 underline mt-6 py-2">
-            처음부터 다시 진단하기
+            처음부터 다시 확인하기
           </button>
         </div>
         <CenterCTA />
@@ -481,7 +481,7 @@ export default function CheckQuiz() {
     <Shell>
       <div className="bg-white rounded-2xl p-8 text-center shadow-sm border border-gray-100">
         <button onClick={startFresh} className="bg-[#7B2D8B] text-white font-bold py-3 px-8 rounded-full">
-          자가진단 시작하기
+          셀프체크 시작하기
         </button>
       </div>
     </Shell>
@@ -523,7 +523,7 @@ function ShareCard({
     const nav = typeof navigator !== "undefined" ? (navigator as Navigator & { share?: (d: ShareData) => Promise<void> }) : null;
     if (nav?.share) {
       try {
-        await nav.share({ title: "내몸에미소 자가진단", text: `${shareText}\n`, url: shareUrl });
+        await nav.share({ title: "내몸에미소 셀프체크", text: `${shareText}\n`, url: shareUrl });
         return;
       } catch (e) {
         // 사용자가 공유 취소(AbortError)면 폴백 안 함
@@ -543,7 +543,7 @@ function ShareCard({
   return (
     <div className="mt-5 rounded-2xl p-6 text-center text-white bg-gradient-to-br from-[#7B2D8B] to-[#9B4DAB]">
       <p className="font-bold text-lg mb-0.5">{t.name}</p>
-      <p className="text-purple-200 text-sm mb-4">위험도 {riskLabel} · 내몸에미소 1분 자가진단</p>
+      <p className="text-purple-200 text-sm mb-4">위험도 {riskLabel} · 내몸에미소 1분 셀프체크</p>
       <button
         onClick={handleShare}
         className="w-full bg-white text-[#7B2D8B] font-bold py-3.5 px-6 rounded-full hover:bg-gray-100 transition-colors"
@@ -703,8 +703,8 @@ function CrossPromo({ to }: { to: "pain" | "quiz" }) {
       href="/check"
       className="mt-5 block bg-white rounded-2xl p-5 border border-gray-100 hover:border-[#7B2D8B] transition-colors group"
     >
-      <p className="text-xs font-semibold text-[#9B4DAB] mb-1">체형 유형 진단도 해볼까요?</p>
-      <p className="font-bold text-gray-900 mb-1">1분 자가진단 → 7일 교정 루틴</p>
+      <p className="text-xs font-semibold text-[#9B4DAB] mb-1">체형 유형 확인도 해볼까요?</p>
+      <p className="font-bold text-gray-900 mb-1">1분 셀프체크 → 7일 교정 루틴</p>
       <p className="text-sm text-gray-500">
         거북목·골반·허리·전신 — 내 몸 유형을 확인하고 루틴을 받아보세요 →
       </p>

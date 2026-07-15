@@ -367,7 +367,7 @@ function ResultView({
         <div className="bg-white rounded-xl p-4 mb-5 text-left">
           <p className="text-xs font-semibold text-gray-500 mb-2">센터 1회 체험 포함</p>
           <div className="space-y-1.5 text-sm text-gray-700">
-            {["움직임 평가", "체형측정", "관절 가동성 확인", "운동 처방"].map((item) => (
+            {["움직임 평가", "체형측정", "관절 가동성 확인", "맞춤 운동 설계"].map((item) => (
               <div key={item} className="flex items-center gap-2">
                 <span className="text-[#7B2D8B]">✓</span> {item}
               </div>
@@ -397,8 +397,8 @@ function ResultView({
         href="/check"
         className="block bg-white rounded-2xl p-5 border border-gray-100 hover:border-[#7B2D8B] transition-colors"
       >
-        <p className="text-xs font-semibold text-[#9B4DAB] mb-1">체형 유형 진단도 해볼까요?</p>
-        <p className="font-bold text-gray-900 mb-1">1분 자가진단 → 7일 교정 루틴</p>
+        <p className="text-xs font-semibold text-[#9B4DAB] mb-1">체형 유형 확인도 해볼까요?</p>
+        <p className="font-bold text-gray-900 mb-1">1분 셀프체크 → 7일 교정 루틴</p>
         <p className="text-sm text-gray-500">
           거북목·골반·허리·전신 — 내 몸 유형을 확인하고 루틴을 받아보세요 →
         </p>

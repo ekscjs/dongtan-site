@@ -70,8 +70,8 @@ export const painAreas: Record<AreaKey, PainArea> = {
     ],
     results: [
       {
-        title: "어깨 충돌증후군 가능성",
-        desc: "팔을 들 때 어깨 내부 구조물이 부딪히는 패턴입니다. 방치하면 회전근개 손상으로 이어질 수 있어 초기 대응이 중요합니다.",
+        title: "어깨 내부 충돌 패턴",
+        desc: "팔을 들 때 어깨 내부 구조물이 부딪히는 패턴입니다. 방치하면 어깨 조직에 부담이 누적될 수 있어 초기 대응이 중요합니다.",
         priority: 1,
         matchFn: (c) => c[0] && c[1],
       },
@@ -110,8 +110,8 @@ export const painAreas: Record<AreaKey, PainArea> = {
     ],
     results: [
       {
-        title: "추간판(디스크) 자극 가능성",
-        desc: "앞으로 숙일 때 통증이 심하고 다리 저림이 있다면 디스크가 신경을 자극하는 패턴일 수 있습니다. 전문 평가가 필요합니다.",
+        title: "허리 디스크 부담 패턴",
+        desc: "앞으로 숙일 때 통증이 심하고 다리 저림이 있다면 허리 디스크 쪽에 부담이 실리는 패턴일 수 있습니다. 전문 평가가 필요합니다.",
         priority: 1,
         matchFn: (c) => c[1] && c[3],
       },
@@ -122,8 +122,8 @@ export const painAreas: Record<AreaKey, PainArea> = {
         matchFn: (c) => c[0] && c[5],
       },
       {
-        title: "척추 후관절 증후군 가능성",
-        desc: "뒤로 젖힐 때 통증이 심하다면 척추 관절 자체의 문제일 수 있습니다. 일반 코어 운동보다 관절 가동성 회복이 먼저입니다.",
+        title: "척추 관절 부담 패턴",
+        desc: "뒤로 젖힐 때 통증이 심하다면 척추 관절 쪽에 부담이 실리는 패턴일 수 있습니다. 일반 코어 운동보다 관절 가동성 회복이 먼저입니다.",
         priority: 1,
         matchFn: (c) => c[2],
       },
@@ -217,7 +217,7 @@ export const painAreas: Record<AreaKey, PainArea> = {
       "오래 서 있으면 발목이 붓거나 무겁다",
       "발목이 안쪽으로 꺾이는 편이다 (내반)",
       "걸을 때 발이 밖으로 벌어진다",
-      "발바닥이 자주 아프다 (족저근막염 의심)",
+      "발바닥이 자주 아프다 (아치 부담 의심)",
     ],
     results: [
       {
@@ -227,7 +227,7 @@ export const painAreas: Record<AreaKey, PainArea> = {
         matchFn: (c) => c[0],
       },
       {
-        title: "족저근막염 가능성",
+        title: "발바닥 근막 부담 패턴",
         desc: "발바닥 통증은 족저근막에 과부하가 걸린 신호입니다. 종아리·아킬레스건 단축이 함께 있는 경우가 많습니다.",
         priority: 1,
         matchFn: (c) => c[4],

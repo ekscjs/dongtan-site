@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import CheckQuiz from "./CheckQuiz";
 import { resultTypes, type TypeKey } from "./data";
 
-const DEFAULT_TITLE = "동탄 체형·통증 자가진단 + 7일 교정 루틴 | 내몸에미소";
+const DEFAULT_TITLE = "동탄 체형·통증 셀프체크 + 7일 교정 루틴 | 내몸에미소";
 const DEFAULT_DESC =
-  "1분 자가진단으로 내 몸 유형(거북목·골반·허리·전신)을 확인하고, 유형별 7일 교정 루틴을 매일 따라 해보세요. 동탄 체형교정·재활 내몸에미소.";
+  "1분 셀프체크로 내 몸 유형(거북목·골반·허리·전신)을 확인하고, 유형별 7일 교정 루틴을 매일 따라 해보세요. 동탄 체형교정·재활 내몸에미소.";
 
 export async function generateMetadata({
   searchParams,
@@ -16,7 +16,7 @@ export async function generateMetadata({
   const valid = !!type && type in resultTypes;
 
   const title = valid
-    ? `나는 ${resultTypes[type!].name}! · 1분 통증·체형 자가진단 | 내몸에미소`
+    ? `나는 ${resultTypes[type!].name}! · 1분 통증·체형 셀프체크 | 내몸에미소`
     : DEFAULT_TITLE;
   const description = valid
     ? `${resultTypes[type!].oneLiner} 동탄 내몸에미소에서 내 몸 유형과 7일 교정 루틴을 확인하세요.`
