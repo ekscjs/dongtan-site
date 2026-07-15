@@ -349,6 +349,7 @@ export default function CheckQuiz() {
         <ShareCard type={saved.type} riskLabel={saved.risk.label} />
         <RelatedContent type={saved.type} />
         <CrossPromo to="pain" />
+        <CrossPromo to="ask" />
         <ClassPromo />
         <CenterCTA />
       </Shell>
@@ -454,6 +455,8 @@ export default function CheckQuiz() {
             처음부터 다시 확인하기
           </button>
         </div>
+        <CrossPromo to="pain" />
+        <CrossPromo to="ask" />
         <CenterCTA />
       </Shell>
     );
@@ -493,6 +496,7 @@ export default function CheckQuiz() {
         <ShareCard type={saved.retest.type} riskLabel={saved.retest.riskLabel} retest improved={improved} />
         <RelatedContent type={saved.retest.type} />
         <CrossPromo to="pain" />
+        <CrossPromo to="ask" />
         <CenterCTA highlight />
       </Shell>
     );
@@ -705,7 +709,7 @@ function CenterCTA({ highlight = false }: { highlight?: boolean }) {
   );
 }
 
-function CrossPromo({ to }: { to: "pain" | "quiz" }) {
+function CrossPromo({ to }: { to: "pain" | "quiz" | "ask" }) {
   if (to === "pain") {
     return (
       <Link
@@ -716,6 +720,20 @@ function CrossPromo({ to }: { to: "pain" | "quiz" }) {
         <p className="font-bold text-gray-900 mb-1">아픈 부위 클릭 → 원인 분석</p>
         <p className="text-sm text-gray-500">
           목·어깨·허리·골반·무릎·발목 중 불편한 곳을 골라보세요 →
+        </p>
+      </Link>
+    );
+  }
+  if (to === "ask") {
+    return (
+      <Link
+        href="/ask"
+        className="mt-5 block bg-white rounded-2xl p-5 border border-gray-100 hover:border-[#7B2D8B] transition-colors group"
+      >
+        <p className="text-sm font-semibold text-[#9B4DAB] mb-1">미소AI에게도 물어볼까요?</p>
+        <p className="font-bold text-gray-900 mb-1">증상 말하면 관련 글 찾아드려요</p>
+        <p className="text-sm text-gray-500">
+          동탄에서 실제 관리한 회원 사례로 쓴 글 중에서 답을 찾아드려요 →
         </p>
       </Link>
     );
