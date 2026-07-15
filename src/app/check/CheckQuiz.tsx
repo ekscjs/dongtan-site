@@ -200,7 +200,7 @@ export default function CheckQuiz() {
             <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
               어떤 방식으로<br />확인해볼까요?
             </h1>
-            <p className="text-sm text-gray-500 mb-8">둘 다 무료 · 1~3분이면 완료됩니다</p>
+            <p className="text-sm text-gray-500 mb-8">셋 다 무료 · 1~3분이면 완료됩니다</p>
 
             <div className="space-y-4">
               {/* 체형 유형 진단 */}
@@ -255,10 +255,10 @@ export default function CheckQuiz() {
                     <MessageSquareIcon className="text-[#7B2D8B] group-hover:text-white" size={24} />
                   </div>
                   <div className="flex-1">
-                    <p className="text-xs font-semibold text-[#9B4DAB] mb-1">AI 컨시어지</p>
-                    <h2 className="text-lg font-bold text-gray-900 mb-1">AI에게 물어보기</h2>
+                    <p className="text-xs font-semibold text-[#9B4DAB] mb-1">미소AI</p>
+                    <h2 className="text-lg font-bold text-gray-900 mb-1">미소AI에게 물어보기</h2>
                     <p className="text-sm text-gray-500">
-                      증상을 그대로 말하면 관련 글·셀프체크·운동을 찾아드려요
+                      동탄에서 실제 트레이닝한 회원 사례로 쓴 글 중에서 답을 찾아드려요
                     </p>
                   </div>
                   <span className="text-gray-300 text-xl shrink-0">›</span>

@@ -76,11 +76,11 @@ export default function AskConcierge() {
         <div className="max-w-xl mx-auto">
           {!result ? (
             <>
-              <p className="text-xs font-semibold text-[#9B4DAB] uppercase tracking-widest mb-3">AI에게 물어보기</p>
+              <p className="text-xs font-semibold text-[#9B4DAB] uppercase tracking-widest mb-3">미소AI</p>
               <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
                 어떤 증상이<br />궁금하세요?
               </h1>
-              <p className="text-sm text-gray-500 mb-6">증상을 편하게 적어주시면 관련 글·셀프체크·운동을 찾아드려요</p>
+              <p className="text-sm text-gray-500 mb-6">증상을 편하게 적어주시면, 동탄에서 실제 트레이닝한 회원 사례로 쓴 글 중에서 답을 찾아드려요</p>
 
               <form
                 onSubmit={(e) => {
