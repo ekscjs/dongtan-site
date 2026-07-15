@@ -40,22 +40,31 @@ const programs = [
   },
 ];
 
-const galleryImages: { src: string; alt: string }[] = [
-  { src: "/gallery/center-2.jpg", alt: "내몸에미소 센터 내부" },
+const galleryRow1: { src: string; alt: string }[] = [
   { src: "/gallery/center-1.jpg", alt: "내몸에미소 센터 내부" },
+  { src: "/gallery/center-2.jpg", alt: "내몸에미소 센터 내부" },
   { src: "/gallery/training-1.jpg", alt: "1:1 운동 지도" },
   { src: "/gallery/training-2.jpg", alt: "1:1 운동 지도" },
   { src: "/gallery/training-3.jpg", alt: "1:1 운동 지도" },
   { src: "/gallery/training-4.jpg", alt: "1:1 운동 지도" },
   { src: "/gallery/training-6.jpg", alt: "1:1 운동 지도" },
-  { src: "/gallery/training-7.jpg", alt: "1:1 운동 지도" },
   { src: "/gallery/training-8.jpg", alt: "1:1 운동 지도" },
   { src: "/gallery/training-9.jpg", alt: "1:1 운동 지도" },
-  { src: "/gallery/training-10.png", alt: "덤벨 들고 자세 교정 지도받는 회원" },
   { src: "/gallery/추가1.jpg", alt: "1:1 운동 지도" },
+  { src: "/gallery/KakaoTalk_20231027_135610097.jpg", alt: "폼롤러로 스트레칭하는 회원들" },
+];
+
+const galleryRow2: { src: string; alt: string }[] = [
   { src: "/gallery/추가3.png", alt: "1:1 운동 지도" },
   { src: "/gallery/추가4.jpg", alt: "1:1 운동 지도" },
-  { src: "/gallery/KakaoTalk_20231027_135610097.jpg", alt: "폼롤러로 스트레칭하는 회원들" },
+  { src: "/gallery/1.png", alt: "1:1 운동 지도" },
+  { src: "/gallery/2.png", alt: "1:1 운동 지도" },
+  { src: "/gallery/3.png", alt: "1:1 운동 지도" },
+  { src: "/gallery/4.png", alt: "1:1 운동 지도" },
+  { src: "/gallery/6.png", alt: "1:1 운동 지도" },
+  { src: "/gallery/7.png", alt: "1:1 운동 지도" },
+  { src: "/gallery/8.png", alt: "1:1 운동 지도" },
+  { src: "/gallery/9.png", alt: "1:1 운동 지도" },
 ];
 
 const steps: { step: string; title: string; desc: string }[] = [
@@ -188,9 +197,9 @@ export default function Home() {
               이렇게 운동합니다
             </h2>
           </div>
-          <div className="overflow-hidden">
+          <div className="overflow-hidden flex flex-col gap-3">
             <div className="flex gap-3 w-max animate-[marquee-scroll_40s_linear_infinite] hover:[animation-play-state:paused]">
-              {[...galleryImages, ...galleryImages].map((img, i) => (
+              {[...galleryRow1, ...galleryRow1].map((img, i) => (
                 <div key={i} className="shrink-0 w-40 h-40 md:w-56 md:h-56 rounded-2xl overflow-hidden">
                   <Image
                     src={img.src}
@@ -199,6 +208,20 @@ export default function Home() {
                     height={224}
                     className="w-full h-full object-cover"
                     priority={i === 0}
+                    sizes="(max-width: 768px) 160px, 224px"
+                  />
+                </div>
+              ))}
+            </div>
+            <div className="flex gap-3 w-max animate-[marquee-scroll-reverse_40s_linear_infinite] hover:[animation-play-state:paused]">
+              {[...galleryRow2, ...galleryRow2].map((img, i) => (
+                <div key={i} className="shrink-0 w-40 h-40 md:w-56 md:h-56 rounded-2xl overflow-hidden">
+                  <Image
+                    src={img.src}
+                    alt={img.alt}
+                    width={224}
+                    height={224}
+                    className="w-full h-full object-cover"
                     sizes="(max-width: 768px) 160px, 224px"
                   />
                 </div>
