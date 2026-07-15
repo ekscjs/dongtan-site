@@ -699,6 +699,38 @@ export default function AnalyticsPage() {
         </div>
 
         <div className="bg-white rounded-2xl shadow p-6 mb-6">
+          <h2 className="text-sm font-semibold text-gray-700 mb-4">
+            미소AI 사용 현황 <span className="text-xs font-normal text-gray-400">(최근 30일)</span>
+          </h2>
+          {!events ? (
+            <p className="text-xs text-gray-400">불러오는 중...</p>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="bg-[#FAF5FB] rounded-xl p-4 text-center">
+                <p className="text-xs text-gray-500 mb-1">카드 클릭</p>
+                <p className="text-3xl font-bold text-[#7B2D8B]">{events.counts["ai_concierge_click"] ?? 0}</p>
+                <p className="text-xs text-gray-400 mt-1">회</p>
+              </div>
+              <div className="bg-[#FAF5FB] rounded-xl p-4 text-center">
+                <p className="text-xs text-gray-500 mb-1">질문 제출</p>
+                <p className="text-3xl font-bold text-[#7B2D8B]">{events.counts["ai_ask_submit"] ?? 0}</p>
+                <p className="text-xs text-gray-400 mt-1">회</p>
+              </div>
+              <div className="bg-[#FAF5FB] rounded-xl p-4 text-center">
+                <p className="text-xs text-gray-500 mb-1">관련 글 클릭</p>
+                <p className="text-3xl font-bold text-[#7B2D8B]">{events.counts["ai_ask_click_post"] ?? 0}</p>
+                <p className="text-xs text-gray-400 mt-1">회</p>
+              </div>
+              <div className="bg-[#FAF5FB] rounded-xl p-4 text-center">
+                <p className="text-xs text-gray-500 mb-1">방(자가진단·운동 등) 클릭</p>
+                <p className="text-3xl font-bold text-[#7B2D8B]">{events.counts["ai_ask_click_tool"] ?? 0}</p>
+                <p className="text-xs text-gray-400 mt-1">회</p>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="bg-white rounded-2xl shadow p-6 mb-6">
           <div className="flex items-center justify-between mb-4">
             <div>
               <h2 className="text-sm font-semibold text-gray-700">구글 검색어 순위표</h2>

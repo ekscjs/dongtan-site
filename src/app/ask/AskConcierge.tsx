@@ -16,6 +16,14 @@ import {
 
 const EXAMPLES = ["앉으면 허리가 아파요", "어깨가 결려요", "무릎이 시큰거려요", "거북목이 심해요"];
 
+function track(event: string, properties?: Record<string, unknown>) {
+  fetch("/api/track", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ event, properties: properties ?? {} }),
+  }).catch(() => {});
+}
+
 type AskResult = {
   answer: string;
   related_posts: { title: string; slug: string }[];
@@ -56,7 +64,11 @@ export default function AskConcierge() {
         setLoading(false);
         return;
       }
-      setResult(data as AskResult);
+      const r = data as AskResult;
+      setResult(r);
+      track("ai_ask_submit", {
+        result: r.is_emergency ? "emergency" : r.limited ? "limited" : "normal",
+      });
     } catch {
       setError("네트워크 오류입니다. 잠시 후 다시 시도해주세요.");
     }
@@ -159,6 +171,7 @@ export default function AskConcierge() {
                       <Link
                         key={p.slug}
                         href={`/blog/${p.slug}`}
+                        onClick={() => track("ai_ask_click_post", { slug: p.slug })}
                         className="block bg-white rounded-xl border border-gray-100 px-4 py-3.5 hover:border-[#7B2D8B] hover:bg-[#FAF5FB] transition-colors"
                       >
                         <p className="font-semibold text-sm text-gray-900">{p.title}</p>
@@ -178,6 +191,7 @@ export default function AskConcierge() {
                         <Link
                           key={t.href}
                           href={t.href}
+                          onClick={() => track("ai_ask_click_tool", { href: t.href })}
                           className="flex items-center gap-3 bg-white rounded-xl border border-gray-100 px-4 py-3.5 hover:border-[#7B2D8B] hover:bg-[#FAF5FB] transition-colors group"
                         >
                           <div className="w-9 h-9 rounded-lg bg-[#FAF5FB] flex items-center justify-center shrink-0 group-hover:bg-[#7B2D8B] transition-colors">

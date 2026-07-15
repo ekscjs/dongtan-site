@@ -248,6 +248,7 @@ export default function CheckQuiz() {
               {/* AI 컨시어지 */}
               <Link
                 href="/ask"
+                onClick={() => track("ai_concierge_click", { from: "check" })}
                 className="block bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:border-[#7B2D8B] transition-colors group"
               >
                 <div className="flex items-start gap-4">
