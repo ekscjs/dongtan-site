@@ -24,6 +24,7 @@ import {
   CheckIcon,
   TrendingUpIcon,
   ArrowRightIcon,
+  MessageSquareIcon,
 } from "@/components/Icons";
 
 type IconComponent = (props: { className?: string; size?: number }) => React.ReactElement;
@@ -238,6 +239,26 @@ export default function CheckQuiz() {
                     <p className="text-sm text-gray-500">
                       목·어깨·허리·골반·무릎·발목<br />
                       아픈 곳을 클릭하면 원인 분석을 해드려요
+                    </p>
+                  </div>
+                  <span className="text-gray-300 text-xl shrink-0">›</span>
+                </div>
+              </Link>
+
+              {/* AI 컨시어지 */}
+              <Link
+                href="/ask"
+                className="block bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:border-[#7B2D8B] transition-colors group"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-[#FAF5FB] flex items-center justify-center shrink-0 group-hover:bg-[#7B2D8B] transition-colors">
+                    <MessageSquareIcon className="text-[#7B2D8B] group-hover:text-white" size={24} />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-xs font-semibold text-[#9B4DAB] mb-1">AI 컨시어지</p>
+                    <h2 className="text-lg font-bold text-gray-900 mb-1">AI에게 물어보기</h2>
+                    <p className="text-sm text-gray-500">
+                      증상을 그대로 말하면 관련 글·셀프체크·운동을 찾아드려요
                     </p>
                   </div>
                   <span className="text-gray-300 text-xl shrink-0">›</span>
