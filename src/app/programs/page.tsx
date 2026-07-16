@@ -1,6 +1,5 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
 import KakaoButton from "@/components/KakaoButton";
@@ -144,8 +143,8 @@ export default function ProgramsPage() {
               {certs.map((c, i) => (
                 <div key={i} className="bg-white rounded-xl px-5 py-4 border border-purple-100 flex flex-col gap-1">
                   <p className="text-xs text-gray-400">{c.year}</p>
-                  <p className="text-xs font-semibold text-[#7B2D8B]">{c.title}</p>
-                  <p className="text-sm font-medium text-gray-800">{c.desc}</p>
+                  <p className="text-xs md:text-sm lg:text-base font-semibold text-[#7B2D8B]">{c.title}</p>
+                  <p className="text-sm md:text-base lg:text-lg font-medium text-gray-800">{c.desc}</p>
                 </div>
               ))}
             </div>
@@ -157,7 +156,7 @@ export default function ProgramsPage() {
           <div className="max-w-3xl mx-auto flex flex-col sm:flex-row gap-3 justify-center">
             {programs.map((p) => (
               <a key={p.id} href={`#${p.id}`}
-                className="flex-1 text-center border border-[#7B2D8B] text-[#7B2D8B] font-semibold py-3 px-4 rounded-full text-sm hover:bg-[#7B2D8B] hover:text-white transition-colors">
+                className="flex-1 text-center border border-[#7B2D8B] text-[#7B2D8B] font-semibold py-3 px-4 rounded-full text-sm md:text-base lg:text-lg hover:bg-[#7B2D8B] hover:text-white transition-colors">
                 {p.title}
               </a>
             ))}

@@ -41,7 +41,7 @@ export default function Header() {
             const isActive = pathname === link.href || pathname.startsWith(link.href + "/");
             return (
               <Link key={link.href} href={link.href}
-                className={`text-sm font-medium transition-colors relative ${
+                className={`text-sm md:text-base lg:text-lg font-medium transition-colors relative ${
                   isActive
                     ? "text-[#7B2D8B] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-[#7B2D8B] after:rounded-full"
                     : "text-gray-600 hover:text-[#7B2D8B]"
@@ -50,7 +50,7 @@ export default function Header() {
               </Link>
             );
           })}
-          <KakaoButton className="bg-[#7B2D8B] text-white text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-[#9B4DAB] transition-colors">
+          <KakaoButton className="bg-[#7B2D8B] text-white text-sm md:text-base lg:text-lg font-semibold px-5 py-2.5 rounded-full hover:bg-[#9B4DAB] transition-colors">
             무료 상담
           </KakaoButton>
         </nav>

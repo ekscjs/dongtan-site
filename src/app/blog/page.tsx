@@ -89,7 +89,7 @@ function BlogPageContent() {
                   setVisible(INITIAL_COUNT);
                   router.replace("/blog", { scroll: false });
                 }}
-                className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${
+                className={`px-4 py-1.5 rounded-full text-sm md:text-base lg:text-lg font-semibold transition-all ${
                   category === c
                     ? "bg-[#7B2D8B] text-white"
                     : "border border-gray-200 text-gray-500 hover:border-[#7B2D8B] hover:text-[#7B2D8B]"
@@ -135,7 +135,7 @@ function BlogPageContent() {
                         {post.title}
                       </h2>
                       {post.excerpt && (
-                        <p className="text-gray-500 text-sm leading-relaxed">{post.excerpt}</p>
+                        <p className="text-gray-500 text-sm md:text-base lg:text-lg leading-relaxed">{post.excerpt}</p>
                       )}
                     </Link>
                   </article>
@@ -150,7 +150,7 @@ function BlogPageContent() {
                       setVisible(next);
                       router.replace(`/blog?count=${next}`, { scroll: false });
                     }}
-                    className="border-2 border-[#7B2D8B] text-[#7B2D8B] font-bold px-8 py-3 rounded-full text-sm hover:bg-[#7B2D8B] hover:text-white transition-all"
+                    className="border-2 border-[#7B2D8B] text-[#7B2D8B] font-bold px-8 py-3 rounded-full text-sm md:text-base lg:text-lg hover:bg-[#7B2D8B] hover:text-white transition-all"
                   >
                     더보기
                   </button>

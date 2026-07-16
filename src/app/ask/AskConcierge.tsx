@@ -92,7 +92,7 @@ export default function AskConcierge() {
               <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
                 어떤 증상이<br />궁금하세요?
               </h1>
-              <p className="text-sm text-gray-500 mb-6">증상을 편하게 적어주시면, 동탄에서 실제 관리한 회원 사례로 쓴 글 중에서 답을 찾아드려요</p>
+              <p className="text-sm md:text-base lg:text-lg text-gray-500 mb-6">증상을 편하게 적어주시면, 동탄에서 실제 관리한 회원 사례로 쓴 글 중에서 답을 찾아드려요</p>
 
               <form
                 onSubmit={(e) => {
@@ -118,7 +118,7 @@ export default function AskConcierge() {
                 </button>
               </form>
 
-              {error && <p className="text-sm text-red-500 mt-3">{error}</p>}
+              {error && <p className="text-sm md:text-base lg:text-lg text-red-500 mt-3">{error}</p>}
 
               <div className="flex flex-wrap gap-2 mt-5">
                 {EXAMPLES.map((ex) => (
@@ -129,7 +129,7 @@ export default function AskConcierge() {
                       submit(ex);
                     }}
                     disabled={loading}
-                    className="text-xs bg-white border border-gray-200 text-gray-600 px-3.5 py-2 rounded-full hover:border-[#7B2D8B] hover:text-[#7B2D8B] transition-colors disabled:opacity-50"
+                    className="text-xs md:text-sm lg:text-base bg-white border border-gray-200 text-gray-600 px-3.5 py-2 rounded-full hover:border-[#7B2D8B] hover:text-[#7B2D8B] transition-colors disabled:opacity-50"
                   >
                     {ex}
                   </button>
@@ -148,7 +148,7 @@ export default function AskConcierge() {
             <>
               <div className="bg-red-50 border border-red-200 rounded-2xl p-6 text-center">
                 <p className="text-red-600 font-bold text-lg mb-2">병원(응급실) 먼저</p>
-                <p className="text-red-700 text-sm leading-relaxed">{result.answer}</p>
+                <p className="text-red-700 text-sm md:text-base lg:text-lg leading-relaxed">{result.answer}</p>
               </div>
               <button onClick={reset} className="w-full mt-5 text-sm text-gray-400 hover:text-gray-600 underline">
                 다시 물어보기
@@ -174,7 +174,7 @@ export default function AskConcierge() {
                         onClick={() => track("ai_ask_click_post", { slug: p.slug })}
                         className="block bg-white rounded-xl border border-gray-100 px-4 py-3.5 hover:border-[#7B2D8B] hover:bg-[#FAF5FB] transition-colors"
                       >
-                        <p className="font-semibold text-sm text-gray-900">{p.title}</p>
+                        <p className="font-semibold text-sm md:text-base lg:text-lg text-gray-900">{p.title}</p>
                       </Link>
                     ))}
                   </div>
@@ -197,7 +197,7 @@ export default function AskConcierge() {
                           <div className="w-9 h-9 rounded-lg bg-[#FAF5FB] flex items-center justify-center shrink-0 group-hover:bg-[#7B2D8B] transition-colors">
                             <ToolIcon className="text-[#7B2D8B] group-hover:text-white" size={18} />
                           </div>
-                          <p className="font-semibold text-sm text-gray-900 flex-1">{t.label}</p>
+                          <p className="font-semibold text-sm md:text-base lg:text-lg text-gray-900 flex-1">{t.label}</p>
                           <span className="text-gray-300">›</span>
                         </Link>
                       );
@@ -209,7 +209,7 @@ export default function AskConcierge() {
               {result.show_consult && (
                 <div className="mt-5 bg-gradient-to-br from-[#7B2D8B] to-[#9B4DAB] rounded-2xl p-6 text-center text-white">
                   <p className="font-bold mb-1">💬 정확한 건 상담에서</p>
-                  <p className="text-purple-200 text-sm mb-4">움직임을 직접 확인하고 맞춤 방향을 안내해 드려요</p>
+                  <p className="text-purple-200 text-sm md:text-base lg:text-lg mb-4">움직임을 직접 확인하고 맞춤 방향을 안내해 드려요</p>
                   <KakaoButton className="block w-full bg-white text-[#7B2D8B] font-bold py-3.5 rounded-full hover:bg-gray-100 transition-colors">
                     카카오로 상담하기
                   </KakaoButton>

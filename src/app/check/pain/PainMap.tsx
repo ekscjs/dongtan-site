@@ -180,7 +180,7 @@ function ChecklistView({
             <button
               key={i}
               onClick={() => toggle(i)}
-              className={`w-full text-left px-4 py-4 rounded-xl border text-sm font-medium flex items-center gap-3 transition-colors ${
+              className={`w-full text-left px-4 py-4 rounded-xl border text-sm md:text-base lg:text-lg font-medium flex items-center gap-3 transition-colors ${
                 checked[i]
                   ? "border-[#7B2D8B] bg-[#FAF5FB] text-[#7B2D8B]"
                   : "border-gray-200 text-gray-700 hover:border-[#9B4DAB] hover:bg-[#FAF5FB]"
@@ -280,11 +280,11 @@ function ResultView({
           {selected.map((k) => painAreas[k].label).join("·")} 체크 완료
         </h2>
         {hasSerious ? (
-          <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-sm text-amber-800 mb-2">
+          <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-sm md:text-base lg:text-lg text-amber-800 mb-2">
             ⚠️ 정밀 평가가 필요한 패턴이 발견됐습니다. 전문가 점검을 권해드립니다.
           </div>
         ) : (
-          <div className="bg-green-50 border border-green-200 rounded-xl px-4 py-3 text-sm text-green-800 mb-2">
+          <div className="bg-green-50 border border-green-200 rounded-xl px-4 py-3 text-sm md:text-base lg:text-lg text-green-800 mb-2">
             ✓ 큰 이상 신호는 없지만, 지금 관리하면 더 좋아질 수 있어요.
           </div>
         )}
@@ -307,13 +307,13 @@ function ResultView({
                     </span>
                   )}
                 </div>
-                <p className="font-semibold text-gray-900 text-sm mb-1">{f.title}</p>
-                <p className="text-xs text-gray-500 leading-relaxed">{f.desc}</p>
+                <p className="font-semibold text-gray-900 text-sm md:text-base lg:text-lg mb-1">{f.title}</p>
+                <p className="text-xs md:text-sm lg:text-base text-gray-500 leading-relaxed">{f.desc}</p>
               </div>
             ))}
           </div>
           {findings.length === 0 && (
-            <p className="text-sm text-gray-500">선택한 항목 기준으로 큰 이상 패턴이 없습니다.</p>
+            <p className="text-sm md:text-base lg:text-lg text-gray-500">선택한 항목 기준으로 큰 이상 패턴이 없습니다.</p>
           )}
         </div>
       )}
@@ -340,7 +340,7 @@ function ResultView({
       {posts && posts.length > 0 && (
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
           <h3 className="font-bold text-gray-900 mb-1">관련 칼럼</h3>
-          <p className="text-sm text-gray-500 mb-4">원인과 해결 방향을 더 알아보세요</p>
+          <p className="text-sm md:text-base lg:text-lg text-gray-500 mb-4">원인과 해결 방향을 더 알아보세요</p>
           <div className="space-y-2.5">
             {posts.map((p) => (
               <Link
@@ -348,8 +348,8 @@ function ResultView({
                 href={`/blog/${p.slug}`}
                 className="block rounded-xl border border-gray-100 px-4 py-3 hover:border-[#7B2D8B] hover:bg-[#FAF5FB] transition-colors"
               >
-                <p className="font-semibold text-sm text-gray-900 line-clamp-1">{p.title}</p>
-                {p.excerpt && <p className="text-xs text-gray-500 mt-0.5 line-clamp-1">{p.excerpt}</p>}
+                <p className="font-semibold text-sm md:text-base lg:text-lg text-gray-900 line-clamp-1">{p.title}</p>
+                {p.excerpt && <p className="text-xs md:text-sm lg:text-base text-gray-500 mt-0.5 line-clamp-1">{p.excerpt}</p>}
               </Link>
             ))}
           </div>
@@ -361,12 +361,12 @@ function ResultView({
         <p className="text-white font-bold text-lg mb-1">
           AI 분석 결과, 정확한 평가는<br />움직임 검사까지 해야 합니다.
         </p>
-        <p className="text-purple-200 text-sm mb-5">
+        <p className="text-purple-200 text-sm md:text-base lg:text-lg mb-5">
           센터에서는 이 결과를 바탕으로 실제 움직임을 확인하고 맞춤 운동 방향을 안내해 드립니다.
         </p>
         <div className="bg-white rounded-xl p-4 mb-5 text-left">
           <p className="text-xs font-semibold text-gray-500 mb-2">센터 1회 체험 포함</p>
-          <div className="space-y-1.5 text-sm text-gray-700">
+          <div className="space-y-1.5 text-sm md:text-base lg:text-lg text-gray-700">
             {["움직임 평가", "체형측정", "관절 가동성 확인", "맞춤 운동 설계"].map((item) => (
               <div key={item} className="flex items-center gap-2">
                 <span className="text-[#7B2D8B]">✓</span> {item}
@@ -399,7 +399,7 @@ function ResultView({
       >
         <p className="text-sm font-semibold text-[#9B4DAB] mb-1">체형 유형 확인도 해볼까요?</p>
         <p className="font-bold text-gray-900 mb-1">1분 셀프체크 → 7일 교정 루틴</p>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm md:text-base lg:text-lg text-gray-500">
           거북목·골반·허리·전신 — 내 몸 유형을 확인하고 루틴을 받아보세요 →
         </p>
       </Link>
@@ -462,7 +462,7 @@ export default function PainMap() {
                 <h1 className="text-2xl font-bold text-gray-900 mb-2">
                   아픈 부위를 선택하세요
                 </h1>
-                <p className="text-sm text-gray-500 mb-6">복수 선택 가능 · 클릭하면 체크리스트가 뜹니다</p>
+                <p className="text-sm md:text-base lg:text-lg text-gray-500 mb-6">복수 선택 가능 · 클릭하면 체크리스트가 뜹니다</p>
 
                 <BodySVG selected={selected} onToggle={toggleArea} />
 
@@ -474,7 +474,7 @@ export default function PainMap() {
                       <button
                         key={k}
                         onClick={() => toggleArea(k)}
-                        className={`px-4 py-2 rounded-full text-sm font-semibold border transition-colors ${
+                        className={`px-4 py-2 rounded-full text-sm md:text-base lg:text-lg font-semibold border transition-colors ${
                           active
                             ? "bg-[#7B2D8B] text-white border-[#7B2D8B]"
                             : "bg-white text-gray-600 border-gray-200 hover:border-[#7B2D8B] hover:text-[#7B2D8B]"

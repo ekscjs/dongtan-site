@@ -285,7 +285,7 @@ export default function Home() {
                   href="https://maps.google.com/?q=내몸에미소+경기도+화성시+동탄+지성로+134"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-[#7B2D8B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#6a2578] transition-colors text-center"
+                  className="bg-[#7B2D8B] text-white font-bold px-6 py-3 rounded-full text-sm md:text-base lg:text-lg hover:bg-[#6a2578] transition-colors text-center"
                 >
                   구글 지도로 보기
                 </a>
@@ -293,7 +293,7 @@ export default function Home() {
                   href="https://map.naver.com/p/entry/place/1101035370"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="border border-[#7B2D8B] text-[#7B2D8B] font-bold px-6 py-3 rounded-full text-sm hover:bg-purple-50 transition-colors text-center"
+                  className="border border-[#7B2D8B] text-[#7B2D8B] font-bold px-6 py-3 rounded-full text-sm md:text-base lg:text-lg hover:bg-purple-50 transition-colors text-center"
                 >
                   네이버 지도로 보기
                 </a>

@@ -192,7 +192,7 @@ export default async function BlogPostPage({
                   className="flex-1 group flex flex-col gap-1 p-4 rounded-xl border border-gray-100 hover:border-[#7B2D8B] hover:bg-[#FAF5FB] transition-colors"
                 >
                   <span className="text-xs text-gray-400 group-hover:text-[#7B2D8B]">← 이전 글</span>
-                  <span className="text-sm font-medium text-gray-700 group-hover:text-[#7B2D8B] line-clamp-2">
+                  <span className="text-sm md:text-base lg:text-lg font-medium text-gray-700 group-hover:text-[#7B2D8B] line-clamp-2">
                     {prev.title}
                   </span>
                 </Link>
@@ -206,7 +206,7 @@ export default async function BlogPostPage({
                   className="flex-1 group flex flex-col gap-1 p-4 rounded-xl border border-gray-100 hover:border-[#7B2D8B] hover:bg-[#FAF5FB] transition-colors text-right"
                 >
                   <span className="text-xs text-gray-400 group-hover:text-[#7B2D8B]">다음 글 →</span>
-                  <span className="text-sm font-medium text-gray-700 group-hover:text-[#7B2D8B] line-clamp-2">
+                  <span className="text-sm md:text-base lg:text-lg font-medium text-gray-700 group-hover:text-[#7B2D8B] line-clamp-2">
                     {next.title}
                   </span>
                 </Link>

@@ -200,7 +200,7 @@ export default function CheckQuiz() {
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
               어떤 방식으로<br />확인해볼까요?
             </h1>
-            <p className="text-sm text-gray-500 mb-8">셋 다 무료 · 1~3분이면 완료됩니다</p>
+            <p className="text-sm md:text-base lg:text-lg text-gray-500 mb-8">셋 다 무료 · 1~3분이면 완료됩니다</p>
 
             <div className="space-y-4">
               {/* 체형 유형 진단 */}
@@ -215,7 +215,7 @@ export default function CheckQuiz() {
                   <div className="flex-1">
                     <p className="text-sm font-semibold text-[#9B4DAB] mb-1">1분 셀프체크</p>
                     <h2 className="text-lg font-bold text-gray-900 mb-1">체형 유형 확인</h2>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm md:text-base lg:text-lg text-gray-500">
                       거북목 / 골반 / 허리 / 전신<br />
                       내 몸 유형을 파악하고 7일 교정 루틴을 받아보세요
                     </p>
@@ -236,7 +236,7 @@ export default function CheckQuiz() {
                   <div className="flex-1">
                     <p className="text-sm font-semibold text-[#9B4DAB] mb-1">통증지도</p>
                     <h2 className="text-lg font-bold text-gray-900 mb-1">통증 부위 체크</h2>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm md:text-base lg:text-lg text-gray-500">
                       목·어깨·허리·골반·무릎·발목<br />
                       아픈 곳을 클릭하면 원인 분석을 해드려요
                     </p>
@@ -258,7 +258,7 @@ export default function CheckQuiz() {
                   <div className="flex-1">
                     <p className="text-sm font-semibold text-[#9B4DAB] mb-1">미소AI</p>
                     <h2 className="text-lg font-bold text-gray-900 mb-1">미소AI에게 물어보기</h2>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm md:text-base lg:text-lg text-gray-500">
                       동탄에서 실제 관리한 회원 사례로 쓴 글 중에서 답을 찾아드려요
                     </p>
                   </div>
@@ -335,7 +335,7 @@ export default function CheckQuiz() {
             <p className="text-[#7B2D8B] font-semibold mb-5">{t.oneLiner}</p>
           </div>
           <p className="text-gray-600 leading-relaxed mb-3">{t.why}</p>
-          <p className="text-sm text-gray-500 bg-[#FAF5FB] rounded-xl px-4 py-3 mb-8 flex items-start gap-2"><LightbulbIcon className="text-[#9B4DAB] shrink-0 mt-0.5" size={16} />{saved.risk.note}</p>
+          <p className="text-sm md:text-base lg:text-lg text-gray-500 bg-[#FAF5FB] rounded-xl px-4 py-3 mb-8 flex items-start gap-2"><LightbulbIcon className="text-[#9B4DAB] shrink-0 mt-0.5" size={16} />{saved.risk.note}</p>
           <button
             onClick={startRoutine}
             className="w-full bg-[#7B2D8B] text-white font-bold py-4 px-6 rounded-full hover:bg-[#6a2578] transition-colors mb-3"
@@ -376,7 +376,7 @@ export default function CheckQuiz() {
           <div className="w-full bg-gray-200 rounded-full h-2 mb-1">
             <div className="bg-[#7B2D8B] h-2 rounded-full transition-all duration-500" style={{ width: `${(done.length / 7) * 100}%` }} />
           </div>
-          <p className="text-sm text-gray-500 mb-6">
+          <p className="text-sm md:text-base lg:text-lg text-gray-500 mb-6">
             {allDone ? "7일 완주! 정말 잘하셨어요" : `${done.length}일째 함께하고 있어요`}
           </p>
 
@@ -414,7 +414,7 @@ export default function CheckQuiz() {
                               <Image src={d.imageUrl} alt={d.title} fill className="object-cover transition-opacity duration-300 opacity-0 [&.loaded]:opacity-100" onLoad={(e) => e.currentTarget.classList.add("loaded")} />
                             </div>
                           )}
-                          <p className="text-sm text-gray-600 mt-1 leading-relaxed">{d.how}</p>
+                          <p className="text-sm md:text-base lg:text-lg text-gray-600 mt-1 leading-relaxed">{d.how}</p>
                           <p className="text-xs text-[#7B2D8B] mt-1 flex items-center gap-1"><ArrowRightIcon size={12} />{d.point}</p>
                         </>
                       )}
@@ -434,7 +434,7 @@ export default function CheckQuiz() {
           </div>
 
           {!allDone && !canDoToday && (
-            <p className="text-center text-sm text-gray-500 mt-6 bg-[#FAF5FB] rounded-xl py-3">
+            <p className="text-center text-sm md:text-base lg:text-lg text-gray-500 mt-6 bg-[#FAF5FB] rounded-xl py-3">
               오늘 동작 완료! 내일 Day {nextDay}가 열려요
             </p>
           )}
@@ -622,7 +622,7 @@ function RelatedContent({ type }: { type: TypeKey }) {
     return (
       <div className="mt-5 bg-white rounded-2xl p-6 border border-gray-100 text-center">
         <p className="font-bold text-gray-900 mb-1">원장 칼럼 더 보기</p>
-        <p className="text-sm text-gray-500 mb-4">내 유형과 관련된 글을 읽어보세요</p>
+        <p className="text-sm md:text-base lg:text-lg text-gray-500 mb-4">내 유형과 관련된 글을 읽어보세요</p>
         <Link
           href="/blog"
           className="inline-block bg-[#FAF5FB] text-[#7B2D8B] font-semibold py-2.5 px-6 rounded-full hover:bg-[#f0e4f3] transition-colors"
@@ -636,7 +636,7 @@ function RelatedContent({ type }: { type: TypeKey }) {
   return (
     <div className="mt-5 bg-white rounded-2xl p-6 border border-gray-100">
       <p className="font-bold text-gray-900 mb-1">내 유형과 관련된 칼럼</p>
-      <p className="text-sm text-gray-500 mb-4">왜 이런 몸이 됐는지 더 알아보세요</p>
+      <p className="text-sm md:text-base lg:text-lg text-gray-500 mb-4">왜 이런 몸이 됐는지 더 알아보세요</p>
       <div className="space-y-2.5">
         {posts.map((p) => (
           <Link
@@ -644,14 +644,14 @@ function RelatedContent({ type }: { type: TypeKey }) {
             href={`/blog/${p.slug}`}
             className="block rounded-xl border border-gray-100 px-4 py-3 hover:border-[#7B2D8B] hover:bg-[#FAF5FB] transition-colors"
           >
-            <p className="font-semibold text-sm text-gray-900 line-clamp-1">{p.title}</p>
-            {p.excerpt && <p className="text-xs text-gray-500 mt-0.5 line-clamp-1">{p.excerpt}</p>}
+            <p className="font-semibold text-sm md:text-base lg:text-lg text-gray-900 line-clamp-1">{p.title}</p>
+            {p.excerpt && <p className="text-xs md:text-sm lg:text-base text-gray-500 mt-0.5 line-clamp-1">{p.excerpt}</p>}
           </Link>
         ))}
       </div>
       <Link
         href="/blog"
-        className="block text-center text-sm text-[#7B2D8B] font-semibold mt-4 hover:underline"
+        className="block text-center text-sm md:text-base lg:text-lg text-[#7B2D8B] font-semibold mt-4 hover:underline"
       >
         전체 칼럼 보기 →
       </Link>
@@ -668,7 +668,7 @@ function ClassPromo() {
     >
       <p className="text-sm font-semibold text-[#9B4DAB] uppercase tracking-widest mb-1">바디 리셋 세션</p>
       <p className="font-bold text-gray-900 mb-1">운동보다 먼저 해야 할 것 · 2시간</p>
-      <p className="text-sm text-gray-500">
+      <p className="text-sm md:text-base lg:text-lg text-gray-500">
         잠든 근육을 깨우는 2시간 1:1 세션 →
       </p>
     </Link>
@@ -681,7 +681,7 @@ function CenterCTA({ highlight = false }: { highlight?: boolean }) {
       <p className={`font-bold mb-1 ${highlight ? "text-white" : "text-gray-900"}`}>
         막힌 방향, 센터에서 정확히 짚어드려요
       </p>
-      <p className={`text-sm mb-5 ${highlight ? "text-purple-200" : "text-gray-500"}`}>
+      <p className={`text-sm md:text-base lg:text-lg mb-5 ${highlight ? "text-purple-200" : "text-gray-500"}`}>
         동탄 내몸에미소 · 1:1 정밀 측정 · 무료 상담
       </p>
       <div className="flex flex-col sm:flex-row gap-3">
@@ -718,7 +718,7 @@ function CrossPromo({ to }: { to: "pain" | "quiz" | "ask" }) {
       >
         <p className="text-sm font-semibold text-[#9B4DAB] mb-1">통증지도도 해볼까요?</p>
         <p className="font-bold text-gray-900 mb-1">아픈 부위 클릭 → 원인 분석</p>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm md:text-base lg:text-lg text-gray-500">
           목·어깨·허리·골반·무릎·발목 중 불편한 곳을 골라보세요 →
         </p>
       </Link>
@@ -732,7 +732,7 @@ function CrossPromo({ to }: { to: "pain" | "quiz" | "ask" }) {
       >
         <p className="text-sm font-semibold text-[#9B4DAB] mb-1">미소AI에게도 물어볼까요?</p>
         <p className="font-bold text-gray-900 mb-1">증상 말하면 관련 글 찾아드려요</p>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm md:text-base lg:text-lg text-gray-500">
           동탄에서 실제 관리한 회원 사례로 쓴 글 중에서 답을 찾아드려요 →
         </p>
       </Link>
@@ -745,7 +745,7 @@ function CrossPromo({ to }: { to: "pain" | "quiz" | "ask" }) {
     >
       <p className="text-sm font-semibold text-[#9B4DAB] mb-1">체형 유형 확인도 해볼까요?</p>
       <p className="font-bold text-gray-900 mb-1">1분 셀프체크 → 7일 교정 루틴</p>
-      <p className="text-sm text-gray-500">
+      <p className="text-sm md:text-base lg:text-lg text-gray-500">
         거북목·골반·허리·전신 — 내 몸 유형을 확인하고 루틴을 받아보세요 →
       </p>
     </Link>

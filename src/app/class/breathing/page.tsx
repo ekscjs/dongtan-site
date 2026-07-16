@@ -120,7 +120,7 @@ export default function BodyResetSessionPage() {
             <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 text-center mb-2">
               2시간, 이렇게 진행돼요
             </h2>
-            <p className="text-sm text-gray-500 text-center mb-8">
+            <p className="text-sm md:text-base lg:text-lg text-gray-500 text-center mb-8">
               원장이 처음부터 끝까지 직접 함께합니다
             </p>
             <div className="space-y-4">
@@ -132,7 +132,7 @@ export default function BodyResetSessionPage() {
                       <p className="font-bold text-gray-900">{f.title}</p>
                       <span className="text-xs text-gray-400">{f.min}</span>
                     </div>
-                    <p className="text-sm text-gray-600 mt-1 leading-relaxed">{f.desc}</p>
+                    <p className="text-sm md:text-base lg:text-lg text-gray-600 mt-1 leading-relaxed">{f.desc}</p>
                   </div>
                 </div>
               ))}
@@ -182,7 +182,7 @@ export default function BodyResetSessionPage() {
         <section id="apply" className="px-4 py-12 bg-white scroll-mt-20">
           <div className="max-w-xl mx-auto">
             <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 text-center mb-2">신청하기</h2>
-            <p className="text-sm text-gray-500 text-center mb-6">
+            <p className="text-sm md:text-base lg:text-lg text-gray-500 text-center mb-6">
               신청 후 원장이 직접 연락드려 일정을 조율합니다
             </p>
             <LeadForm

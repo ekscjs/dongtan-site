@@ -165,13 +165,13 @@ export default function AboutPage() {
             </div>
             <div className="bg-gray-50 rounded-2xl p-8 space-y-3">
               <p className="text-gray-700 font-medium">경기도 화성시 동탄 지성로 134 5층</p>
-              <p className="text-gray-500 text-sm">카카오맵, 네이버 지도에서 "내몸에미소"로 검색하세요.</p>
+              <p className="text-gray-500 text-sm md:text-base lg:text-lg">카카오맵, 네이버 지도에서 "내몸에미소"로 검색하세요.</p>
               <div className="flex gap-3 pt-1">
                 <a
                   href="https://maps.google.com/?q=내몸에미소+경기도+화성시+동탄+지성로+134"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-[#7B2D8B] text-white font-bold px-5 py-2.5 rounded-full text-sm hover:bg-[#6a2578] transition-colors"
+                  className="bg-[#7B2D8B] text-white font-bold px-5 py-2.5 rounded-full text-sm md:text-base lg:text-lg hover:bg-[#6a2578] transition-colors"
                 >
                   구글 지도
                 </a>
@@ -179,7 +179,7 @@ export default function AboutPage() {
                   href="https://map.naver.com/p/entry/place/1101035370"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="border border-[#7B2D8B] text-[#7B2D8B] font-bold px-5 py-2.5 rounded-full text-sm hover:bg-purple-50 transition-colors"
+                  className="border border-[#7B2D8B] text-[#7B2D8B] font-bold px-5 py-2.5 rounded-full text-sm md:text-base lg:text-lg hover:bg-purple-50 transition-colors"
                 >
                   네이버 지도
                 </a>
