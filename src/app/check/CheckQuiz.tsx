@@ -7,6 +7,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import KakaoButton from "@/components/KakaoButton";
 import { supabase } from "@/lib/supabase";
+import { getOrCreateVisitorId } from "@/lib/visitor";
 import {
   questions,
   resultTypes,
@@ -62,6 +63,44 @@ function track(event: string, properties?: Record<string, unknown>) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ event, properties: properties ?? {} }),
+  }).catch(() => {});
+}
+
+// data.ts questions 순서와 동일 — 각 문항의 선택지를 의미 있는 필드명으로 매핑
+const SELF_CHECK_FIELDS = [
+  "sitting_hours",
+  "main_area",
+  "worse_when",
+  "forward_head",
+  "round_shoulder",
+  "uneven_stance",
+  "temporary_relief",
+  "pain_severity",
+] as const;
+
+function saveSelfCheck(
+  answers: number[],
+  type: TypeKey,
+  risk: { label: string; score: number },
+  isRetest: boolean
+) {
+  const fields: Record<string, string> = {};
+  SELF_CHECK_FIELDS.forEach((key, i) => {
+    const opt = questions[i]?.options[answers[i]];
+    if (opt) fields[key] = opt.label;
+  });
+  fetch("/api/self-check", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      anon_id: getOrCreateVisitorId(),
+      ...fields,
+      answers_raw: answers,
+      result_type: type,
+      risk_label: risk.label,
+      risk_score: risk.score,
+      is_retest: isRetest,
+    }),
   }).catch(() => {});
 }
 
@@ -143,6 +182,7 @@ export default function CheckQuiz() {
       save(updated);
       setSaved(updated);
       track("self_check_retest", { type, risk: risk.label });
+      saveSelfCheck(next, type, risk, true);
       setView("retest"); // 결과 비교 화면(아래 retest 뷰가 결과 표시)
       setStep(questions.length);
     } else {
@@ -155,6 +195,7 @@ export default function CheckQuiz() {
       save(s);
       setSaved(s);
       track("self_check_complete", { type, risk: risk.label });
+      saveSelfCheck(next, type, risk, false);
       setView("result");
     }
   }

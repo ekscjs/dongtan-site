@@ -204,5 +204,6 @@ export function scoreToRisk(answers: number[]) {
   answers.forEach((optIdx, qIdx) => {
     r += questions[qIdx]?.options[optIdx]?.risk ?? 0;
   });
-  return riskLevels.find((l) => r <= l.max) ?? riskLevels[riskLevels.length - 1];
+  const level = riskLevels.find((l) => r <= l.max) ?? riskLevels[riskLevels.length - 1];
+  return { ...level, score: r };
 }
