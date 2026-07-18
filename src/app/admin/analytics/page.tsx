@@ -238,16 +238,28 @@ export default function AnalyticsPage() {
 
   const fetchData = useCallback(async () => {
     setLoading(true);
-    try {
-      const res = await fetch("/api/admin/analytics");
-      if (res.status === 401) { router.push("/admin"); return; }
-      const json = await res.json();
-      if (json.error) throw new Error(json.error);
-      setData(json);
-    } catch (e) {
-      setError(String(e));
-    } finally {
-      setLoading(false);
+    setError("");
+    const maxRetries = 2;
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 15000);
+        const res = await fetch("/api/admin/analytics", { signal: controller.signal });
+        clearTimeout(timeout);
+        if (res.status === 401) { router.push("/admin"); return; }
+        const json = await res.json();
+        if (json.error) throw new Error(json.error);
+        setData(json);
+        setLoading(false);
+        return;
+      } catch (e) {
+        if (attempt === maxRetries) {
+          setError(String(e));
+          setLoading(false);
+          return;
+        }
+        await new Promise((r) => setTimeout(r, 800 * (attempt + 1))); // 800ms, 1600ms 대기 후 재시도
+      }
     }
   }, [router]);
 
