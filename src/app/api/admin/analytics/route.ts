@@ -9,19 +9,22 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const now = new Date();
+  // KST(UTC+9) 기준 날짜 계산 — 서버는 UTC로 도니, 날짜 경계는 한국 기준으로 따로 맞춰야 함
+  const KST_OFFSET_MS = 9 * 60 * 60 * 1000;
+  // 특정 시각의 KST 날짜 문자열(YYYY-MM-DD)
+  const kstDateStr = (d: Date) => new Date(d.getTime() + KST_OFFSET_MS).toISOString().slice(0, 10);
+  // daysAgo일 전 KST 자정에 해당하는 실제 UTC 시각
+  const kstMidnightUtc = (daysAgo: number) => {
+    const shifted = new Date(Date.now() + KST_OFFSET_MS);
+    shifted.setUTCHours(0, 0, 0, 0);
+    shifted.setUTCDate(shifted.getUTCDate() - daysAgo);
+    return new Date(shifted.getTime() - KST_OFFSET_MS);
+  };
 
   // 날짜 범위 계산
-  const todayStart = new Date(now);
-  todayStart.setHours(0, 0, 0, 0);
-
-  const weekStart = new Date(now);
-  weekStart.setDate(weekStart.getDate() - 7);
-  weekStart.setHours(0, 0, 0, 0);
-
-  const monthStart = new Date(now);
-  monthStart.setDate(monthStart.getDate() - 30);
-  monthStart.setHours(0, 0, 0, 0);
+  const todayStart = kstMidnightUtc(0);
+  const weekStart = kstMidnightUtc(7);
+  const monthStart = kstMidnightUtc(30);
 
   const fmt = (d: Date) => d.toISOString();
 
@@ -109,7 +112,7 @@ export async function GET(req: NextRequest) {
     // 날짜별 방문자 집계
     const dailyMap: Record<string, Set<string>> = {};
     for (const row of dailyRes.data ?? []) {
-      const date = row.created_at.slice(0, 10); // YYYY-MM-DD
+      const date = kstDateStr(new Date(row.created_at)); // YYYY-MM-DD (KST)
       if (!dailyMap[date]) dailyMap[date] = new Set();
       // page_views에서 visitor_id가 없으면 created_at으로 대체
     }
@@ -128,7 +131,7 @@ export async function GET(req: NextRequest) {
 
     const dailyVisitors: Record<string, Set<string>> = {};
     for (const row of dailyWithVisitor.data ?? []) {
-      const date = row.created_at.slice(0, 10);
+      const date = kstDateStr(new Date(row.created_at));
       if (!dailyVisitors[date]) dailyVisitors[date] = new Set();
       if (row.visitor_id) dailyVisitors[date].add(row.visitor_id);
     }
@@ -139,14 +142,14 @@ export async function GET(req: NextRequest) {
     // 날짜별 페이지뷰 총량 (신청 전환율 분모 — 방문자 수가 아닌 페이지뷰 수 기준)
     const pageviewCountsByDate: Record<string, number> = {};
     for (const row of dailyWithVisitor.data ?? []) {
-      const date = row.created_at.slice(0, 10);
+      const date = kstDateStr(new Date(row.created_at));
       pageviewCountsByDate[date] = (pageviewCountsByDate[date] ?? 0) + 1;
     }
 
     // 날짜별 신청(leads) 건수
     const leadsCountsByDate: Record<string, number> = {};
     for (const row of leadsRes.data ?? []) {
-      const date = row.created_at.slice(0, 10);
+      const date = kstDateStr(new Date(row.created_at));
       leadsCountsByDate[date] = (leadsCountsByDate[date] ?? 0) + 1;
     }
 
@@ -174,7 +177,7 @@ export async function GET(req: NextRequest) {
     // 카카오 상담 버튼 클릭 — 날짜별 집계
     const kakaoCountsByDate: Record<string, number> = {};
     for (const row of kakaoRes.data ?? []) {
-      const date = row.created_at.slice(0, 10);
+      const date = kstDateStr(new Date(row.created_at));
       kakaoCountsByDate[date] = (kakaoCountsByDate[date] ?? 0) + 1;
     }
     const kakaoChart = Object.entries(kakaoCountsByDate)
@@ -185,7 +188,7 @@ export async function GET(req: NextRequest) {
     // 월별 방문자 집계 (연간 차트)
     const monthlyVisitors: Record<string, Set<string>> = {};
     for (const row of allTimeRes.data ?? []) {
-      const month = row.created_at.slice(0, 7); // YYYY-MM
+      const month = kstDateStr(new Date(row.created_at)).slice(0, 7); // YYYY-MM (KST)
       if (!monthlyVisitors[month]) monthlyVisitors[month] = new Set();
       if (row.visitor_id) monthlyVisitors[month].add(row.visitor_id);
     }
