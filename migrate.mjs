@@ -13,6 +13,7 @@ const supabase = createClient(env.NEXT_PUBLIC_SUPABASE_URL, env.SUPABASE_SERVICE
 const sqls = [
   `ALTER TABLE posts ADD COLUMN IF NOT EXISTS tag text`,
   `ALTER TABLE posts ADD COLUMN IF NOT EXISTS excerpt text`,
+  `ALTER TABLE posts ADD COLUMN IF NOT EXISTS gbp_posted_at timestamptz`,
 ];
 
 for (const sql of sqls) {
@@ -46,13 +47,14 @@ for (const sql of sqls) {
 // 테이블 컬럼 확인
 const { data } = await supabase
   .from('posts')
-  .select('id, tag, excerpt')
+  .select('id, tag, excerpt, gbp_posted_at')
   .limit(1);
 
 if (data) {
-  console.log('\n✅ tag, excerpt 컬럼 정상 확인됨');
+  console.log('\n✅ tag, excerpt, gbp_posted_at 컬럼 정상 확인됨');
 } else {
   console.log('\n아직 컬럼이 없음. Supabase SQL 에디터에서 직접 실행하세요:');
   console.log('ALTER TABLE posts ADD COLUMN IF NOT EXISTS tag text;');
   console.log('ALTER TABLE posts ADD COLUMN IF NOT EXISTS excerpt text;');
+  console.log('ALTER TABLE posts ADD COLUMN IF NOT EXISTS gbp_posted_at timestamptz;');
 }
