@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { supabase, type Post } from "@/lib/supabase";
 import { report4050, findings4050 } from "../data";
+import FindingsGrid from "../FindingsGrid";
 
 export const revalidate = 3600;
 
@@ -93,21 +94,7 @@ export default async function Report4050Page() {
             <p className="text-gray-500 text-sm md:text-base mb-6">
               측정된 각도·점수의 평균입니다. 정상 범위와 비교한 값이 아니라, 저희가 실제로 측정한 값 그대로입니다.
             </p>
-            <div className="grid grid-cols-2 gap-3 md:gap-4">
-              {findings4050.map((f) => (
-                <div key={f.label} className="bg-white rounded-2xl p-5 border border-gray-100">
-                  <p className="text-xs md:text-sm text-gray-500 mb-1">{f.label}</p>
-                  <p className="text-2xl md:text-3xl font-bold text-[#7B2D8B]">
-                    {f.value}<span className="text-base md:text-lg font-semibold ml-0.5">{f.unit}</span>
-                  </p>
-                  <p className="text-xs text-gray-400 mt-1">
-                    N={f.n}
-                    {f.range ? ` · 범위 ${f.range}` : ""}
-                  </p>
-                  {f.note && <p className="text-xs text-gray-400 mt-0.5">{f.note}</p>}
-                </div>
-              ))}
-            </div>
+            <FindingsGrid findings={findings4050} />
           </section>
 
           {/* 4. 실제 사례 연결 */}
@@ -138,7 +125,8 @@ export default async function Report4050Page() {
           </section>
 
           {/* 7. 업데이트 표시 */}
-          <div className="border-t border-gray-100 pt-6 text-sm text-gray-400">
+          <div className="border-t border-gray-100 pt-6 flex items-center gap-2 text-sm text-gray-400">
+            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse shrink-0" />
             표본 {report4050.sampleSize}명 · 마지막 업데이트 {report4050.lastUpdated} · 다음 업데이트 예정 {report4050.nextUpdate}
           </div>
         </div>

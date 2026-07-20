@@ -3,6 +3,7 @@ export type Finding = {
   value: string;
   unit: string;
   n: number;
+  max: number; // 막대 기준폭 — 각도항목 0~60°, 점수항목 0~100점
   range?: string;
   note?: string;
 };
@@ -32,12 +33,12 @@ export const report4050: ReportMeta = {
 //   → 부분측정 4명은 "뷰당 최저점 지표 2개만" 선택 저장되는 구조라 포함 시 편향됨
 // 움직임평가 총점(발끝잡기·Apley): 스키마 무관 10명 전원 존재해 전체 합산
 export const findings4050: Finding[] = [
-  { label: "거북목각도", value: "30.55", unit: "°", n: 12, range: "27.4~34.7°" },
-  { label: "라운드숄더각도", value: "45.3", unit: "°", n: 12 },
-  { label: "골반전방경사각도", value: "7.02", unit: "°", n: 12, range: "4.6~8.3°" },
-  { label: "요추각도", value: "51.3", unit: "°", n: 12 },
-  { label: "오버헤드스쿼트 · 무릎안정성", value: "57.3", unit: "점", n: 6, note: "0~100점, 높을수록 안정적" },
-  { label: "오버헤드스쿼트 · 어깨안정성", value: "41.33", unit: "점", n: 6, note: "0~100점, 높을수록 안정적" },
-  { label: "발끝잡기", value: "64.8", unit: "점", n: 10, note: "0~100점, 높을수록 유연함" },
-  { label: "Apley 우측", value: "55.6", unit: "점", n: 10, note: "0~100점, 어깨 가동성 평가" },
+  { label: "거북목각도", value: "30.55", unit: "°", n: 12, max: 60, range: "27.4~34.7°" },
+  { label: "라운드숄더각도", value: "45.3", unit: "°", n: 12, max: 60 },
+  { label: "골반전방경사각도", value: "7.02", unit: "°", n: 12, max: 60, range: "4.6~8.3°" },
+  { label: "요추각도", value: "51.3", unit: "°", n: 12, max: 60 },
+  { label: "오버헤드스쿼트 · 무릎안정성", value: "57.3", unit: "점", n: 6, max: 100, note: "0~100점, 높을수록 안정적" },
+  { label: "오버헤드스쿼트 · 어깨안정성", value: "41.33", unit: "점", n: 6, max: 100, note: "0~100점, 높을수록 안정적" },
+  { label: "발끝잡기", value: "64.8", unit: "점", n: 10, max: 100, note: "0~100점, 높을수록 유연함" },
+  { label: "Apley 우측", value: "55.6", unit: "점", n: 10, max: 100, note: "0~100점, 어깨 가동성 평가" },
 ];
