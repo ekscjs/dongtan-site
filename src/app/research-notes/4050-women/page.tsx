@@ -3,8 +3,10 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { supabase, type Post } from "@/lib/supabase";
-import { report4050, findings4050 } from "../data";
+import { report4050, movementFindings4050, angleScores4050 } from "../data";
 import FindingsGrid from "../FindingsGrid";
+import TopIssues from "../TopIssues";
+import DistributionBars from "../DistributionBars";
 
 export const revalidate = 3600;
 
@@ -90,11 +92,22 @@ export default async function Report4050Page() {
 
           {/* 3. 핵심 발견 */}
           <section className="mb-12">
-            <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">관찰된 평균 수치</h2>
-            <p className="text-gray-500 text-sm md:text-base mb-6">
-              측정된 각도·점수의 평균입니다. 정상 범위와 비교한 값이 아니라, 저희가 실제로 측정한 값 그대로입니다.
+            <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">관찰된 체형 데이터</h2>
+            <p className="text-gray-500 text-sm md:text-base mb-8">
+              바디닷이 측정 즉시 0~100점으로 환산해 주는 자체 점수를 기준으로 정리했습니다(저희가 임의로 만든 기준이 아닙니다). 점수가 낮을수록 더 흔하게 관찰된 문제입니다.
             </p>
-            <FindingsGrid findings={findings4050} />
+
+            <h3 className="font-bold text-gray-900 mb-1">관찰 회원 중 가장 흔한 체형 문제 Top3</h3>
+            <p className="text-gray-500 text-xs md:text-sm mb-4">평균 점수가 낮은 순으로 정렬했습니다</p>
+            <TopIssues items={angleScores4050} />
+
+            <h3 className="font-bold text-gray-900 mt-10 mb-1">항목별 양호 · 보통 · 주의 분포</h3>
+            <p className="text-gray-500 text-xs md:text-sm mb-4">표본이 작아 인원수(명)로 표시합니다</p>
+            <DistributionBars items={angleScores4050} />
+
+            <h3 className="font-bold text-gray-900 mt-10 mb-1">움직임평가 점수</h3>
+            <p className="text-gray-500 text-xs md:text-sm mb-4">오버헤드스쿼트 · 발끝잡기 · Apley, 모두 0~100점 기준</p>
+            <FindingsGrid findings={movementFindings4050} />
           </section>
 
           {/* 4. 실제 사례 연결 */}
