@@ -26,6 +26,7 @@ import {
   TrendingUpIcon,
   ArrowRightIcon,
   MessageSquareIcon,
+  BarChartIcon,
 } from "@/components/Icons";
 
 type IconComponent = (props: { className?: string; size?: number }) => React.ReactElement;
@@ -389,6 +390,7 @@ export default function CheckQuiz() {
         </div>
         <ShareCard type={saved.type} riskLabel={saved.risk.label} />
         <RelatedContent type={saved.type} />
+        <ResearchNotePromo />
         <CrossPromo to="pain" />
         <CrossPromo to="ask" />
         <ClassPromo />
@@ -697,6 +699,25 @@ function RelatedContent({ type }: { type: TypeKey }) {
         전체 칼럼 보기 →
       </Link>
     </div>
+  );
+}
+
+function ResearchNotePromo() {
+  return (
+    <Link
+      href="/research-notes"
+      onClick={() => track("research_notes_click", { from: "check_result" })}
+      className="mt-5 flex items-center gap-4 bg-[#FAF5FB] rounded-2xl p-5 border border-[#f0e4f3] hover:border-[#7B2D8B] transition-colors group"
+    >
+      <div className="w-11 h-11 rounded-xl bg-white flex items-center justify-center shrink-0 group-hover:bg-[#7B2D8B] transition-colors">
+        <BarChartIcon className="text-[#7B2D8B] group-hover:text-white" size={22} />
+      </div>
+      <div className="flex-1">
+        <p className="text-sm font-semibold text-[#9B4DAB] mb-0.5">연구노트</p>
+        <p className="font-bold text-gray-900">이 데이터가 쌓여 만들어지는 연구노트 보기</p>
+      </div>
+      <span className="text-gray-300 text-xl shrink-0">›</span>
+    </Link>
   );
 }
 

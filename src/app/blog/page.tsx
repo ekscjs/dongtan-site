@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { Post } from "@/lib/supabase";
+import { BarChartIcon } from "@/components/Icons";
 
 const INITIAL_COUNT = 10;
 const LOAD_MORE_COUNT = 6;
@@ -78,6 +79,21 @@ function BlogPageContent() {
         <div className="max-w-3xl mx-auto">
           <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">블로그</h1>
           <p className="text-gray-500 mb-8">실제 케이스와 경험을 바탕으로, 몸에 대한 이야기를 기록합니다</p>
+
+          {/* 연구노트 카드 */}
+          <Link
+            href="/research-notes"
+            className="mb-8 flex items-center gap-4 bg-[#FAF5FB] rounded-2xl p-5 border border-[#f0e4f3] hover:border-[#7B2D8B] transition-colors group"
+          >
+            <div className="w-11 h-11 rounded-xl bg-white flex items-center justify-center shrink-0 group-hover:bg-[#7B2D8B] transition-colors">
+              <BarChartIcon className="text-[#7B2D8B] group-hover:text-white" size={22} />
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-semibold text-[#9B4DAB] mb-0.5">연구노트</p>
+              <p className="font-bold text-gray-900">내몸에미소가 직접 쌓은 체형 데이터 보기</p>
+            </div>
+            <span className="text-gray-300 text-xl shrink-0">›</span>
+          </Link>
 
           {/* 카테고리 필터 */}
           <div className="flex gap-2 mb-10">
