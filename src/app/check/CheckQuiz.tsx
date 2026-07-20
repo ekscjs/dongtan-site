@@ -708,9 +708,9 @@ function ClassPromo() {
       className="mt-5 block rounded-2xl p-6 bg-white border border-gray-100 hover:border-[#7B2D8B] transition-colors"
     >
       <p className="text-sm font-semibold text-[#9B4DAB] uppercase tracking-widest mb-1">바디 리셋 세션</p>
-      <p className="font-bold text-gray-900 mb-1">운동보다 먼저 해야 할 것 · 2시간</p>
+      <p className="font-bold text-gray-900 mb-1">운동보다 먼저 해야 할 것 · 4주 1:1</p>
       <p className="text-sm md:text-base lg:text-lg text-gray-500">
-        잠든 근육을 깨우는 2시간 1:1 세션 →
+        몸을 원래 자리로 되돌리는 4주 프로그램 →
       </p>
     </Link>
   );
