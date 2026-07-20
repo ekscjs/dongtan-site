@@ -28,109 +28,136 @@ export async function GET(req: NextRequest) {
 
   const fmt = (d: Date) => d.toISOString();
 
+  // Supabase는 한 쿼리당 최대 1000행까지만 반환하므로, .range()로 끝까지 나눠 받아온다
+  const PAGE_SIZE = 1000;
+  async function fetchAllRows<T>(
+    buildQuery: () => PromiseLike<{ data: T[] | null; error: { message: string } | null }>
+  ): Promise<T[]> {
+    const rows: T[] = [];
+    let from = 0;
+    while (true) {
+      const { data, error } = await (buildQuery() as unknown as {
+        range: (from: number, to: number) => PromiseLike<{ data: T[] | null; error: { message: string } | null }>;
+      }).range(from, from + PAGE_SIZE - 1);
+      if (error) throw new Error(error.message);
+      const batch = data ?? [];
+      rows.push(...batch);
+      if (batch.length < PAGE_SIZE) break;
+      from += PAGE_SIZE;
+    }
+    return rows;
+  }
+
   try {
     // 병렬 쿼리
     const [
-      todayRes,
-      weekRes,
-      monthRes,
-      dailyRes,
-      sourceRes,
-      pageRes,
-      exitRes,
-      newVsReturnRes,
+      todayRows,
+      weekRows,
+      monthRows,
+      sourceRows,
+      pageRows,
+      exitRows,
+      newVsReturnRows,
     ] = await Promise.all([
       // 오늘 방문자 (고유 visitor_id)
-      supabaseAdmin
-        .from("page_views")
-        .select("visitor_id", { count: "exact" })
-        .gte("created_at", fmt(todayStart))
-        .not("visitor_id", "is", null),
+      fetchAllRows<{ visitor_id: string | null }>(() =>
+        supabaseAdmin
+          .from("page_views")
+          .select("visitor_id")
+          .gte("created_at", fmt(todayStart))
+          .not("visitor_id", "is", null)
+      ),
 
       // 주간 방문자
-      supabaseAdmin
-        .from("page_views")
-        .select("visitor_id", { count: "exact" })
-        .gte("created_at", fmt(weekStart))
-        .not("visitor_id", "is", null),
+      fetchAllRows<{ visitor_id: string | null }>(() =>
+        supabaseAdmin
+          .from("page_views")
+          .select("visitor_id")
+          .gte("created_at", fmt(weekStart))
+          .not("visitor_id", "is", null)
+      ),
 
       // 월간 방문자
-      supabaseAdmin
-        .from("page_views")
-        .select("visitor_id", { count: "exact" })
-        .gte("created_at", fmt(monthStart))
-        .not("visitor_id", "is", null),
-
-      // 날짜별 페이지뷰 (최근 30일) — created_at 날짜만 추출
-      supabaseAdmin
-        .from("page_views")
-        .select("created_at")
-        .gte("created_at", fmt(monthStart))
-        .order("created_at", { ascending: true }),
+      fetchAllRows<{ visitor_id: string | null }>(() =>
+        supabaseAdmin
+          .from("page_views")
+          .select("visitor_id")
+          .gte("created_at", fmt(monthStart))
+          .not("visitor_id", "is", null)
+      ),
 
       // 유입경로 비율 (최근 30일)
-      supabaseAdmin
-        .from("page_views")
-        .select("source")
-        .gte("created_at", fmt(monthStart)),
+      fetchAllRows<{ source: string }>(() =>
+        supabaseAdmin
+          .from("page_views")
+          .select("source")
+          .gte("created_at", fmt(monthStart))
+      ),
 
       // 인기 페이지 Top 10 (최근 30일)
-      supabaseAdmin
-        .from("page_views")
-        .select("page")
-        .gte("created_at", fmt(monthStart))
-        .not("page", "like", "/admin%"),
+      fetchAllRows<{ page: string }>(() =>
+        supabaseAdmin
+          .from("page_views")
+          .select("page")
+          .gte("created_at", fmt(monthStart))
+          .not("page", "like", "/admin%")
+      ),
 
       // 이탈 지점 — 세션의 마지막 페이지 (최근 30일)
-      supabaseAdmin
-        .from("page_views")
-        .select("page, session_id, created_at")
-        .gte("created_at", fmt(monthStart))
-        .not("page", "like", "/admin%")
-        .order("created_at", { ascending: false }),
+      fetchAllRows<{ page: string; session_id: string | null; created_at: string }>(() =>
+        supabaseAdmin
+          .from("page_views")
+          .select("page, session_id, created_at")
+          .gte("created_at", fmt(monthStart))
+          .not("page", "like", "/admin%")
+          .order("created_at", { ascending: false })
+      ),
 
       // 신규 vs 재방문 (최근 30일)
-      supabaseAdmin
-        .from("page_views")
-        .select("is_new_visitor, visitor_id")
-        .gte("created_at", fmt(monthStart))
-        .not("visitor_id", "is", null),
+      fetchAllRows<{ is_new_visitor: boolean; visitor_id: string | null }>(() =>
+        supabaseAdmin
+          .from("page_views")
+          .select("is_new_visitor, visitor_id")
+          .gte("created_at", fmt(monthStart))
+          .not("visitor_id", "is", null)
+      ),
     ]);
 
     // 신청(leads) 날짜별 건수 (최근 30일) — page_views와 조인해 전환율 계산
-    const leadsRes = await supabaseAdmin
-      .from("leads")
-      .select("created_at")
-      .gte("created_at", fmt(monthStart));
+    const leadsRows = await fetchAllRows<{ created_at: string }>(() =>
+      supabaseAdmin
+        .from("leads")
+        .select("created_at")
+        .gte("created_at", fmt(monthStart))
+    );
 
     // 카카오 상담 버튼 클릭 (최근 30일)
-    const kakaoRes = await supabaseAdmin
-      .from("kakao_clicks")
-      .select("created_at")
-      .gte("created_at", fmt(monthStart));
+    const kakaoRows = await fetchAllRows<{ created_at: string }>(() =>
+      supabaseAdmin
+        .from("kakao_clicks")
+        .select("created_at")
+        .gte("created_at", fmt(monthStart))
+    );
 
-    // 날짜별 방문자 집계
-    const dailyMap: Record<string, Set<string>> = {};
-    for (const row of dailyRes.data ?? []) {
-      const date = kstDateStr(new Date(row.created_at)); // YYYY-MM-DD (KST)
-      if (!dailyMap[date]) dailyMap[date] = new Set();
-      // page_views에서 visitor_id가 없으면 created_at으로 대체
-    }
-    // visitor_id 포함 쿼리로 재집계
-    const dailyWithVisitor = await supabaseAdmin
-      .from("page_views")
-      .select("created_at, visitor_id")
-      .gte("created_at", fmt(monthStart))
-      .order("created_at", { ascending: true });
+    // 날짜별 방문자 집계 (visitor_id 포함, 최근 30일)
+    const dailyWithVisitorRows = await fetchAllRows<{ created_at: string; visitor_id: string | null }>(() =>
+      supabaseAdmin
+        .from("page_views")
+        .select("created_at, visitor_id")
+        .gte("created_at", fmt(monthStart))
+        .order("created_at", { ascending: true })
+    );
 
     // 전체 기간 (연간 차트용)
-    const allTimeRes = await supabaseAdmin
-      .from("page_views")
-      .select("created_at, visitor_id")
-      .order("created_at", { ascending: true });
+    const allTimeRows = await fetchAllRows<{ created_at: string; visitor_id: string | null }>(() =>
+      supabaseAdmin
+        .from("page_views")
+        .select("created_at, visitor_id")
+        .order("created_at", { ascending: true })
+    );
 
     const dailyVisitors: Record<string, Set<string>> = {};
-    for (const row of dailyWithVisitor.data ?? []) {
+    for (const row of dailyWithVisitorRows) {
       const date = kstDateStr(new Date(row.created_at));
       if (!dailyVisitors[date]) dailyVisitors[date] = new Set();
       if (row.visitor_id) dailyVisitors[date].add(row.visitor_id);
@@ -141,14 +168,14 @@ export async function GET(req: NextRequest) {
 
     // 날짜별 페이지뷰 총량 (신청 전환율 분모 — 방문자 수가 아닌 페이지뷰 수 기준)
     const pageviewCountsByDate: Record<string, number> = {};
-    for (const row of dailyWithVisitor.data ?? []) {
+    for (const row of dailyWithVisitorRows) {
       const date = kstDateStr(new Date(row.created_at));
       pageviewCountsByDate[date] = (pageviewCountsByDate[date] ?? 0) + 1;
     }
 
     // 날짜별 신청(leads) 건수
     const leadsCountsByDate: Record<string, number> = {};
-    for (const row of leadsRes.data ?? []) {
+    for (const row of leadsRows) {
       const date = kstDateStr(new Date(row.created_at));
       leadsCountsByDate[date] = (leadsCountsByDate[date] ?? 0) + 1;
     }
@@ -176,7 +203,7 @@ export async function GET(req: NextRequest) {
 
     // 카카오 상담 버튼 클릭 — 날짜별 집계
     const kakaoCountsByDate: Record<string, number> = {};
-    for (const row of kakaoRes.data ?? []) {
+    for (const row of kakaoRows) {
       const date = kstDateStr(new Date(row.created_at));
       kakaoCountsByDate[date] = (kakaoCountsByDate[date] ?? 0) + 1;
     }
@@ -187,7 +214,7 @@ export async function GET(req: NextRequest) {
 
     // 월별 방문자 집계 (연간 차트)
     const monthlyVisitors: Record<string, Set<string>> = {};
-    for (const row of allTimeRes.data ?? []) {
+    for (const row of allTimeRows) {
       const month = kstDateStr(new Date(row.created_at)).slice(0, 7); // YYYY-MM (KST)
       if (!monthlyVisitors[month]) monthlyVisitors[month] = new Set();
       if (row.visitor_id) monthlyVisitors[month].add(row.visitor_id);
@@ -198,7 +225,7 @@ export async function GET(req: NextRequest) {
 
     // 유입경로 집계
     const sourceCounts: Record<string, number> = {};
-    for (const row of sourceRes.data ?? []) {
+    for (const row of sourceRows) {
       sourceCounts[row.source] = (sourceCounts[row.source] ?? 0) + 1;
     }
     const sourceChart = Object.entries(sourceCounts)
@@ -207,7 +234,7 @@ export async function GET(req: NextRequest) {
 
     // 인기 페이지 집계
     const pageCounts: Record<string, number> = {};
-    for (const row of pageRes.data ?? []) {
+    for (const row of pageRows) {
       pageCounts[row.page] = (pageCounts[row.page] ?? 0) + 1;
     }
     const topPages = Object.entries(pageCounts)
@@ -217,7 +244,7 @@ export async function GET(req: NextRequest) {
 
     // 이탈 지점: 각 세션의 마지막 페이지
     const sessionLastPage: Record<string, { page: string; ts: string }> = {};
-    for (const row of exitRes.data ?? []) {
+    for (const row of exitRows) {
       if (!row.session_id) continue;
       if (!sessionLastPage[row.session_id]) {
         sessionLastPage[row.session_id] = { page: row.page, ts: row.created_at };
@@ -236,7 +263,7 @@ export async function GET(req: NextRequest) {
     const visitorFirstSeen: Record<string, boolean> = {};
     let newCount = 0;
     let returnCount = 0;
-    for (const row of newVsReturnRes.data ?? []) {
+    for (const row of newVsReturnRows) {
       if (!row.visitor_id || row.visitor_id in visitorFirstSeen) continue;
       visitorFirstSeen[row.visitor_id] = row.is_new_visitor;
       if (row.is_new_visitor) newCount++;
@@ -250,17 +277,19 @@ export async function GET(req: NextRequest) {
     };
 
     // 블로그 글 제목 맵
-    const postsRes = await supabaseAdmin.from("posts").select("title, slug");
+    const postsRows = await fetchAllRows<{ title: string | null; slug: string | null }>(() =>
+      supabaseAdmin.from("posts").select("title, slug")
+    );
     const slugToTitle: Record<string, string> = {};
-    for (const post of postsRes.data ?? []) {
+    for (const post of postsRows) {
       if (post.slug && post.title) slugToTitle[post.slug] = post.title;
     }
 
     return NextResponse.json({
       summary: {
-        today: countUnique(todayRes.data ?? []),
-        week: countUnique(weekRes.data ?? []),
-        month: countUnique(monthRes.data ?? []),
+        today: countUnique(todayRows),
+        week: countUnique(weekRows),
+        month: countUnique(monthRows),
       },
       dailyChart,
       yearlyChart,
