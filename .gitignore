@@ -43,3 +43,5 @@ next-env.d.ts
 
 .vercel
 gen-lang-client-*.json
+
+.env*

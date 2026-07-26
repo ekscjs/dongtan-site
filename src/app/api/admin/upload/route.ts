@@ -1,15 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import { createClient } from "@supabase/supabase-js";
 import { brandImage } from "@/lib/brandImage";
-
-async function checkAuth() {
-  const cookieStore = await cookies();
-  return cookieStore.get("admin_auth")?.value === "1";
-}
+import { isAdmin } from "@/lib/adminAuth";
 
 export async function POST(req: NextRequest) {
-  if (!(await checkAuth())) {
+  if (!(await isAdmin())) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

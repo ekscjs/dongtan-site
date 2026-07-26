@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { createHash } from "crypto";
 import bcrypt from "bcryptjs";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { createSessionToken, ADMIN_COOKIE, ADMIN_COOKIE_MAX_AGE } from "@/lib/adminAuth";
 
 const MAX_ATTEMPTS = 5;
 const WINDOW_MINUTES = 15;
@@ -71,11 +72,11 @@ export async function POST(req: NextRequest) {
   }
 
   const cookieStore = await cookies();
-  cookieStore.set("admin_auth", "1", {
+  cookieStore.set(ADMIN_COOKIE, createSessionToken(), {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
-    maxAge: 60 * 60 * 24 * 30, // 30일
+    maxAge: ADMIN_COOKIE_MAX_AGE,
     path: "/",
   });
   // JS에서 읽을 수 있는 플래그 쿠키 (Tracker 관리자 제외용)

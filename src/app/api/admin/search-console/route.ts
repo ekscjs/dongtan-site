@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
+import { isAdmin } from "@/lib/adminAuth";
 
 // Google Search Console API — 서비스 계정 방식
 // 환경변수 GOOGLE_SERVICE_ACCOUNT_JSON 에 JSON 문자열로 넣어야 함
@@ -46,8 +46,7 @@ async function getAccessToken(): Promise<string> {
 
 export async function GET(req: NextRequest) {
   // 관리자 인증 확인
-  const cookieStore = await cookies();
-  if (cookieStore.get("admin_auth")?.value !== "1") {
+  if (!(await isAdmin())) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

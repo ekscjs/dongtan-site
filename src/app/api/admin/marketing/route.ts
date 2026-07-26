@@ -1,12 +1,7 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import fs from "fs";
 import path from "path";
-
-async function checkAuth() {
-  const cookieStore = await cookies();
-  return cookieStore.get("admin_auth")?.value === "1";
-}
+import { isAdmin } from "@/lib/adminAuth";
 
 function parseMarketingFile(content: string) {
   // 제목, slug, tag, excerpt 파싱
@@ -23,7 +18,7 @@ function parseMarketingFile(content: string) {
 }
 
 export async function GET() {
-  if (!(await checkAuth())) {
+  if (!(await isAdmin())) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

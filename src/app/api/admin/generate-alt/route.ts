@@ -1,16 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import Anthropic from "@anthropic-ai/sdk";
+import { isAdmin } from "@/lib/adminAuth";
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
-async function checkAuth() {
-  const cookieStore = await cookies();
-  return cookieStore.get("admin_auth")?.value === "1";
-}
-
 export async function POST(req: NextRequest) {
-  if (!(await checkAuth())) {
+  if (!(await isAdmin())) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   try {

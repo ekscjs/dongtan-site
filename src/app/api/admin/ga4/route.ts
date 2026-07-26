@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
+import { isAdmin } from "@/lib/adminAuth";
 
 const GA4_PROPERTY_ID = "541281945";
 
@@ -55,8 +55,7 @@ async function runReport(token: string, body: object) {
 }
 
 export async function GET(req: NextRequest) {
-  const cookieStore = await cookies();
-  if (cookieStore.get("admin_auth")?.value !== "1") {
+  if (!(await isAdmin())) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

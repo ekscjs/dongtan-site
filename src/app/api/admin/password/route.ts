@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { isAdmin } from "@/lib/adminAuth";
 
 export async function PATCH(req: NextRequest) {
-  const cookieStore = await cookies();
-  const isAuthed = cookieStore.get("admin_auth")?.value === "1";
+  const isAuthed = await isAdmin();
   if (!isAuthed) {
     return NextResponse.json({ error: "로그인이 필요합니다." }, { status: 401 });
   }
