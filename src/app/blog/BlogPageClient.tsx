@@ -7,14 +7,9 @@ import { Suspense, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import type { Post } from "@/lib/supabase";
 import { BarChartIcon } from "@/components/Icons";
-import { CATEGORIES, normalizeCategory, buildBlogUrl } from "./blogUrl";
+import { CATEGORIES, PER_PAGE, normalizeCategory, getPostCategory, buildBlogUrl } from "./blogUrl";
 
-const PER_PAGE = 10;
 const SCROLL_KEY = "blog-scroll-y";
-
-function getCategory(tag: string | null): "임상노트" | "몸 이야기" {
-  return tag === "임상노트" ? "임상노트" : "몸 이야기";
-}
 
 function formatDate(post: Post) {
   const dateStr = post.publish_at ?? post.created_at;
@@ -67,7 +62,7 @@ function BlogPageContent({ posts }: { posts: Post[] }) {
 
   const filtered = category === "전체"
     ? posts
-    : posts.filter((p) => getCategory(p.tag ?? null) === category);
+    : posts.filter((p) => getPostCategory(p.tag ?? null) === category);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
   const currentPage = Math.min(Math.max(pageParam, 1), totalPages);
@@ -133,11 +128,11 @@ function BlogPageContent({ posts }: { posts: Post[] }) {
                     <Link href={`/blog/${post.slug}`} onClick={saveScrollPosition} className="block border-b border-gray-100 pb-8 group active:opacity-60 transition-opacity duration-100">
                       <div className="flex items-center gap-3 mb-3">
                         <span className={`text-xs font-semibold px-3 py-1 rounded-full ${
-                          getCategory(post.tag ?? null) === "임상노트"
+                          getPostCategory(post.tag ?? null) === "임상노트"
                             ? "bg-[#FAF5FB] text-[#7B2D8B]"
                             : "bg-gray-100 text-gray-500"
                         }`}>
-                          {getCategory(post.tag ?? null)}
+                          {getPostCategory(post.tag ?? null)}
                         </span>
                         <span className="text-xs text-gray-400">{formatDate(post)}</span>
                       </div>
