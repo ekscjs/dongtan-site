@@ -20,11 +20,10 @@ function getCategory(tag: string | null): "임상노트" | "몸 이야기" {
 }
 
 function formatDate(post: Post) {
-  const dateStr = post.publish_at && new Date(post.publish_at) <= new Date()
-    ? post.publish_at
-    : post.created_at;
+  const dateStr = post.publish_at ?? post.created_at;
   const d = new Date(dateStr);
-  return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, "0")}`;
+  const [year, month] = d.toLocaleDateString("en-CA", { timeZone: "Asia/Seoul" }).split("-");
+  return `${year}.${month}`;
 }
 
 function BlogPageContent() {

@@ -93,7 +93,12 @@ export async function generateMetadata({
 
 function formatDate(dateStr: string) {
   const d = new Date(dateStr);
-  return `${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일`;
+  return d.toLocaleDateString("ko-KR", {
+    timeZone: "Asia/Seoul",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 }
 
 export default async function BlogPostPage({
@@ -116,7 +121,7 @@ export default async function BlogPostPage({
     "@type": "BlogPosting",
     headline: post.title,
     description: post.excerpt,
-    datePublished: post.created_at,
+    datePublished: post.publish_at ?? post.created_at,
     dateModified: post.created_at,
     ...(firstImg ? { image: [firstImg] } : {}),
     mainEntityOfPage: `${SITE}/blog/${post.slug}`,
@@ -168,7 +173,7 @@ export default async function BlogPostPage({
                 {post.tag}
               </span>
             )}
-            <span className="text-xs text-gray-400">{formatDate(post.created_at)}</span>
+            <span className="text-xs text-gray-400">{formatDate(post.publish_at ?? post.created_at)}</span>
           </div>
 
           <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4 leading-snug">{post.title}</h1>
