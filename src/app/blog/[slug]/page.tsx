@@ -1,3 +1,4 @@
+import { cache, Suspense } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
@@ -25,7 +26,7 @@ function parseFaq(md: string): { q: string; a: string }[] {
   return out;
 }
 
-async function getPost(slug: string): Promise<Post | null> {
+const getPost = cache(async (slug: string): Promise<Post | null> => {
   const now = new Date().toISOString();
   const { data, error } = await supabase
     .from("posts")
@@ -37,7 +38,7 @@ async function getPost(slug: string): Promise<Post | null> {
 
   if (error) return null;
   return data;
-}
+});
 
 async function getAdjacentPosts(createdAt: string): Promise<{
   prev: Pick<Post, "title" | "slug"> | null;
@@ -68,6 +69,50 @@ async function getAdjacentPosts(createdAt: string): Promise<{
   };
 }
 
+async function AdjacentPosts({ createdAt }: { createdAt: string }) {
+  const { prev, next } = await getAdjacentPosts(createdAt);
+  return (
+    <div className="flex justify-between items-stretch gap-4">
+      {prev ? (
+        <Link
+          href={`/blog/${prev.slug}`}
+          className="flex-1 group flex flex-col gap-1 p-4 rounded-xl border border-gray-100 hover:border-[#7B2D8B] hover:bg-[#FAF5FB] transition-colors"
+        >
+          <span className="text-xs text-gray-400 group-hover:text-[#7B2D8B]">← 이전 글</span>
+          <span className="text-sm md:text-base lg:text-lg font-medium text-gray-700 group-hover:text-[#7B2D8B] line-clamp-2">
+            {prev.title}
+          </span>
+        </Link>
+      ) : (
+        <div className="flex-1" />
+      )}
+
+      {next ? (
+        <Link
+          href={`/blog/${next.slug}`}
+          className="flex-1 group flex flex-col gap-1 p-4 rounded-xl border border-gray-100 hover:border-[#7B2D8B] hover:bg-[#FAF5FB] transition-colors text-right"
+        >
+          <span className="text-xs text-gray-400 group-hover:text-[#7B2D8B]">다음 글 →</span>
+          <span className="text-sm md:text-base lg:text-lg font-medium text-gray-700 group-hover:text-[#7B2D8B] line-clamp-2">
+            {next.title}
+          </span>
+        </Link>
+      ) : (
+        <div className="flex-1" />
+      )}
+    </div>
+  );
+}
+
+function AdjacentPostsSkeleton() {
+  return (
+    <div className="flex justify-between items-stretch gap-4 animate-pulse">
+      <div className="flex-1 h-16 bg-gray-100 rounded-xl" />
+      <div className="flex-1 h-16 bg-gray-100 rounded-xl" />
+    </div>
+  );
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -75,7 +120,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPost(slug);
-  if (!post) return {};
+  if (!post) notFound();
   const ogImg = extractFirstImage(post.content ?? "");
   return {
     title: `${post.title} | 내몸에미소 동탄`,
@@ -112,7 +157,6 @@ export default async function BlogPostPage({
   if (!post) notFound();
 
   const html = markdownToHtml(post.content ?? "");
-  const { prev, next } = await getAdjacentPosts(post.created_at);
 
   const firstImg = extractFirstImage(post.content ?? "");
   const faq = parseFaq(post.content ?? "");
@@ -190,35 +234,9 @@ export default async function BlogPostPage({
 
           {/* 이전/다음 글 네비게이션 */}
           <div className="mt-16 pt-8 border-t border-gray-100">
-            <div className="flex justify-between items-stretch gap-4">
-              {prev ? (
-                <Link
-                  href={`/blog/${prev.slug}`}
-                  className="flex-1 group flex flex-col gap-1 p-4 rounded-xl border border-gray-100 hover:border-[#7B2D8B] hover:bg-[#FAF5FB] transition-colors"
-                >
-                  <span className="text-xs text-gray-400 group-hover:text-[#7B2D8B]">← 이전 글</span>
-                  <span className="text-sm md:text-base lg:text-lg font-medium text-gray-700 group-hover:text-[#7B2D8B] line-clamp-2">
-                    {prev.title}
-                  </span>
-                </Link>
-              ) : (
-                <div className="flex-1" />
-              )}
-
-              {next ? (
-                <Link
-                  href={`/blog/${next.slug}`}
-                  className="flex-1 group flex flex-col gap-1 p-4 rounded-xl border border-gray-100 hover:border-[#7B2D8B] hover:bg-[#FAF5FB] transition-colors text-right"
-                >
-                  <span className="text-xs text-gray-400 group-hover:text-[#7B2D8B]">다음 글 →</span>
-                  <span className="text-sm md:text-base lg:text-lg font-medium text-gray-700 group-hover:text-[#7B2D8B] line-clamp-2">
-                    {next.title}
-                  </span>
-                </Link>
-              ) : (
-                <div className="flex-1" />
-              )}
-            </div>
+            <Suspense fallback={<AdjacentPostsSkeleton />}>
+              <AdjacentPosts createdAt={post.created_at} />
+            </Suspense>
 
             <div className="text-center mt-6">
               <Link
