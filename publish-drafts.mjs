@@ -3,7 +3,7 @@
  *
  * 실행 (관장님 로컬 PC, dongtan-site 폴더에서):
  *   node publish-drafts.mjs                      # 준비된 초안 전부, 내일부터 하루 1개씩 예약
- *   node publish-drafts.mjs --start=2026-07-05   # 시작일 지정(그날 09시부터)
+ *   node publish-drafts.mjs --start=2026-07-05   # 시작일 지정(그날 KST 자정부터)
  *   node publish-drafts.mjs --every=2            # 2일 간격
  *   node publish-drafts.mjs plantar pelvic       # 특정 글만
  *
@@ -28,15 +28,18 @@ const startArg = argv.find(a => a.startsWith("--start="))?.split("=")[1];
 const everyArg = Number(argv.find(a => a.startsWith("--every="))?.split("=")[1]) || 1;
 const only = argv.filter(a => !a.startsWith("--"));
 
-// 예약 시작 기준: 지정 없으면 '내일' 09:00(KST)
+// 예약 시작 기준: 지정 없으면 '내일' 00:00(KST 자정)
 function baseDate() {
-  if (startArg) return new Date(`${startArg}T09:00:00+09:00`);
+  if (startArg) return new Date(`${startArg}T00:00:00+09:00`);
   const d = new Date(); d.setDate(d.getDate() + 1);
   const y = d.getFullYear(), m = String(d.getMonth()+1).padStart(2,"0"), day = String(d.getDate()).padStart(2,"0");
-  return new Date(`${y}-${m}-${day}T09:00:00+09:00`);
+  return new Date(`${y}-${m}-${day}T00:00:00+09:00`);
 }
 const BASE = baseDate();
 function slotISO(i) { const d = new Date(BASE); d.setDate(d.getDate() + i*everyArg); return d.toISOString(); }
+// UTC ISO 문자열의 날짜 부분(slice(0,10))은 KST 자정 기준이면 하루 전으로 밀리므로,
+// 로그 표시용 KST 달력 날짜는 반드시 이 함수로 변환해서 쓴다.
+function kstDateStr(iso) { return new Date(iso).toLocaleDateString("en-CA", { timeZone: "Asia/Seoul" }); }
 
 function loadEnv() {
   const env = {}; const txt = readFileSync(join(__dirname, ".env.local"), "utf8");
@@ -93,16 +96,16 @@ async function publishOne(file, idx) {
 
   if (exist) {
     const { error } = await supabase.from("posts").update(row).eq("id", exist.id);
-    console.log(error ? `  ✗ ${fm.slug} update 실패: ${error.message}` : `  ✓ ${fm.slug} 갱신 (예약 ${when.slice(0,10)})`);
+    console.log(error ? `  ✗ ${fm.slug} update 실패: ${error.message}` : `  ✓ ${fm.slug} 갱신 (예약 ${kstDateStr(when)})`);
   } else {
     const { error } = await supabase.from("posts").insert(row);
-    console.log(error ? `  ✗ ${fm.slug} insert 실패: ${error.message}` : `  ✓ ${fm.slug} 예약발행 등록 (${when.slice(0,10)})`);
+    console.log(error ? `  ✗ ${fm.slug} insert 실패: ${error.message}` : `  ✓ ${fm.slug} 예약발행 등록 (${kstDateStr(when)})`);
   }
 }
 
 const files = readdirSync(DRAFTS).filter(f => f.endsWith(".md"))
   .filter(f => only.length === 0 || only.some(s => f.includes(s)));
 if (files.length === 0) { console.log("발행할 .md 초안이 없습니다."); process.exit(0); }
-console.log(`예약 시작 ${BASE.toISOString().slice(0,10)} · ${everyArg}일 간격 · 대상 ${files.length}개`);
+console.log(`예약 시작 ${kstDateStr(BASE)} · ${everyArg}일 간격 · 대상 ${files.length}개`);
 for (let i = 0; i < files.length; i++) { try { await publishOne(files[i], i); } catch (e) { console.error(`  ✗ ${files[i]}:`, e.message); } }
 console.log("\n완료. 각 예약시각이 지나면 자동으로 사이트에 노출됩니다. (관리자에서 예약시간 조정 가능)");

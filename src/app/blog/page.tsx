@@ -37,7 +37,7 @@ function BlogPageContent() {
   const [category, setCategory] = useState<Category>("전체");
 
   useEffect(() => {
-    fetch("/api/posts")
+    fetch("/api/posts", { cache: "no-store" })
       .then((r) => r.json())
       .then((data) => {
         setPosts(data);

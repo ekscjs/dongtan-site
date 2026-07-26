@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 import { supabase, type Post } from "@/lib/supabase";
 import { markdownToHtml } from "@/lib/markdown";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 const SITE = "https://www.bodymiso.com";
 
