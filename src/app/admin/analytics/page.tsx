@@ -23,7 +23,8 @@ type AnalyticsData = {
   slugToTitle: Record<string, string>;
   conversionChart: ConversionPoint[];
   conversionTotals: ConversionTotals;
-  kakaoChart: DailyPoint[];
+  kakaoWeekly: { label: string; count: number }[];
+  kakaoRecent: { datetime: string; page: string; source: string }[];
   kakaoTotal: number;
 };
 
@@ -342,7 +343,8 @@ export default function AnalyticsPage() {
   }));
   const conversionChart = data?.conversionChart ?? [];
   const conversionTotals = data?.conversionTotals ?? { pageviews: 0, leads: 0, rate: 0 };
-  const kakaoChart = data?.kakaoChart ?? [];
+  const kakaoWeekly = data?.kakaoWeekly ?? [];
+  const kakaoRecent = data?.kakaoRecent ?? [];
   const kakaoTotal = data?.kakaoTotal ?? 0;
 
   const totalVisitors = (data?.newVsReturn.new ?? 0) + (data?.newVsReturn.return ?? 0);
@@ -541,25 +543,50 @@ export default function AnalyticsPage() {
         {/* ── 카카오 상담 버튼 클릭 ── */}
         <div className="bg-white rounded-2xl shadow p-6 mb-6">
           <h2 className="text-sm font-semibold text-gray-700 mb-4">
-            카카오 상담 버튼 클릭 <span className="text-xs font-normal text-gray-400">(최근 30일)</span>
+            카카오 상담 버튼 클릭 <span className="text-xs font-normal text-gray-400">(주별 · 최근 8주)</span>
           </h2>
-          {kakaoChart.length === 0 ? (
-            <p className="text-xs text-gray-400">아직 데이터가 없습니다. kakao_clicks 테이블을 생성하면 표시됩니다.</p>
+          {kakaoTotal === 0 && kakaoRecent.length === 0 ? (
+            <p className="text-xs text-gray-400">최근 8주간 카카오 상담 버튼 클릭이 없습니다.</p>
           ) : (
             <>
               <div className="grid grid-cols-2 gap-4 mb-5">
                 <div className="bg-[#FAF5FB] rounded-xl p-4 text-center">
-                  <p className="text-xs text-gray-500 mb-1">클릭 수</p>
+                  <p className="text-xs text-gray-500 mb-1">클릭 수 (30일)</p>
                   <p className="text-2xl font-bold text-gray-900">{kakaoTotal.toLocaleString()}</p>
                 </div>
                 <div className="bg-[#FAF5FB] rounded-xl p-4 text-center">
-                  <p className="text-xs text-gray-500 mb-1">페이지뷰 대비 클릭률</p>
+                  <p className="text-xs text-gray-500 mb-1">클릭률 (30일)</p>
                   <p className="text-2xl font-bold text-[#7B2D8B]">
                     {conversionTotals.pageviews > 0 ? (Math.round((kakaoTotal / conversionTotals.pageviews) * 1000) / 10) : 0}%
                   </p>
                 </div>
               </div>
-              <LineChart data={kakaoChart} mode="month" />
+              <BarChart data={kakaoWeekly} />
+              {kakaoRecent.length > 0 && (
+                <div className="mt-5">
+                  <p className="text-xs font-semibold text-gray-400 mb-2">최근 클릭 내역</p>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-xs">
+                      <thead>
+                        <tr className="text-gray-400 border-b border-gray-100">
+                          <th className="text-left py-2 font-medium">시각</th>
+                          <th className="text-left py-2 font-medium">누른 페이지</th>
+                          <th className="text-left py-2 font-medium">유입경로</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {kakaoRecent.map((r, i) => (
+                          <tr key={i} className="border-b border-gray-50">
+                            <td className="py-2 text-gray-600 whitespace-nowrap">{r.datetime}</td>
+                            <td className="py-2 text-gray-700">{pageLabel(r.page, data?.slugToTitle)}</td>
+                            <td className="py-2 text-gray-500">{SOURCE_LABELS[r.source] ?? r.source}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
             </>
           )}
         </div>

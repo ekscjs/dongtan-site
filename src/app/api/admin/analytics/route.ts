@@ -25,6 +25,7 @@ export async function GET(req: NextRequest) {
   const todayStart = kstMidnightUtc(0);
   const weekStart = kstMidnightUtc(7);
   const monthStart = kstMidnightUtc(30);
+  const eightWeeksStart = kstMidnightUtc(55); // 오늘 포함 8주 커버
 
   const fmt = (d: Date) => d.toISOString();
 
@@ -131,12 +132,13 @@ export async function GET(req: NextRequest) {
         .gte("created_at", fmt(monthStart))
     );
 
-    // 카카오 상담 버튼 클릭 (최근 30일)
-    const kakaoRows = await fetchAllRows<{ created_at: string }>(() =>
+    // 카카오 상담 버튼 클릭 (최근 8주 — 주별 막대 + 최근 내역용)
+    const kakaoRows = await fetchAllRows<{ created_at: string; page: string | null; source: string | null }>(() =>
       supabaseAdmin
         .from("kakao_clicks")
-        .select("created_at")
-        .gte("created_at", fmt(monthStart))
+        .select("created_at, page, source")
+        .gte("created_at", fmt(eightWeeksStart))
+        .order("created_at", { ascending: false })
     );
 
     // 날짜별 방문자 집계 (visitor_id 포함, 최근 30일)
@@ -201,16 +203,48 @@ export async function GET(req: NextRequest) {
       ? Math.round((conversionTotals.leads / conversionTotals.pageviews) * 1000) / 10
       : 0;
 
-    // 카카오 상담 버튼 클릭 — 날짜별 집계
-    const kakaoCountsByDate: Record<string, number> = {};
-    for (const row of kakaoRows) {
-      const date = kstDateStr(new Date(row.created_at));
-      kakaoCountsByDate[date] = (kakaoCountsByDate[date] ?? 0) + 1;
+    // 카카오 상담 버튼 클릭 — 총합은 30일 기준 유지(클릭률 분모인 페이지뷰와 기간 일치)
+    const monthStartStr = kstDateStr(monthStart);
+    const kakaoTotal = kakaoRows.filter(
+      (r) => kstDateStr(new Date(r.created_at)) >= monthStartStr
+    ).length;
+
+    // 카카오 상담 버튼 클릭 — 주별 집계 (KST 월요일~일요일, 클릭 0인 주도 포함)
+    const kstMondayStr = (d: Date) => {
+      const shifted = new Date(d.getTime() + KST_OFFSET_MS);
+      const dow = shifted.getUTCDay(); // 0=일 … 6=토
+      const diff = dow === 0 ? 6 : dow - 1; // 월요일까지 되감을 일수
+      shifted.setUTCDate(shifted.getUTCDate() - diff);
+      return shifted.toISOString().slice(0, 10);
+    };
+
+    // 최근 8주치 월요일 목록(오래된 주 → 최신 주)
+    const weekKeys: string[] = [];
+    for (let i = 7; i >= 0; i--) {
+      weekKeys.push(kstMondayStr(kstMidnightUtc(i * 7)));
     }
-    const kakaoChart = Object.entries(kakaoCountsByDate)
-      .sort(([a], [b]) => a.localeCompare(b))
-      .map(([date, count]) => ({ date, count }));
-    const kakaoTotal = Object.values(kakaoCountsByDate).reduce((s, n) => s + n, 0);
+
+    const kakaoWeekCounts: Record<string, number> = {};
+    for (const key of weekKeys) kakaoWeekCounts[key] = 0; // 제로필
+    for (const row of kakaoRows) {
+      const key = kstMondayStr(new Date(row.created_at));
+      if (key in kakaoWeekCounts) kakaoWeekCounts[key] += 1;
+    }
+
+    const kakaoWeekly = weekKeys.map((key) => {
+      const mon = new Date(key + "T00:00:00Z");
+      const sun = new Date(mon.getTime() + 6 * 86400000);
+      const label = (d: Date) => (d.getUTCMonth() + 1) + "/" + d.getUTCDate();
+      return { label: label(mon) + "~" + label(sun), count: kakaoWeekCounts[key] };
+    });
+
+    // 카카오 상담 버튼 최근 클릭 내역 (최대 10건)
+    const kakaoRecent = kakaoRows.slice(0, 10).map((r) => ({
+      datetime: new Date(new Date(r.created_at).getTime() + KST_OFFSET_MS)
+        .toISOString().slice(0, 16).replace("T", " "), // "2026-07-23 14:05" (KST)
+      page: r.page ?? "unknown",
+      source: r.source ?? "direct",
+    }));
 
     // 월별 방문자 집계 (연간 차트)
     const monthlyVisitors: Record<string, Set<string>> = {};
@@ -300,7 +334,8 @@ export async function GET(req: NextRequest) {
       slugToTitle,
       conversionChart,
       conversionTotals: { ...conversionTotals, rate: conversionRate },
-      kakaoChart,
+      kakaoWeekly,
+      kakaoRecent,
       kakaoTotal,
     });
   } catch (err) {
