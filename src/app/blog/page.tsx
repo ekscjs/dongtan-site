@@ -75,5 +75,19 @@ export default async function BlogPage({
   const view = await resolveView(sp);
   if (!view.ok) notFound();
 
-  return <BlogPageClient initialPosts={view.posts} />;
+  const filtered = view.category === "전체"
+    ? view.posts
+    : view.posts.filter((p) => getPostCategory(p.tag ?? null) === view.category);
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
+  const pagePosts = filtered.slice((view.page - 1) * PER_PAGE, view.page * PER_PAGE);
+
+  return (
+    <BlogPageClient
+      pagePosts={pagePosts}
+      category={view.category}
+      currentPage={view.page}
+      totalPages={totalPages}
+      totalCount={filtered.length}
+    />
+  );
 }

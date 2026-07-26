@@ -3,11 +3,10 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
-import { Suspense, useEffect, useRef } from "react";
-import { useSearchParams } from "next/navigation";
+import { useEffect, useRef } from "react";
 import type { Post } from "@/lib/supabase";
 import { BarChartIcon } from "@/components/Icons";
-import { CATEGORIES, PER_PAGE, normalizeCategory, getPostCategory, buildBlogUrl } from "./blogUrl";
+import { CATEGORIES, PER_PAGE, getPostCategory, buildBlogUrl, type Category } from "./blogUrl";
 
 const SCROLL_KEY = "blog-scroll-y";
 
@@ -32,10 +31,19 @@ function getPageNumbers(current: number, total: number): (number | "ellipsis")[]
   return result;
 }
 
-function BlogPageContent({ posts }: { posts: Post[] }) {
-  const searchParams = useSearchParams();
-  const category = normalizeCategory(searchParams.get("cat"));
-  const pageParam = Number(searchParams.get("page")) || 1;
+export default function BlogPageClient({
+  pagePosts,
+  category,
+  currentPage,
+  totalPages,
+  totalCount,
+}: {
+  pagePosts: Post[];
+  category: Category;
+  currentPage: number;
+  totalPages: number;
+  totalCount: number;
+}) {
   const isFirstPageEffect = useRef(true);
 
   // 뒤로가기 시 브라우저 기본 스크롤 복원이 마운트 직후 페인트와 경합해 맨 위로
@@ -46,7 +54,7 @@ function BlogPageContent({ posts }: { posts: Post[] }) {
     return () => { window.history.scrollRestoration = prev; };
   }, []);
 
-  // 데이터가 서버에서 이미 채워져 오므로 로딩을 기다릴 필요 없이 마운트 시 바로 복원.
+  // 마운트 시(글 상세에서 뒤로가기 포함) 저장된 스크롤 위치로 복원.
   useEffect(() => {
     const saved = sessionStorage.getItem(SCROLL_KEY);
     if (saved == null) return;
@@ -59,14 +67,6 @@ function BlogPageContent({ posts }: { posts: Post[] }) {
   const saveScrollPosition = () => {
     sessionStorage.setItem(SCROLL_KEY, String(window.scrollY));
   };
-
-  const filtered = category === "전체"
-    ? posts
-    : posts.filter((p) => getPostCategory(p.tag ?? null) === category);
-
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
-  const currentPage = Math.min(Math.max(pageParam, 1), totalPages);
-  const pagePosts = filtered.slice((currentPage - 1) * PER_PAGE, currentPage * PER_PAGE);
 
   // 페이지/카테고리 링크로 이동했을 때만 맨 위로 스크롤.
   // 최초 마운트(글 상세에서 뒤로가기 포함)는 위 스크롤 복원 로직에 맡긴다.
@@ -118,7 +118,7 @@ function BlogPageContent({ posts }: { posts: Post[] }) {
             ))}
           </div>
 
-          {filtered.length === 0 ? (
+          {totalCount === 0 ? (
             <p className="text-gray-400 text-center py-20">아직 게시된 글이 없습니다.</p>
           ) : (
             <>
@@ -150,7 +150,7 @@ function BlogPageContent({ posts }: { posts: Post[] }) {
               {totalPages > 1 && (
                 <div className="mt-12">
                   <p className="text-xs text-gray-400 text-center mb-4">
-                    전체 {filtered.length}개 중 {(currentPage - 1) * PER_PAGE + 1}–{Math.min(currentPage * PER_PAGE, filtered.length)}
+                    전체 {totalCount}개 중 {(currentPage - 1) * PER_PAGE + 1}–{Math.min(currentPage * PER_PAGE, totalCount)}
                   </p>
                   <div className="flex items-center justify-center gap-1 flex-wrap">
                     {currentPage > 1 ? (
@@ -199,13 +199,5 @@ function BlogPageContent({ posts }: { posts: Post[] }) {
       </main>
       <Footer />
     </>
-  );
-}
-
-export default function BlogPageClient({ initialPosts }: { initialPosts: Post[] }) {
-  return (
-    <Suspense>
-      <BlogPageContent posts={initialPosts} />
-    </Suspense>
   );
 }
