@@ -28,6 +28,28 @@ function hasKorean(text: string) {
   return /[가-힣]/.test(text);
 }
 
+type PostStatus = "published" | "scheduled" | "draft";
+
+function getPostStatus(post: Post, now: Date): PostStatus {
+  if (!post.published) return "draft";
+  if (post.publish_at && new Date(post.publish_at) > now) return "scheduled";
+  return "published";
+}
+
+function getPageNumbers(current: number, total: number): (number | "ellipsis")[] {
+  if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+  const keep = new Set([1, total, current - 1, current, current + 1]);
+  const sorted = [...keep].filter((p) => p >= 1 && p <= total).sort((a, b) => a - b);
+  const result: (number | "ellipsis")[] = [];
+  let prev = 0;
+  for (const p of sorted) {
+    if (prev && p - prev > 1) result.push("ellipsis");
+    result.push(p);
+    prev = p;
+  }
+  return result;
+}
+
 async function translateToSlug(text: string): Promise<string> {
   try {
     const res = await fetch(
@@ -53,7 +75,10 @@ export default function AdminPage() {
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState("");
   const [slugGenerating, setSlugGenerating] = useState(false);
-  const [visibleCount, setVisibleCount] = useState(20);
+  const [query, setQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState<"all" | PostStatus>("all");
+  const [page, setPage] = useState(1);
+  const PER_PAGE = 20;
   const [pwModalOpen, setPwModalOpen] = useState(false);
   const [pwCurrent, setPwCurrent] = useState("");
   const [pwNew, setPwNew] = useState("");
@@ -152,6 +177,10 @@ export default function AdminPage() {
       setPwSaving(false);
     }
   }
+
+  useEffect(() => {
+    setPage(1);
+  }, [query, statusFilter]);
 
   useEffect(() => {
     const onPop = (e: PopStateEvent) => {
@@ -255,6 +284,11 @@ export default function AdminPage() {
     } else {
       alert("삭제 실패");
     }
+  }
+
+  function goToPage(n: number) {
+    setPage(n);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   if (view === "loading") {
@@ -484,9 +518,22 @@ export default function AdminPage() {
 
   // list view
   const now = new Date();
-  const scheduledCount = posts.filter((p) => p.published && p.publish_at && new Date(p.publish_at) > now).length;
-  const publishedCount = posts.filter((p) => p.published && !(p.publish_at && new Date(p.publish_at) > now)).length;
-  const draftCount = posts.filter((p) => !p.published).length;
+  const scheduledCount = posts.filter((p) => getPostStatus(p, now) === "scheduled").length;
+  const publishedCount = posts.filter((p) => getPostStatus(p, now) === "published").length;
+  const draftCount = posts.filter((p) => getPostStatus(p, now) === "draft").length;
+
+  const q = query.trim().toLowerCase();
+  const filtered = posts.filter((post) => {
+    if (statusFilter !== "all" && getPostStatus(post, now) !== statusFilter) return false;
+    if (q) {
+      const hay = `${post.title} ${post.slug} ${post.tag ?? ""}`.toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
+  const currentPage = Math.min(page, totalPages);
+  const pagePosts = filtered.slice((currentPage - 1) * PER_PAGE, currentPage * PER_PAGE);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -569,12 +616,44 @@ export default function AdminPage() {
           </a>
         </div>
 
+        {posts.length > 0 && (
+          <div className="flex flex-col sm:flex-row gap-3 mb-4">
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="제목, 슬러그, 태그로 검색"
+              className="flex-1 border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#7B2D8B]"
+            />
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value as "all" | PostStatus)}
+              className="border border-gray-200 rounded-lg px-4 py-2.5 text-sm bg-white focus:outline-none focus:border-[#7B2D8B]"
+            >
+              <option value="all">전체</option>
+              <option value="published">공개</option>
+              <option value="scheduled">예약됨</option>
+              <option value="draft">비공개</option>
+            </select>
+          </div>
+        )}
+
         <div className="bg-white rounded-2xl shadow overflow-x-auto">
           {posts.length === 0 ? (
             <div className="text-center py-16 text-gray-400 text-sm">
               <p>글이 없습니다.</p>
               <button onClick={openNew} className="mt-3 text-[#7B2D8B] font-semibold">
                 첫 글 작성하기 →
+              </button>
+            </div>
+          ) : filtered.length === 0 ? (
+            <div className="text-center py-16 text-gray-400 text-sm">
+              <p>{query ? `'${query}' 검색 결과가 없습니다` : "조건에 맞는 글이 없습니다"}</p>
+              <button
+                onClick={() => { setQuery(""); setStatusFilter("all"); }}
+                className="mt-3 text-[#7B2D8B] font-semibold"
+              >
+                필터 초기화
               </button>
             </div>
           ) : (
@@ -589,7 +668,9 @@ export default function AdminPage() {
                 </tr>
               </thead>
               <tbody>
-                {posts.slice(0, visibleCount).map((post, i) => (
+                {pagePosts.map((post, i) => {
+                  const status = getPostStatus(post, now);
+                  return (
                   <tr
                     key={post.id}
                     className={`border-b border-gray-50 ${i % 2 === 0 ? "" : "bg-gray-50/50"}`}
@@ -606,26 +687,20 @@ export default function AdminPage() {
                       )}
                     </td>
                     <td className="px-4 py-4">
-                      {(() => {
-                        const isScheduled = post.published && post.publish_at && new Date(post.publish_at) > new Date();
-                        const isPublished = post.published && !isScheduled;
-                        return (
-                          <div>
-                            <span className={`text-xs px-2 py-0.5 rounded-full ${
-                              isScheduled ? "bg-orange-50 text-orange-500"
-                              : isPublished ? "bg-green-50 text-green-600"
-                              : "bg-gray-100 text-gray-400"
-                            }`}>
-                              {isScheduled ? "예약됨" : isPublished ? "공개" : "비공개"}
-                            </span>
-                            {isScheduled && post.publish_at && (
-                              <div className="text-xs text-gray-400 mt-0.5">
-                                {new Date(post.publish_at).toLocaleDateString("ko-KR", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" })}
-                              </div>
-                            )}
+                      <div>
+                        <span className={`text-xs px-2 py-0.5 rounded-full ${
+                          status === "scheduled" ? "bg-orange-50 text-orange-500"
+                          : status === "published" ? "bg-green-50 text-green-600"
+                          : "bg-gray-100 text-gray-400"
+                        }`}>
+                          {status === "scheduled" ? "예약됨" : status === "published" ? "공개" : "비공개"}
+                        </span>
+                        {status === "scheduled" && post.publish_at && (
+                          <div className="text-xs text-gray-400 mt-0.5">
+                            {new Date(post.publish_at).toLocaleDateString("ko-KR", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" })}
                           </div>
-                        );
-                      })()}
+                        )}
+                      </div>
                     </td>
                     <td className="px-4 py-4 text-xs text-gray-400">
                       {new Date(post.publish_at || post.created_at).toLocaleDateString("ko-KR")}
@@ -655,18 +730,47 @@ export default function AdminPage() {
                       </div>
                     </td>
                   </tr>
-                ))}
+                  );
+                })}
               </tbody>
             </table>
           )}
-          {visibleCount < posts.length && (
-            <div className="text-center py-6">
-              <button
-                onClick={() => setVisibleCount((c) => c + 20)}
-                className="border-2 border-[#7B2D8B] text-[#7B2D8B] font-bold px-8 py-2.5 rounded-full text-sm hover:bg-[#7B2D8B] hover:text-white transition-all"
-              >
-                더보기 ({posts.length - visibleCount}개 남음)
-              </button>
+          {filtered.length > 0 && totalPages > 1 && (
+            <div className="flex flex-wrap items-center justify-between gap-3 px-6 py-4 border-t border-gray-100">
+              <p className="text-xs text-gray-400">
+                전체 {filtered.length}개 중 {(currentPage - 1) * PER_PAGE + 1}–{Math.min(currentPage * PER_PAGE, filtered.length)}
+              </p>
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => goToPage(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="px-3 py-1.5 rounded-full text-sm text-gray-500 hover:bg-gray-100 disabled:opacity-30 disabled:hover:bg-transparent"
+                >
+                  이전
+                </button>
+                {getPageNumbers(currentPage, totalPages).map((p, i) =>
+                  p === "ellipsis" ? (
+                    <span key={`e${i}`} className="px-2 text-sm text-gray-300">···</span>
+                  ) : (
+                    <button
+                      key={p}
+                      onClick={() => goToPage(p)}
+                      className={`min-w-[2rem] px-2 py-1.5 rounded-full text-sm ${
+                        p === currentPage ? "bg-[#7B2D8B] text-white" : "text-gray-500 hover:bg-gray-100"
+                      }`}
+                    >
+                      {p}
+                    </button>
+                  )
+                )}
+                <button
+                  onClick={() => goToPage(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="px-3 py-1.5 rounded-full text-sm text-gray-500 hover:bg-gray-100 disabled:opacity-30 disabled:hover:bg-transparent"
+                >
+                  다음
+                </button>
+              </div>
             </div>
           )}
         </div>
