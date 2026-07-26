@@ -735,42 +735,44 @@ export default function AdminPage() {
               </tbody>
             </table>
           )}
-          {filtered.length > 0 && totalPages > 1 && (
+          {filtered.length > 0 && (
             <div className="flex flex-wrap items-center justify-between gap-3 px-6 py-4 border-t border-gray-100">
               <p className="text-xs text-gray-400">
                 전체 {filtered.length}개 중 {(currentPage - 1) * PER_PAGE + 1}–{Math.min(currentPage * PER_PAGE, filtered.length)}
               </p>
-              <div className="flex items-center gap-1">
-                <button
-                  onClick={() => goToPage(currentPage - 1)}
-                  disabled={currentPage === 1}
-                  className="px-3 py-1.5 rounded-full text-sm text-gray-500 hover:bg-gray-100 disabled:opacity-30 disabled:hover:bg-transparent"
-                >
-                  이전
-                </button>
-                {getPageNumbers(currentPage, totalPages).map((p, i) =>
-                  p === "ellipsis" ? (
-                    <span key={`e${i}`} className="px-2 text-sm text-gray-300">···</span>
-                  ) : (
-                    <button
-                      key={p}
-                      onClick={() => goToPage(p)}
-                      className={`min-w-[2rem] px-2 py-1.5 rounded-full text-sm ${
-                        p === currentPage ? "bg-[#7B2D8B] text-white" : "text-gray-500 hover:bg-gray-100"
-                      }`}
-                    >
-                      {p}
-                    </button>
-                  )
-                )}
-                <button
-                  onClick={() => goToPage(currentPage + 1)}
-                  disabled={currentPage === totalPages}
-                  className="px-3 py-1.5 rounded-full text-sm text-gray-500 hover:bg-gray-100 disabled:opacity-30 disabled:hover:bg-transparent"
-                >
-                  다음
-                </button>
-              </div>
+              {totalPages > 1 && (
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={() => goToPage(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className="px-3 py-1.5 rounded-full text-sm text-gray-500 hover:bg-gray-100 disabled:opacity-30 disabled:hover:bg-transparent"
+                  >
+                    이전
+                  </button>
+                  {getPageNumbers(currentPage, totalPages).map((p, i) =>
+                    p === "ellipsis" ? (
+                      <span key={`e${i}`} className="px-2 text-sm text-gray-300">···</span>
+                    ) : (
+                      <button
+                        key={p}
+                        onClick={() => goToPage(p)}
+                        className={`min-w-[2rem] px-2 py-1.5 rounded-full text-sm ${
+                          p === currentPage ? "bg-[#7B2D8B] text-white" : "text-gray-500 hover:bg-gray-100"
+                        }`}
+                      >
+                        {p}
+                      </button>
+                    )
+                  )}
+                  <button
+                    onClick={() => goToPage(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                    className="px-3 py-1.5 rounded-full text-sm text-gray-500 hover:bg-gray-100 disabled:opacity-30 disabled:hover:bg-transparent"
+                  >
+                    다음
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </div>

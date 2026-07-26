@@ -12,3 +12,9 @@ export function buildBlogUrl(cat: Category, page: number) {
   const qs = params.toString();
   return qs ? `/blog?${qs}` : "/blog";
 }
+
+export function buildBlogTitle(cat: Category, page: number): string {
+  const base = cat === "전체" ? "블로그" : cat;
+  const suffix = page > 1 ? ` (${page}페이지)` : "";
+  return `${base}${suffix} | 내몸에미소`;
+}

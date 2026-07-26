@@ -3,7 +3,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import type { Post } from "@/lib/supabase";
 import { BarChartIcon } from "@/components/Icons";
@@ -37,25 +37,13 @@ function getPageNumbers(current: number, total: number): (number | "ellipsis")[]
   return result;
 }
 
-function BlogPageContent() {
+function BlogPageContent({ posts }: { posts: Post[] }) {
   const searchParams = useSearchParams();
   const category = normalizeCategory(searchParams.get("cat"));
   const pageParam = Number(searchParams.get("page")) || 1;
-
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState(true);
   const isFirstPageEffect = useRef(true);
 
-  useEffect(() => {
-    fetch("/api/posts", { cache: "no-store" })
-      .then((r) => r.json())
-      .then((data) => {
-        setPosts(data);
-        setLoading(false);
-      });
-  }, []);
-
-  // 뒤로가기 시 브라우저 기본 스크롤 복원이 비동기 로딩과 경합해 맨 위로
+  // 뒤로가기 시 브라우저 기본 스크롤 복원이 마운트 직후 페인트와 경합해 맨 위로
   // 튀는 문제가 있어, 직접 복원하기로 하고 브라우저 자동 복원은 꺼둔다.
   useEffect(() => {
     const prev = window.history.scrollRestoration;
@@ -63,15 +51,15 @@ function BlogPageContent() {
     return () => { window.history.scrollRestoration = prev; };
   }, []);
 
+  // 데이터가 서버에서 이미 채워져 오므로 로딩을 기다릴 필요 없이 마운트 시 바로 복원.
   useEffect(() => {
-    if (loading) return;
     const saved = sessionStorage.getItem(SCROLL_KEY);
     if (saved == null) return;
     sessionStorage.removeItem(SCROLL_KEY);
     requestAnimationFrame(() => {
       window.scrollTo(0, Number(saved));
     });
-  }, [loading]);
+  }, []);
 
   const saveScrollPosition = () => {
     sessionStorage.setItem(SCROLL_KEY, String(window.scrollY));
@@ -135,20 +123,7 @@ function BlogPageContent() {
             ))}
           </div>
 
-          {loading ? (
-            <div className="space-y-8 animate-pulse">
-              {[1, 2, 3, 4, 5].map((i) => (
-                <div key={i} className="border-b border-gray-100 pb-8">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="h-6 w-16 bg-gray-100 rounded-full" />
-                    <div className="h-4 w-16 bg-gray-100 rounded" />
-                  </div>
-                  <div className="h-7 bg-gray-200 rounded w-3/4 mb-2" />
-                  <div className="h-4 bg-gray-100 rounded w-full" />
-                </div>
-              ))}
-            </div>
-          ) : filtered.length === 0 ? (
+          {filtered.length === 0 ? (
             <p className="text-gray-400 text-center py-20">아직 게시된 글이 없습니다.</p>
           ) : (
             <>
@@ -232,10 +207,10 @@ function BlogPageContent() {
   );
 }
 
-export default function BlogPageClient() {
+export default function BlogPageClient({ initialPosts }: { initialPosts: Post[] }) {
   return (
     <Suspense>
-      <BlogPageContent />
+      <BlogPageContent posts={initialPosts} />
     </Suspense>
   );
 }
