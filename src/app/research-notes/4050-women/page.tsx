@@ -71,11 +71,16 @@ export default async function Report4050Page() {
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 leading-tight">
             {report4050.title}
           </h1>
-          <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-gray-500 mb-2">
-            <span className="whitespace-nowrap">표본 {report4050.sampleSize}명</span>
-            <span aria-hidden>·</span>
-            <span className="whitespace-nowrap">{report4050.collectingSince}부터 축적</span>
-          </p>
+          <dl className="flex flex-col gap-0.5 text-gray-500 mb-6 text-sm md:text-base">
+            <div className="flex gap-3">
+              <dt className="w-20 shrink-0 text-gray-400">표본</dt>
+              <dd>{report4050.sampleSize}명</dd>
+            </div>
+            <div className="flex gap-3">
+              <dt className="w-20 shrink-0 text-gray-400">수집 기간</dt>
+              <dd>{report4050.collectingSince}부터</dd>
+            </div>
+          </dl>
           <p className="text-gray-600 text-base md:text-lg leading-relaxed mb-12">
             내몸에미소를 방문한 40~59세 여성 회원의 체형·움직임 측정 결과를 모으고 있습니다. 아직 표본이 크지 않은 <strong>초기 관찰 기록</strong>이며, 방문 회원이 늘어날수록 계속 업데이트됩니다.
           </p>
@@ -142,15 +147,21 @@ export default async function Report4050Page() {
           </section>
 
           {/* 7. 업데이트 표시 */}
-          <div className="border-t border-gray-100 pt-6 flex items-start gap-2 text-sm text-gray-400">
-            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse shrink-0 mt-1.5" />
-            <p className="flex flex-wrap items-center gap-x-2 gap-y-1">
-              <span className="whitespace-nowrap">표본 {report4050.sampleSize}명</span>
-              <span aria-hidden>·</span>
-              <span className="whitespace-nowrap">마지막 업데이트 {report4050.lastUpdated}</span>
-              <span aria-hidden>·</span>
-              <span className="whitespace-nowrap">다음 업데이트 예정 {report4050.nextUpdate}</span>
-            </p>
+          <div className="border-t border-gray-100 pt-6 text-sm">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse shrink-0" />
+              <span className="text-gray-500">업데이트 기록</span>
+            </div>
+            <dl className="pl-4 text-gray-400">
+              <div className="flex gap-3 py-0.5">
+                <dt className="w-28 shrink-0">마지막 업데이트</dt>
+                <dd className="text-gray-500">{report4050.lastUpdated}</dd>
+              </div>
+              <div className="flex gap-3 py-0.5">
+                <dt className="w-28 shrink-0">다음 예정</dt>
+                <dd className="text-gray-500">{report4050.nextUpdate}</dd>
+              </div>
+            </dl>
           </div>
         </div>
       </main>
