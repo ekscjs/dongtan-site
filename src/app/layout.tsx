@@ -5,6 +5,7 @@ import Script from "next/script";
 import Tracker from "@/components/Tracker";
 import ScrollToTop from "@/components/ScrollToTop";
 import { RouteProgressProvider } from "@/components/RouteProgress";
+import AskFloatingButton from "@/components/AskFloatingButton";
 import "./globals.css";
 
 const notoSansKR = Noto_Sans_KR({
@@ -125,6 +126,7 @@ export default function RootLayout({
         />
         <ScrollToTop />
         <RouteProgressProvider>{children}</RouteProgressProvider>
+        <AskFloatingButton />
         <Tracker />
         <Analytics />
         {/* Google Analytics */}
