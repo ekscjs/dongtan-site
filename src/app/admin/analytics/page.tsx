@@ -739,7 +739,7 @@ export default function AnalyticsPage() {
 
         <div className="bg-white rounded-2xl shadow p-6 mb-6">
           <h2 className="text-sm font-semibold text-gray-700 mb-4">
-            미소AI 사용 현황 <span className="text-xs font-normal text-gray-400">(최근 30일)</span>
+            미소코치 사용 현황 <span className="text-xs font-normal text-gray-400">(최근 30일)</span>
           </h2>
           {!events ? (
             <p className="text-xs text-gray-400">불러오는 중...</p>

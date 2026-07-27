@@ -88,7 +88,10 @@ export default function AskConcierge() {
         <div className="max-w-xl mx-auto">
           {!result ? (
             <>
-              <p className="text-sm font-semibold text-[#9B4DAB] uppercase tracking-widest mb-3">미소AI</p>
+              <div className="mb-3">
+                <p className="text-sm font-semibold text-[#9B4DAB] tracking-widest">미소코치</p>
+                <p className="text-xs text-gray-400 mt-0.5">AI가 24시간 답해드려요</p>
+              </div>
               <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
                 어떤 증상이<br />궁금하세요?
               </h1>
@@ -165,7 +168,7 @@ export default function AskConcierge() {
 
               {result.related_posts.length > 0 && (
                 <div className="mt-5">
-                  <p className="text-xs font-semibold text-gray-500 mb-3 px-1">📖 관련 칼럼</p>
+                  <p className="text-xs font-semibold text-gray-500 mb-3 px-1">관련 칼럼</p>
                   <div className="space-y-2.5">
                     {result.related_posts.map((p) => (
                       <Link
@@ -206,15 +209,19 @@ export default function AskConcierge() {
                 </div>
               )}
 
-              {result.show_consult && (
-                <div className="mt-5 bg-gradient-to-br from-[#7B2D8B] to-[#9B4DAB] rounded-2xl p-6 text-center text-white">
-                  <p className="font-bold mb-1">💬 정확한 건 상담에서</p>
-                  <p className="text-purple-200 text-sm md:text-base lg:text-lg mb-4">움직임을 직접 확인하고 맞춤 방향을 안내해 드려요</p>
-                  <KakaoButton className="block w-full bg-white text-[#7B2D8B] font-bold py-3.5 rounded-full hover:bg-gray-100 transition-colors">
-                    카카오로 상담하기
-                  </KakaoButton>
-                </div>
-              )}
+              <div className="mt-5 bg-gradient-to-br from-[#7B2D8B] to-[#9B4DAB] rounded-2xl p-6 text-center text-white">
+                <p className="font-bold mb-1">정확한 건 상담에서</p>
+                <p className="text-purple-200 text-sm md:text-base lg:text-lg mb-4">
+                  <span className="inline-block">움직임을 직접 확인하고</span>{" "}
+                  <span className="inline-block">맞춤 방향을 안내해 드려요</span>
+                </p>
+                <KakaoButton
+                  onClick={() => track("ai_ask_consult_click")}
+                  className="block w-full bg-white text-[#7B2D8B] font-bold py-3.5 rounded-full hover:bg-gray-100 transition-colors"
+                >
+                  카카오로 무료 상담
+                </KakaoButton>
+              </div>
 
               <button onClick={reset} className="w-full mt-6 text-sm text-gray-400 hover:text-gray-600 underline">
                 다시 물어보기

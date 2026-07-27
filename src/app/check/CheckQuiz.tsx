@@ -302,8 +302,8 @@ export default function CheckQuiz() {
                     <MessageSquareIcon className="text-[#7B2D8B] group-hover:text-white" size={24} />
                   </div>
                   <div className="flex-1">
-                    <p className="text-sm font-semibold text-[#9B4DAB] mb-1">미소AI</p>
-                    <h2 className="text-lg font-bold text-gray-900 mb-1">미소AI에게 물어보기</h2>
+                    <p className="text-sm font-semibold text-[#9B4DAB] mb-1">미소코치</p>
+                    <h2 className="text-lg font-bold text-gray-900 mb-1">미소코치에게 물어보기</h2>
                     <p className="text-sm md:text-base lg:text-lg text-gray-500 text-pretty">
                       <span className="inline-block">동탄에서 실제 관리한 회원 사례로 쓴 글 중에서</span>{" "}
                       <span className="inline-block">답을 찾아드려요</span>
@@ -813,7 +813,7 @@ function CrossPromo({ to }: { to: "pain" | "quiz" | "ask" }) {
         href="/ask"
         className="mt-5 block bg-white rounded-2xl p-5 border border-gray-100 hover:border-[#7B2D8B] transition-colors group"
       >
-        <p className="text-sm font-semibold text-[#9B4DAB] mb-1">미소AI에게도 물어볼까요?</p>
+        <p className="text-sm font-semibold text-[#9B4DAB] mb-1">미소코치에게도 물어볼까요?</p>
         <p className="font-bold text-gray-900 mb-1">증상 말하면 관련 글 찾아드려요</p>
         <p className="text-sm md:text-base lg:text-lg text-gray-500 text-pretty">
           <span className="inline-block">동탄에서 실제 관리한 회원 사례로 쓴 글 중에서</span>{" "}

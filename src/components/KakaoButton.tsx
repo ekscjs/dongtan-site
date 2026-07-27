@@ -6,12 +6,15 @@ import { getOrCreateVisitorId, getOrCreateSessionId } from "@/lib/visitor";
 interface KakaoButtonProps {
   className?: string;
   children: React.ReactNode;
+  onClick?: () => void;
 }
 
-export default function KakaoButton({ className, children }: KakaoButtonProps) {
+export default function KakaoButton({ className, children, onClick }: KakaoButtonProps) {
   const pathname = usePathname();
 
   const handleClick = () => {
+    onClick?.();
+
     if (typeof window !== "undefined" && typeof (window as any).gtag === "function") {
       (window as any).gtag("event", "kakao_chat_click", {
         event_category: "engagement",
