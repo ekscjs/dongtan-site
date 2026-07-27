@@ -4,13 +4,13 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
-import type { Post } from "@/lib/supabase";
 import { BarChartIcon } from "@/components/Icons";
 import { CATEGORIES, PER_PAGE, getPostCategory, buildBlogUrl, type Category } from "./blogUrl";
+import type { PostListItem } from "./page";
 
 const SCROLL_KEY = "blog-scroll-y";
 
-function formatDate(post: Post) {
+function formatDate(post: PostListItem) {
   const dateStr = post.publish_at ?? post.created_at;
   const d = new Date(dateStr);
   const [year, month] = d.toLocaleDateString("en-CA", { timeZone: "Asia/Seoul" }).split("-");
@@ -38,7 +38,7 @@ export default function BlogPageClient({
   totalPages,
   totalCount,
 }: {
-  pagePosts: Post[];
+  pagePosts: PostListItem[];
   category: Category;
   currentPage: number;
   totalPages: number;

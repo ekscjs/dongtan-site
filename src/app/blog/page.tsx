@@ -10,11 +10,13 @@ const DESCRIPTION = "실제 케이스와 경험을 바탕으로, 몸에 대한 �
 
 export const revalidate = 60;
 
-const getPosts = cache(async (): Promise<Post[]> => {
+export type PostListItem = Pick<Post, "id" | "title" | "slug" | "excerpt" | "tag" | "created_at" | "publish_at">;
+
+const getPosts = cache(async (): Promise<PostListItem[]> => {
   const now = new Date().toISOString();
   const { data } = await supabase
     .from("posts")
-    .select("*")
+    .select("id,title,slug,excerpt,tag,created_at,publish_at")
     .eq("published", true)
     .or(`publish_at.is.null,publish_at.lte.${now}`)
     .order("publish_at", { ascending: false, nullsFirst: false });
@@ -22,7 +24,7 @@ const getPosts = cache(async (): Promise<Post[]> => {
 });
 
 type ResolvedView =
-  | { ok: true; category: Category; page: number; posts: Post[] }
+  | { ok: true; category: Category; page: number; posts: PostListItem[] }
   | { ok: false };
 
 async function resolveView(sp: Record<string, string | string[] | undefined>): Promise<ResolvedView> {
