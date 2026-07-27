@@ -296,7 +296,9 @@ export async function GET(req: NextRequest) {
       ${queriesHtml || "<tr><td>데이터 없음</td></tr>"}
     </table>
     <p style="margin-top:24px;color:#888;font-size:13px;"><a href="https://www.bodymiso.com/admin/analytics">관리자 페이지에서 자세히 보기</a></p>
-    <pre id="report-json">${JSON.stringify(reportJson)}</pre>
+    <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">
+      <pre id="report-json">${JSON.stringify(reportJson)}</pre>
+    </div>
   `;
 
   try {
