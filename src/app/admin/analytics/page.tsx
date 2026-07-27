@@ -738,9 +738,14 @@ export default function AnalyticsPage() {
         </div>
 
         <div className="bg-white rounded-2xl shadow p-6 mb-6">
-          <h2 className="text-sm font-semibold text-gray-700 mb-4">
-            미소코치 사용 현황 <span className="text-xs font-normal text-gray-400">(최근 30일)</span>
-          </h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-sm font-semibold text-gray-700">
+              미소코치 사용 현황 <span className="text-xs font-normal text-gray-400">(최근 30일)</span>
+            </h2>
+            <a href="/admin/ask-logs" className="text-sm text-[#7B2D8B] hover:underline">
+              질문 내용 보기 →
+            </a>
+          </div>
           {!events ? (
             <p className="text-xs text-gray-400">불러오는 중...</p>
           ) : (

@@ -603,6 +603,16 @@ export default function AdminPage() {
             <p className="text-xs text-gray-400 mt-1">국가 · 기기 · GA4 연동</p>
           </a>
           <a
+            href="/admin/ask-logs"
+            className="bg-[#FAF5FB] border border-[#7B2D8B]/20 rounded-2xl p-5 hover:shadow-md transition-shadow cursor-pointer group"
+          >
+            <p className="text-xs text-[#7B2D8B] font-semibold mb-1">미소코치 질문 로그</p>
+            <p className="text-sm font-semibold text-gray-800 group-hover:text-[#7B2D8B]">
+              방문자가 실제로 물어본 증상 →
+            </p>
+            <p className="text-xs text-gray-400 mt-1">글감·FAQ 자료</p>
+          </a>
+          <a
             href="https://analytics.google.com/analytics/web/#/p541281945/reports/intelligenthome"
             target="_blank"
             rel="noopener noreferrer"
