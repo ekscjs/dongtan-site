@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import KakaoButton from "@/components/KakaoButton";
 import { supabase } from "@/lib/supabase";
+import { getOrCreateVisitorId } from "@/lib/visitor";
 import {
   painAreas,
   areaOrder,
@@ -224,10 +225,12 @@ function ChecklistView({
 function ResultView({
   selected,
   answers,
+  entryArea,
   onReset,
 }: {
   selected: AreaKey[];
   answers: Record<AreaKey, boolean[]>;
+  entryArea?: string | null;
   onReset: () => void;
 }) {
   const [posts, setPosts] = useState<RelPost[] | null>(null);
@@ -242,6 +245,29 @@ function ResultView({
 
   const highPriority = findings.filter((f) => f.priority === 1);
   const hasSerious = highPriority.length > 0;
+
+  // 결과 익명 저장 (중복 insert 방지)
+  const savedRef = useRef(false);
+
+  useEffect(() => {
+    if (savedRef.current) return;
+    savedRef.current = true;
+
+    fetch("/api/pain-map", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        anon_id: getOrCreateVisitorId(),
+        areas: selected,
+        area_count: selected.length,
+        answers_raw: answers,
+        findings: findings.map((f) => f.title),
+        priority1_count: highPriority.length,
+        entry_area: entryArea ?? null,
+      }),
+    }).catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // 관련 블로그 로드
   useEffect(() => {
@@ -359,7 +385,8 @@ function ResultView({
       {/* 예약 CTA */}
       <div className="bg-[#7B2D8B] rounded-2xl p-6 text-center">
         <p className="text-white font-bold text-lg mb-1">
-          AI 분석 결과, 정확한 평가는<br />움직임 검사까지 해야 합니다.
+          <span className="inline-block">체크 결과만으로는 여기까지예요.</span>{" "}
+          <span className="inline-block">정확한 건 움직임을 봐야 합니다.</span>
         </p>
         <p className="text-purple-200 text-sm md:text-base lg:text-lg mb-5">
           센터에서는 이 결과를 바탕으로 실제 움직임을 확인하고 맞춤 운동 방향을 안내해 드립니다.
@@ -420,6 +447,8 @@ export default function PainMap() {
   const [view, setView] = useState<View>("map");
   const [selected, setSelected] = useState<Set<AreaKey>>(new Set());
   const [answers, setAnswers] = useState<Record<AreaKey, boolean[]> | null>(null);
+  // ?area= 파싱은 작업지시서-블로그글하단-유틸블록-0727.md 작업 3에서 채워짐. 그 전까진 항상 null.
+  const [entryArea] = useState<string | null>(null);
 
   function toggleArea(k: AreaKey) {
     setSelected((prev) => {
@@ -518,6 +547,7 @@ export default function PainMap() {
             <ResultView
               selected={selectedOrdered}
               answers={answers}
+              entryArea={entryArea}
               onReset={reset}
             />
           )}
