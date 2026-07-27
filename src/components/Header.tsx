@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import KakaoButton from "@/components/KakaoButton";
-import NavPendingBar from "@/components/NavPendingBar";
+import { useRouteProgress } from "@/components/RouteProgress";
 
 const navLinks = [
   { href: "/about", label: "센터 소개" },
@@ -18,6 +18,7 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const close = () => setMenuOpen(false);
   const pathname = usePathname();
+  const { start } = useRouteProgress();
 
   // 메뉴 열렸을 때 배경 스크롤 잠금
   useEffect(() => {
@@ -27,21 +28,28 @@ export default function Header() {
     };
   }, [menuOpen]);
 
-  // 링크 클릭 즉시 메뉴를 닫으면 그 Link의 자손인 NavPendingBar가 전환 중에
-  // 바로 언마운트돼 진행 바가 뜰 틈이 없다. 실제 라우트가 바뀐 뒤(=전환 완료 후)
-  // 닫아야 전환 중에도 바가 보인다.
+  // 링크 클릭은 handleNav에서 즉시 메뉴를 닫는다. 이 effect는 뒤로가기 등
+  // 링크 클릭을 거치지 않고 URL이 바뀌는 경우를 대비한 보험이다.
   useEffect(() => {
     setMenuOpen(false);
   }, [pathname]);
+
+  const handleNav = (href: string) => {
+    setMenuOpen(false); // 항상 즉시 닫는다. 같은 페이지여도 닫는다.
+    if (href === pathname) {
+      window.scrollTo({ top: 0, behavior: "smooth" }); // 같은 페이지면 맨 위로
+      return; // 진행 바 띄우지 않음(전환이 없으므로)
+    }
+    start();
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
       <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
 
         {/* 로고 */}
-        <Link href="/">
+        <Link href="/" onClick={() => handleNav("/")}>
           <Image src="/logo.png" alt="내몸에미소 로고" width={160} height={48} className="object-contain" />
-          <NavPendingBar />
         </Link>
 
         {/* Desktop nav */}
@@ -50,13 +58,13 @@ export default function Header() {
             const isActive = pathname === link.href || pathname.startsWith(link.href + "/");
             return (
               <Link key={link.href} href={link.href}
+                onClick={() => handleNav(link.href)}
                 className={`text-sm md:text-base lg:text-lg font-medium transition-colors relative ${
                   isActive
                     ? "text-[#7B2D8B] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-[#7B2D8B] after:rounded-full"
                     : "text-gray-600 hover:text-[#7B2D8B]"
                 }`}>
                 {link.label}
-                <NavPendingBar />
               </Link>
             );
           })}
@@ -78,9 +86,8 @@ export default function Header() {
         <div className="fixed inset-0 z-[60] bg-white flex flex-col md:hidden">
           {/* 상단 바 */}
           <div className="px-4 py-3 flex items-center justify-between border-b border-gray-100">
-            <Link href="/">
+            <Link href="/" onClick={() => handleNav("/")}>
               <Image src="/logo.png" alt="내몸에미소 로고" width={160} height={48} className="object-contain" />
-              <NavPendingBar />
             </Link>
             <button onClick={close} className="text-gray-700 p-1" aria-label="메뉴 닫기">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -97,13 +104,13 @@ export default function Header() {
                 <Link
                   key={link.href}
                   href={link.href}
+                  onClick={() => handleNav(link.href)}
                   className={`text-2xl font-bold py-5 border-b border-gray-100 flex items-center justify-between ${
                     isActive ? "text-[#7B2D8B]" : "text-gray-900 active:text-[#7B2D8B]"
                   }`}
                 >
                   {link.label}
                   <span className={`text-xl font-normal ${isActive ? "text-[#7B2D8B]" : "text-gray-300"}`}>›</span>
-                  <NavPendingBar />
                 </Link>
               );
             })}

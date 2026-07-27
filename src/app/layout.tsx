@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import Script from "next/script";
 import Tracker from "@/components/Tracker";
 import ScrollToTop from "@/components/ScrollToTop";
+import { RouteProgressProvider } from "@/components/RouteProgress";
 import "./globals.css";
 
 const notoSansKR = Noto_Sans_KR({
@@ -123,7 +124,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
         />
         <ScrollToTop />
-        {children}
+        <RouteProgressProvider>{children}</RouteProgressProvider>
         <Tracker />
         <Analytics />
         {/* Google Analytics */}

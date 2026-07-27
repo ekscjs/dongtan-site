@@ -32,3 +32,8 @@ article img {
   from { transform: translateX(-50%); }
   to { transform: translateX(0); }
 }
+
+@keyframes routebar {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(350%); }
+}
