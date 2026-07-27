@@ -234,8 +234,9 @@ export default function Home() {
           <div className="max-w-2xl mx-auto text-center">
             <p className="text-[#9B4DAB] font-semibold text-sm mb-3 tracking-widest uppercase">실제 회원 후기</p>
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">직접 확인해보세요</h2>
-            <p className="text-gray-500 mb-8 text-sm md:text-base lg:text-lg">
-              네이버 플레이스에 실제 회원분들의 후기가 쌓여 있습니다
+            <p className="text-gray-500 mb-8 text-sm md:text-base lg:text-lg text-pretty">
+              <span className="inline-block">네이버 플레이스에</span>{" "}
+              <span className="inline-block">실제 회원분들의 후기가 쌓여 있습니다</span>
             </p>
             <a
               href="https://map.naver.com/p/entry/place/1101035370"

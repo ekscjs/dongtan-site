@@ -50,8 +50,9 @@ export default function AboutPage() {
               직접 아파봤기 때문에,<br />
               <span className="text-[#7B2D8B]">어디서 막히는지 압니다.</span>
             </h1>
-            <p className="text-base md:text-lg lg:text-xl text-gray-600 leading-relaxed">
-              내몸에미소는 병원과 헬스장 사이 어딘가에서 막막해진 분들을 위한 곳입니다.
+            <p className="text-base md:text-lg lg:text-xl text-gray-600 leading-relaxed text-pretty">
+              <span className="inline-block">내몸에미소는 병원과 헬스장 사이 어딘가에서</span>{" "}
+              <span className="inline-block">막막해진 분들을 위한 곳입니다.</span>
             </p>
           </div>
         </section>

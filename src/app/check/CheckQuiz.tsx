@@ -242,7 +242,11 @@ export default function CheckQuiz() {
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
               어떤 방식으로<br />확인해볼까요?
             </h1>
-            <p className="text-sm md:text-base lg:text-lg text-gray-500 mb-8">셋 다 무료 · 1~3분이면 완료됩니다</p>
+            <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm md:text-base lg:text-lg text-gray-500 mb-8">
+              <span className="whitespace-nowrap">셋 다 무료</span>
+              <span aria-hidden>·</span>
+              <span className="whitespace-nowrap">1~3분이면 완료됩니다</span>
+            </p>
 
             <div className="space-y-4">
               {/* 체형 유형 진단 */}
@@ -300,8 +304,9 @@ export default function CheckQuiz() {
                   <div className="flex-1">
                     <p className="text-sm font-semibold text-[#9B4DAB] mb-1">미소AI</p>
                     <h2 className="text-lg font-bold text-gray-900 mb-1">미소AI에게 물어보기</h2>
-                    <p className="text-sm md:text-base lg:text-lg text-gray-500">
-                      동탄에서 실제 관리한 회원 사례로 쓴 글 중에서 답을 찾아드려요
+                    <p className="text-sm md:text-base lg:text-lg text-gray-500 text-pretty">
+                      <span className="inline-block">동탄에서 실제 관리한 회원 사례로 쓴 글 중에서</span>{" "}
+                      <span className="inline-block">답을 찾아드려요</span>
                     </p>
                   </div>
                   <span className="text-gray-300 text-xl shrink-0">›</span>
@@ -484,7 +489,10 @@ export default function CheckQuiz() {
 
           {allDone && (
             <div className="mt-6 text-center">
-              <p className="text-gray-700 mb-4">7일 동안 어떻게 달라졌는지 다시 확인해볼까요?</p>
+              <p className="text-gray-700 mb-4 text-pretty">
+                <span className="inline-block">7일 동안 어떻게 달라졌는지</span>{" "}
+                <span className="inline-block">다시 확인해볼까요?</span>
+              </p>
               <button
                 onClick={startRetest}
                 className="bg-[#7B2D8B] text-white font-bold py-3 px-8 rounded-full hover:bg-[#6a2578] transition-colors"
@@ -714,7 +722,10 @@ function ResearchNotePromo() {
       </div>
       <div className="flex-1">
         <p className="text-sm font-semibold text-[#9B4DAB] mb-0.5">연구노트</p>
-        <p className="font-bold text-gray-900">이 데이터가 쌓여 만들어지는 연구노트 보기</p>
+        <p className="font-bold text-gray-900 text-pretty">
+          <span className="inline-block">이 데이터가 쌓여 만들어지는</span>{" "}
+          <span className="inline-block">연구노트 보기</span>
+        </p>
       </div>
       <span className="text-gray-300 text-xl shrink-0">›</span>
     </Link>
@@ -729,9 +740,14 @@ function ClassPromo() {
       className="mt-5 block rounded-2xl p-6 bg-white border border-gray-100 hover:border-[#7B2D8B] transition-colors"
     >
       <p className="text-sm font-semibold text-[#9B4DAB] uppercase tracking-widest mb-1">바디 리셋 세션</p>
-      <p className="font-bold text-gray-900 mb-1">운동보다 먼저 해야 할 것 · 4주 1:1</p>
-      <p className="text-sm md:text-base lg:text-lg text-gray-500">
-        몸을 원래 자리로 되돌리는 4주 프로그램 →
+      <p className="flex flex-wrap items-center gap-x-2 gap-y-1 font-bold text-gray-900 mb-1">
+        <span className="whitespace-nowrap">운동보다 먼저 해야 할 것</span>
+        <span aria-hidden>·</span>
+        <span className="whitespace-nowrap">4주 1:1</span>
+      </p>
+      <p className="text-sm md:text-base lg:text-lg text-gray-500 text-pretty">
+        <span className="inline-block">몸을 원래 자리로 되돌리는</span>{" "}
+        <span className="inline-block">4주 프로그램 →</span>
       </p>
     </Link>
   );
@@ -743,8 +759,12 @@ function CenterCTA({ highlight = false }: { highlight?: boolean }) {
       <p className={`font-bold mb-1 ${highlight ? "text-white" : "text-gray-900"}`}>
         막힌 방향, 센터에서 정확히 짚어드려요
       </p>
-      <p className={`text-sm md:text-base lg:text-lg mb-5 ${highlight ? "text-purple-200" : "text-gray-500"}`}>
-        동탄 내몸에미소 · 1:1 정밀 측정 · 무료 상담
+      <p className={`flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-sm md:text-base lg:text-lg mb-5 ${highlight ? "text-purple-200" : "text-gray-500"}`}>
+        <span className="whitespace-nowrap">동탄 내몸에미소</span>
+        <span aria-hidden>·</span>
+        <span className="whitespace-nowrap">1:1 정밀 측정</span>
+        <span aria-hidden>·</span>
+        <span className="whitespace-nowrap">무료 상담</span>
       </p>
       <div className="flex flex-col sm:flex-row gap-3">
         <KakaoButton
@@ -780,8 +800,9 @@ function CrossPromo({ to }: { to: "pain" | "quiz" | "ask" }) {
       >
         <p className="text-sm font-semibold text-[#9B4DAB] mb-1">통증지도도 해볼까요?</p>
         <p className="font-bold text-gray-900 mb-1">아픈 부위 클릭 → 원인 분석</p>
-        <p className="text-sm md:text-base lg:text-lg text-gray-500">
-          목·어깨·허리·골반·무릎·발목 중 불편한 곳을 골라보세요 →
+        <p className="text-sm md:text-base lg:text-lg text-gray-500 text-pretty">
+          <span className="inline-block">목·어깨·허리·골반·무릎·발목 중</span>{" "}
+          <span className="inline-block">불편한 곳을 골라보세요 →</span>
         </p>
       </Link>
     );
@@ -794,8 +815,9 @@ function CrossPromo({ to }: { to: "pain" | "quiz" | "ask" }) {
       >
         <p className="text-sm font-semibold text-[#9B4DAB] mb-1">미소AI에게도 물어볼까요?</p>
         <p className="font-bold text-gray-900 mb-1">증상 말하면 관련 글 찾아드려요</p>
-        <p className="text-sm md:text-base lg:text-lg text-gray-500">
-          동탄에서 실제 관리한 회원 사례로 쓴 글 중에서 답을 찾아드려요 →
+        <p className="text-sm md:text-base lg:text-lg text-gray-500 text-pretty">
+          <span className="inline-block">동탄에서 실제 관리한 회원 사례로 쓴 글 중에서</span>{" "}
+          <span className="inline-block">답을 찾아드려요 →</span>
         </p>
       </Link>
     );
