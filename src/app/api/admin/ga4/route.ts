@@ -1,43 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isAdmin } from "@/lib/adminAuth";
+import { getGoogleAccessToken } from "@/lib/googleAuth";
 
 const GA4_PROPERTY_ID = "541281945";
-
-async function getAccessToken(): Promise<string> {
-  const raw = process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
-  if (!raw) throw new Error("GOOGLE_SERVICE_ACCOUNT_JSON 환경변수 없음");
-
-  const sa = JSON.parse(raw);
-  const now = Math.floor(Date.now() / 1000);
-
-  const header = Buffer.from(JSON.stringify({ alg: "RS256", typ: "JWT" })).toString("base64url");
-  const payload = Buffer.from(
-    JSON.stringify({
-      iss: sa.client_email,
-      scope: "https://www.googleapis.com/auth/analytics.readonly",
-      aud: "https://oauth2.googleapis.com/token",
-      exp: now + 3600,
-      iat: now,
-    })
-  ).toString("base64url");
-
-  const unsigned = `${header}.${payload}`;
-  const crypto = await import("crypto");
-  const sign = crypto.createSign("RSA-SHA256");
-  sign.update(unsigned);
-  const signature = sign.sign(sa.private_key, "base64url");
-  const jwt = `${unsigned}.${signature}`;
-
-  const tokenRes = await fetch("https://oauth2.googleapis.com/token", {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: `grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=${jwt}`,
-  });
-
-  const tokenData = await tokenRes.json();
-  if (!tokenData.access_token) throw new Error(`액세스 토큰 발급 실패: ${JSON.stringify(tokenData)}`);
-  return tokenData.access_token;
-}
 
 async function runReport(token: string, body: object) {
   const res = await fetch(
@@ -60,7 +25,7 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const token = await getAccessToken();
+    const token = await getGoogleAccessToken("https://www.googleapis.com/auth/analytics.readonly");
 
     const dateRange = [{ startDate: "30daysAgo", endDate: "today" }];
 

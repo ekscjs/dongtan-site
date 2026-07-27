@@ -1,48 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isAdmin } from "@/lib/adminAuth";
+import { getGoogleAccessToken } from "@/lib/googleAuth";
 
 // Google Search Console API — 서비스 계정 방식
 // 환경변수 GOOGLE_SERVICE_ACCOUNT_JSON 에 JSON 문자열로 넣어야 함
 // SEARCH_CONSOLE_SITE_URL = "sc-domain:bodymiso.com"
-
-async function getAccessToken(): Promise<string> {
-  const raw = process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
-  if (!raw) throw new Error("GOOGLE_SERVICE_ACCOUNT_JSON 환경변수 없음");
-
-  const sa = JSON.parse(raw);
-  const now = Math.floor(Date.now() / 1000);
-
-  const header = Buffer.from(JSON.stringify({ alg: "RS256", typ: "JWT" })).toString("base64url");
-  const payload = Buffer.from(
-    JSON.stringify({
-      iss: sa.client_email,
-      scope: "https://www.googleapis.com/auth/webmasters.readonly",
-      aud: "https://oauth2.googleapis.com/token",
-      exp: now + 3600,
-      iat: now,
-    })
-  ).toString("base64url");
-
-  const unsigned = `${header}.${payload}`;
-
-  // Node.js crypto로 RS256 서명
-  const crypto = await import("crypto");
-  const sign = crypto.createSign("RSA-SHA256");
-  sign.update(unsigned);
-  const signature = sign.sign(sa.private_key, "base64url");
-
-  const jwt = `${unsigned}.${signature}`;
-
-  const tokenRes = await fetch("https://oauth2.googleapis.com/token", {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: `grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=${jwt}`,
-  });
-
-  const tokenData = await tokenRes.json();
-  if (!tokenData.access_token) throw new Error("액세스 토큰 발급 실패");
-  return tokenData.access_token;
-}
 
 export async function GET(req: NextRequest) {
   // 관리자 인증 확인
@@ -53,7 +15,7 @@ export async function GET(req: NextRequest) {
   const siteUrl = process.env.SEARCH_CONSOLE_SITE_URL ?? "sc-domain:bodymiso.com";
 
   try {
-    const token = await getAccessToken();
+    const token = await getGoogleAccessToken("https://www.googleapis.com/auth/webmasters.readonly");
 
     // 최근 28일 날짜 범위
     const endDate = new Date();
