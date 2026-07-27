@@ -447,8 +447,18 @@ export default function PainMap() {
   const [view, setView] = useState<View>("map");
   const [selected, setSelected] = useState<Set<AreaKey>>(new Set());
   const [answers, setAnswers] = useState<Record<AreaKey, boolean[]> | null>(null);
-  // ?area= 파싱은 작업지시서-블로그글하단-유틸블록-0727.md 작업 3에서 채워짐. 그 전까진 항상 null.
-  const [entryArea] = useState<string | null>(null);
+  const [entryArea, setEntryArea] = useState<string | null>(null);
+
+  // ?area=knee 처럼 부위를 지정해 들어온 경우, 그 부위로 체크리스트를 바로 시작한다.
+  // useSearchParams는 이 사이트에서 SSR 실패 이력이 있어 쓰지 않는다(0726 사고).
+  useEffect(() => {
+    const p = new URLSearchParams(window.location.search).get("area");
+    if (p && p in painAreas) {
+      setSelected(new Set([p as AreaKey]));
+      setView("checklist");
+      setEntryArea(p);
+    }
+  }, []);
 
   function toggleArea(k: AreaKey) {
     setSelected((prev) => {

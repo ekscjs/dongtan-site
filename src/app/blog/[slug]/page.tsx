@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { supabase, type Post } from "@/lib/supabase";
 import { markdownToHtml } from "@/lib/markdown";
+import PostUtilBlock from "@/components/PostUtilBlock";
 
 export const dynamic = "force-dynamic";
 
@@ -231,6 +232,8 @@ export default async function BlogPostPage({
           <article
             dangerouslySetInnerHTML={{ __html: html }}
           />
+
+          <PostUtilBlock slug={post.slug} title={post.title} excerpt={post.excerpt} />
 
           {/* 이전/다음 글 네비게이션 */}
           <div className="mt-16 pt-8 border-t border-gray-100">

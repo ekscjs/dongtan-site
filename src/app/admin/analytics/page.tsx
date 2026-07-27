@@ -770,6 +770,33 @@ export default function AnalyticsPage() {
         </div>
 
         <div className="bg-white rounded-2xl shadow p-6 mb-6">
+          <h2 className="text-sm font-semibold text-gray-700 mb-4">
+            블로그 → 유틸 전환 <span className="text-xs font-normal text-gray-400">(최근 30일)</span>
+          </h2>
+          {!events ? (
+            <p className="text-xs text-gray-400">불러오는 중...</p>
+          ) : (
+            <div className="grid grid-cols-3 gap-4">
+              <div className="bg-[#FAF5FB] rounded-xl p-4 text-center">
+                <p className="text-xs text-gray-500 mb-1">통증지도</p>
+                <p className="text-3xl font-bold text-[#7B2D8B]">{events.counts["post_util_click_pain"] ?? 0}</p>
+                <p className="text-xs text-gray-400 mt-1">회</p>
+              </div>
+              <div className="bg-[#FAF5FB] rounded-xl p-4 text-center">
+                <p className="text-xs text-gray-500 mb-1">셀프체크</p>
+                <p className="text-3xl font-bold text-[#7B2D8B]">{events.counts["post_util_click_check"] ?? 0}</p>
+                <p className="text-xs text-gray-400 mt-1">회</p>
+              </div>
+              <div className="bg-[#FAF5FB] rounded-xl p-4 text-center">
+                <p className="text-xs text-gray-500 mb-1">미소코치</p>
+                <p className="text-3xl font-bold text-[#7B2D8B]">{events.counts["post_util_click_ask"] ?? 0}</p>
+                <p className="text-xs text-gray-400 mt-1">회</p>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="bg-white rounded-2xl shadow p-6 mb-6">
           <div className="flex items-center justify-between mb-4">
             <div>
               <h2 className="text-sm font-semibold text-gray-700">구글 검색어 순위표</h2>
