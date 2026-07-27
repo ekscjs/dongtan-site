@@ -453,7 +453,7 @@ export default function PainMap() {
   // useSearchParams는 이 사이트에서 SSR 실패 이력이 있어 쓰지 않는다(0726 사고).
   useEffect(() => {
     const p = new URLSearchParams(window.location.search).get("area");
-    if (p && p in painAreas) {
+    if (p && areaOrder.includes(p as AreaKey)) {
       setSelected(new Set([p as AreaKey]));
       setView("checklist");
       setEntryArea(p);
