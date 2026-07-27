@@ -185,8 +185,9 @@ export default function BodyResetSessionPage() {
         <section id="apply" className="px-4 py-12 bg-white scroll-mt-20">
           <div className="max-w-xl mx-auto">
             <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 text-center mb-2">문의하기</h2>
-            <p className="text-sm md:text-base lg:text-lg text-gray-500 text-center mb-6">
-              문의 남기시면 원장이 직접 연락드려 프로그램과 진행 방식을 안내합니다
+            <p className="text-sm md:text-base lg:text-lg text-gray-500 text-center mb-6 text-pretty">
+              <span className="inline-block">문의 남기시면 원장이 직접 연락드려</span>{" "}
+              <span className="inline-block">프로그램과 진행 방식을 안내합니다</span>
             </p>
             <LeadForm
               program="바디리셋세션"

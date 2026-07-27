@@ -50,7 +50,11 @@ export default function ResearchNotesHub() {
                   <div className="flex-1">
                     <h2 className="text-lg font-bold text-gray-900 mb-1">{r.title}</h2>
                     <p className="text-sm md:text-base text-gray-500 mb-2">{r.summary}</p>
-                    <p className="text-xs text-gray-400">표본 {r.sampleSize}명 · 마지막 업데이트 {r.lastUpdated}</p>
+                    <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-gray-400">
+                      <span className="whitespace-nowrap">표본 {r.sampleSize}명</span>
+                      <span aria-hidden>·</span>
+                      <span className="whitespace-nowrap">마지막 업데이트 {r.lastUpdated}</span>
+                    </p>
                   </div>
                   <span className="text-gray-300 text-xl shrink-0">›</span>
                 </div>
