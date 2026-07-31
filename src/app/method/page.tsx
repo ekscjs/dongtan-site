@@ -158,7 +158,7 @@ export default function MethodPage() {
             <p className="text-[#9B4DAB] font-semibold text-sm mb-2 tracking-widest uppercase">미소 운동법</p>
             <p className="text-gray-400 text-xs font-semibold mb-6">Ver 1.0 · 2026년 7월</p>
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 leading-snug mb-6 text-balance">
-              <span className="block">바른 자세라는 건 없습니다.</span>
+              <span className="block">바른 자세라는 건 없습니다.</span>{" "}
               <span className="block">
                 <Chunks parts={["몇 분이고", "한 자세로 있는 것이", "잘못된 자세입니다."]} />
               </span>
@@ -372,7 +372,7 @@ export default function MethodPage() {
         <section className="py-12 md:py-16 px-4 bg-[#FAF5FB]">
           <div className="max-w-3xl mx-auto">
             <SectionHeading n="4" title="원칙" />
-            <ol className="space-y-3 mb-6">
+            <ul className="space-y-3 mb-6">
               {PRINCIPLES.map((p, i) => (
                 <li key={p.join("")} className="flex gap-3 bg-white rounded-xl border border-gray-100 px-5 py-4">
                   <span className="shrink-0 font-bold text-[#7B2D8B]">{i + 1}</span>
@@ -381,7 +381,7 @@ export default function MethodPage() {
                   </p>
                 </li>
               ))}
-            </ol>
+            </ul>
             <blockquote className="border-l-4 border-gray-200 pl-4 space-y-1.5">
               <p className="text-gray-700 text-sm font-bold leading-relaxed text-pretty">
                 3번이 흔한 말과 갈리는 지점입니다.
