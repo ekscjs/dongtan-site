@@ -42,6 +42,18 @@ async function fetchAllRows<T>(
 
 type SourceCount = { source: string; count: number };
 type TopPage = { page: string; title: string; count: number };
+type TopPageByDuration = { page: string; title: string; avgSec: number; samples: number };
+
+const SOURCE_LABELS: Record<string, string> = {
+  google: "구글",
+  naver: "네이버",
+  kakao: "카카오",
+  instagram: "인스타그램",
+  search_est: "검색 추정",
+  unknown: "출처 불명",
+  internal: "내부 이동",
+  other: "기타",
+};
 type SearchQuery = { query: string; clicks: number; impressions: number; ctr: number; position: number };
 type SearchPage = { page: string; clicks: number; impressions: number };
 type Ga4Channel = { channel: string; sessions: number };
@@ -80,13 +92,17 @@ export async function GET(req: NextRequest) {
   let selfChecks = 0;
   let sources: SourceCount[] = [];
   let topPages: TopPage[] = [];
+  let realVisitors = 0;
+  let bounceUnder10s = 0;
+  let avgDurationSec = 0;
+  let topPagesByDuration: TopPageByDuration[] = [];
 
   try {
     const [pageViewRows, prevVisitorRows, leadsRows, kakaoRows, selfCheckRows, postsRows] = await Promise.all([
-      fetchAllRows<{ page: string; source: string | null; visitor_id: string | null }>(() =>
+      fetchAllRows<{ page: string; source: string | null; visitor_id: string | null; session_id: string | null; duration_ms: number | null }>(() =>
         supabaseAdmin
           .from("page_views")
-          .select("page, source, visitor_id")
+          .select("page, source, visitor_id, session_id, duration_ms")
           .gte("created_at", fmt(periodStart))
           .lt("created_at", fmt(periodEnd))
       ),
@@ -150,6 +166,42 @@ export async function GET(req: NextRequest) {
         title: page.startsWith("/blog/") ? slugToTitle[page.replace("/blog/", "")] ?? page : page,
         count,
       }));
+
+    // 진짜 방문자 / 10초 미만 이탈 — 세션별 최대 체류시간 기준.
+    // duration_ms가 NULL인 세션(데이터 아직 안 쌓임)은 어느 쪽에도 세지 않는다(0으로 취급 금지).
+    const sessionMaxDuration: Record<string, number> = {};
+    for (const r of pageViewRows) {
+      if (r.duration_ms == null || !r.session_id) continue;
+      const cur = sessionMaxDuration[r.session_id];
+      if (cur === undefined || r.duration_ms > cur) sessionMaxDuration[r.session_id] = r.duration_ms;
+    }
+    for (const d of Object.values(sessionMaxDuration)) {
+      if (d >= 10000) realVisitors++;
+      else bounceUnder10s++;
+    }
+
+    const durationRowsWithValue = pageViewRows.filter((r) => r.duration_ms != null);
+    avgDurationSec = durationRowsWithValue.length
+      ? Math.round(durationRowsWithValue.reduce((s, r) => s + (r.duration_ms as number), 0) / durationRowsWithValue.length / 1000)
+      : 0;
+
+    const pageDurationAgg: Record<string, { sum: number; count: number }> = {};
+    for (const r of durationRowsWithValue) {
+      if (r.page.startsWith("/admin")) continue;
+      const e = pageDurationAgg[r.page] ?? (pageDurationAgg[r.page] = { sum: 0, count: 0 });
+      e.sum += r.duration_ms as number;
+      e.count++;
+    }
+    topPagesByDuration = Object.entries(pageDurationAgg)
+      .filter(([, v]) => v.count >= 3)
+      .map(([page, v]) => ({
+        page,
+        title: page.startsWith("/blog/") ? slugToTitle[page.replace("/blog/", "")] ?? page : page,
+        avgSec: Math.round(v.sum / v.count / 1000),
+        samples: v.count,
+      }))
+      .sort((a, b) => b.avgSec - a.avgSec)
+      .slice(0, 5);
   } catch (e) {
     errors.push(`supabase: ${e instanceof Error ? e.message : String(e)}`);
   }
@@ -257,14 +309,26 @@ export async function GET(req: NextRequest) {
     topSearchPages,
     ga4Channels,
     ga4Devices,
+    realVisitors,
+    bounceUnder10s,
+    avgDurationSec,
+    topPagesByDuration,
     errors,
   };
 
   const sourceRowsHtml = sources
-    .map((s) => `<tr><td style="padding:4px 12px 4px 0;color:#888;">${s.source}</td><td>${s.count}</td></tr>`)
+    .map((s) => `<tr><td style="padding:4px 12px 4px 0;color:#888;">${SOURCE_LABELS[s.source] ?? s.source}</td><td>${s.count}</td></tr>`)
     .join("");
   const topPagesHtml = topPages
     .map((p) => `<tr><td style="padding:4px 12px 4px 0;color:#888;">${p.title}</td><td>${p.count}</td></tr>`)
+    .join("");
+  const topPagesByDurationHtml = topPagesByDuration
+    .map((p) => {
+      const m = Math.floor(p.avgSec / 60);
+      const s = p.avgSec % 60;
+      const dur = m > 0 ? `${m}분 ${s}초` : `${s}초`;
+      return `<tr><td style="padding:4px 12px 4px 0;color:#888;">${p.title}</td><td>${dur}</td></tr>`;
+    })
     .join("");
   const queriesHtml = queries
     .map(
@@ -282,6 +346,7 @@ export async function GET(req: NextRequest) {
     <table style="border-collapse:collapse;font-size:15px;margin-bottom:20px;">
       <tr><td style="padding:6px 16px 6px 0;color:#888;">방문자</td><td><b>${visitors}명</b> (지난주 대비 ${delta(visitors, visitorsPrev)})</td></tr>
       <tr><td style="padding:6px 16px 6px 0;color:#888;">페이지뷰</td><td><b>${pageviews}회</b></td></tr>
+      <tr><td style="padding:6px 16px 6px 0;color:#888;">진짜 방문자 (10초 이상)</td><td><b>${realVisitors}명</b> (10초 미만 이탈 ${bounceUnder10s}명)</td></tr>
       <tr><td style="padding:6px 16px 6px 0;color:#888;">상담 신청</td><td><b>${leads}건</b></td></tr>
       <tr><td style="padding:6px 16px 6px 0;color:#888;">카카오 버튼 클릭</td><td><b>${kakaoClicks}회</b></td></tr>
       <tr><td style="padding:6px 16px 6px 0;color:#888;">셀프체크 실행</td><td><b>${selfChecks}회</b></td></tr>
@@ -290,6 +355,8 @@ export async function GET(req: NextRequest) {
     <table style="border-collapse:collapse;font-size:14px;margin-bottom:20px;">${sourceRowsHtml || "<tr><td>데이터 없음</td></tr>"}</table>
     <h3 style="margin-bottom:6px;">인기글 Top 5</h3>
     <table style="border-collapse:collapse;font-size:14px;margin-bottom:20px;">${topPagesHtml || "<tr><td>데이터 없음</td></tr>"}</table>
+    <h3 style="margin-bottom:6px;">오래 읽힌 글 Top 5</h3>
+    <table style="border-collapse:collapse;font-size:14px;margin-bottom:20px;">${topPagesByDurationHtml || "<tr><td>데이터 없음</td></tr>"}</table>
     <h3 style="margin-bottom:6px;">검색어 Top 10 (Search Console)</h3>
     <table style="border-collapse:collapse;font-size:14px;margin-bottom:20px;">
       <tr style="color:#888;"><td style="padding:4px 12px 4px 0;">검색어</td><td>클릭</td><td>노출</td><td>CTR</td><td>순위</td></tr>

@@ -123,6 +123,15 @@ export async function GET(req: NextRequest) {
       ),
     ]);
 
+    // 체류시간·스크롤 (최근 30일) — 진짜 방문자 판별 + 글별 평균 체류시간용
+    const durationRows = await fetchAllRows<{ page: string; session_id: string | null; duration_ms: number | null }>(() =>
+      supabaseAdmin
+        .from("page_views")
+        .select("page, session_id, duration_ms")
+        .gte("created_at", fmt(monthStart))
+        .not("page", "like", "/admin%")
+    );
+
     // 신청(leads) 날짜별 건수 (최근 30일) — page_views와 조인해 전환율 계산
     const leadsRows = await fetchAllRows<{ created_at: string }>(() =>
       supabaseAdmin
@@ -242,7 +251,7 @@ export async function GET(req: NextRequest) {
       datetime: new Date(new Date(r.created_at).getTime() + KST_OFFSET_MS)
         .toISOString().slice(0, 16).replace("T", " "), // "2026-07-23 14:05" (KST)
       page: r.page ?? "unknown",
-      source: r.source ?? "direct",
+      source: r.source ?? "unknown",
     }));
 
     // 월별 방문자 집계 (연간 차트)
@@ -318,6 +327,35 @@ export async function GET(req: NextRequest) {
       if (post.slug && post.title) slugToTitle[post.slug] = post.title;
     }
 
+    // 진짜 방문자 / 10초 미만 이탈 — 세션별 최대 체류시간 기준
+    // duration_ms가 NULL인 세션(데이터 아직 안 쌓임/이탈 이벤트 유실)은 판별 불가이므로 어느 쪽에도 세지 않는다
+    const sessionMaxDuration: Record<string, number> = {};
+    for (const row of durationRows) {
+      if (row.duration_ms == null || !row.session_id) continue;
+      const cur = sessionMaxDuration[row.session_id];
+      if (cur === undefined || row.duration_ms > cur) sessionMaxDuration[row.session_id] = row.duration_ms;
+    }
+    let realVisitors = 0;
+    let bounceUnder10s = 0;
+    for (const d of Object.values(sessionMaxDuration)) {
+      if (d >= 10000) realVisitors++;
+      else bounceUnder10s++;
+    }
+
+    // 글별 평균 체류시간 Top 10 — duration_ms가 있는 행만 평균(NULL을 0으로 세면 초기엔 전부 "0초"로 보임)
+    const pageDurationAgg: Record<string, { sum: number; count: number }> = {};
+    for (const row of durationRows) {
+      if (row.duration_ms == null) continue;
+      const e = pageDurationAgg[row.page] ?? (pageDurationAgg[row.page] = { sum: 0, count: 0 });
+      e.sum += row.duration_ms;
+      e.count++;
+    }
+    const topPagesByDuration = Object.entries(pageDurationAgg)
+      .filter(([, v]) => v.count >= 3)
+      .map(([page, v]) => ({ page, avgMs: Math.round(v.sum / v.count), samples: v.count }))
+      .sort((a, b) => b.avgMs - a.avgMs)
+      .slice(0, 10);
+
     return NextResponse.json({
       summary: {
         today: countUnique(todayRows),
@@ -336,6 +374,9 @@ export async function GET(req: NextRequest) {
       kakaoWeekly,
       kakaoRecent,
       kakaoTotal,
+      realVisitors,
+      bounceUnder10s,
+      topPagesByDuration,
     });
   } catch (err) {
     console.error("[analytics]", err);

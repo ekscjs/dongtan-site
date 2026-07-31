@@ -26,6 +26,9 @@ type AnalyticsData = {
   kakaoWeekly: { label: string; count: number }[];
   kakaoRecent: { datetime: string; page: string; source: string }[];
   kakaoTotal: number;
+  realVisitors: number;
+  bounceUnder10s: number;
+  topPagesByDuration: { page: string; avgMs: number; samples: number }[];
 };
 
 type SearchData = {
@@ -62,7 +65,8 @@ const SOURCE_LABELS: Record<string, string> = {
   naver: "네이버",
   kakao: "카카오",
   instagram: "인스타그램",
-  direct: "직접 방문",
+  search_est: "검색 추정",
+  unknown: "출처 불명",
   internal: "내부 이동",
   other: "기타",
 };
@@ -72,8 +76,9 @@ const SOURCE_COLORS: Record<string, string> = {
   naver: "#03C75A",
   kakao: "#FEE500",
   instagram: "#E1306C",
-  direct: "#7B2D8B",
-  internal: "#9CA3AF",
+  search_est: "#7B2D8B",
+  unknown: "#9CA3AF",
+  internal: "#B05CC2",
   other: "#D1D5DB",
 };
 
@@ -346,6 +351,9 @@ export default function AnalyticsPage() {
   const kakaoWeekly = data?.kakaoWeekly ?? [];
   const kakaoRecent = data?.kakaoRecent ?? [];
   const kakaoTotal = data?.kakaoTotal ?? 0;
+  const realVisitors = data?.realVisitors ?? 0;
+  const bounceUnder10s = data?.bounceUnder10s ?? 0;
+  const topPagesByDuration = data?.topPagesByDuration ?? [];
 
   const totalVisitors = (data?.newVsReturn.new ?? 0) + (data?.newVsReturn.return ?? 0);
   const newPct = totalVisitors ? Math.round(((data?.newVsReturn.new ?? 0) / totalVisitors) * 100) : 0;
@@ -536,6 +544,59 @@ export default function AnalyticsPage() {
                   </tbody>
                 </table>
               </div>
+            </>
+          )}
+        </div>
+
+        {/* ── 체류시간 기반 진짜 방문자 판별 ── */}
+        <div className="bg-white rounded-2xl shadow p-6 mb-6">
+          <h2 className="text-sm font-semibold text-gray-700 mb-1">
+            진짜 방문자 <span className="text-xs font-normal text-gray-400">(최근 30일 · 세션 최대 체류시간 기준)</span>
+          </h2>
+          <p className="text-xs text-gray-400 mb-4">
+            열자마자 닫은 방문과 실제로 머문 방문을 구분합니다. 체류시간이 아직 안 쌓인 세션은 어느 쪽에도 세지 않습니다.
+          </p>
+          {realVisitors === 0 && bounceUnder10s === 0 ? (
+            <p className="text-xs text-gray-400">데이터 없음 — 체류시간 수집이 막 시작된 경우 정상입니다.</p>
+          ) : (
+            <>
+              <div className="grid grid-cols-2 gap-4 mb-6">
+                <div className="bg-[#FAF5FB] rounded-xl p-4 text-center">
+                  <p className="text-xs text-gray-500 mb-1">진짜 방문자 (10초 이상)</p>
+                  <p className="text-3xl font-bold text-[#7B2D8B]">{realVisitors.toLocaleString()}</p>
+                </div>
+                <div className="bg-[#FAF5FB] rounded-xl p-4 text-center">
+                  <p className="text-xs text-gray-500 mb-1">10초 미만 이탈</p>
+                  <p className="text-3xl font-bold text-gray-900">{bounceUnder10s.toLocaleString()}</p>
+                </div>
+              </div>
+              <p className="text-xs font-semibold text-gray-400 mb-2">글별 평균 체류시간 Top 10</p>
+              {topPagesByDuration.length ? (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-gray-100">
+                        <th className="text-left py-2 px-3 text-xs text-gray-500 font-semibold">페이지</th>
+                        <th className="text-right py-2 px-3 text-xs text-gray-500 font-semibold">평균 체류시간</th>
+                        <th className="text-right py-2 px-3 text-xs text-gray-500 font-semibold">표본</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {topPagesByDuration.map((p, i) => (
+                        <tr key={p.page} className={"border-b border-gray-50 " + (i % 2 === 0 ? "" : "bg-gray-50/50")}>
+                          <td className="py-2 px-3 text-gray-800 font-medium max-w-[240px] truncate" title={pageLabel(p.page, slugToTitle)}>
+                            {pageLabel(p.page, slugToTitle)}
+                          </td>
+                          <td className="py-2 px-3 text-right text-[#7B2D8B] font-semibold">{fmtDuration(Math.round(p.avgMs / 1000))}</td>
+                          <td className="py-2 px-3 text-right text-gray-400">{p.samples}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <p className="text-xs text-gray-400">표본 3건 이상인 페이지가 아직 없습니다.</p>
+              )}
             </>
           )}
         </div>

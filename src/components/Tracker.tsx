@@ -1,11 +1,15 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { getOrCreateVisitorId, getOrCreateSessionId, isNewVisitor } from "@/lib/visitor";
 
 export default function Tracker() {
   const pathname = usePathname();
+  const viewIdRef = useRef<string | null>(null);
+  const startRef = useRef<number>(0);
+  const maxScrollRef = useRef<number>(0);
+  const sentRef = useRef<boolean>(false);
 
   useEffect(() => {
     // 봇 제외 (Lighthouse, HeadlessChrome, PageSpeed 포함)
@@ -16,6 +20,11 @@ export default function Tracker() {
     if (document.cookie.split(";").some((c) => c.trim() === "admin_flag=1")) {
       return;
     }
+
+    viewIdRef.current = null;
+    startRef.current = Date.now();
+    maxScrollRef.current = 0;
+    sentRef.current = false;
 
     const visitor_id = getOrCreateVisitorId();
     const session_id = getOrCreateSessionId();
@@ -31,9 +40,46 @@ export default function Tracker() {
         session_id,
         is_new_visitor: is_new,
       }),
-      // 페이지 이동 시에도 전송 보장
       keepalive: true,
-    }).catch(() => {});
+    })
+      .then((r) => r.json())
+      .then((j) => { viewIdRef.current = j?.view_id ?? null; })
+      .catch(() => {});
+
+    // 스크롤 최대 도달률 기록
+    const onScroll = () => {
+      const doc = document.documentElement;
+      const total = doc.scrollHeight - window.innerHeight;
+      const pct = total > 0 ? Math.round((window.scrollY / total) * 100) : 100;
+      if (pct > maxScrollRef.current) maxScrollRef.current = Math.min(pct, 100);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    // 이탈 시 1회 전송
+    const flush = () => {
+      if (sentRef.current || !viewIdRef.current) return;
+      sentRef.current = true;
+      const payload = JSON.stringify({
+        type: "duration",
+        view_id: viewIdRef.current,
+        duration_ms: Date.now() - startRef.current,
+        scroll_depth: maxScrollRef.current,
+      });
+      // sendBeacon은 페이지가 사라지는 중에도 전송이 보장된다
+      navigator.sendBeacon?.("/api/track", new Blob([payload], { type: "application/json" }));
+    };
+
+    // visibilitychange(hidden)가 모바일에서 가장 확실하다. pagehide는 보조.
+    const onHide = () => { if (document.visibilityState === "hidden") flush(); };
+    document.addEventListener("visibilitychange", onHide);
+    window.addEventListener("pagehide", flush);
+
+    return () => {
+      flush(); // SPA 내부 이동 시에도 여기서 전송됨
+      window.removeEventListener("scroll", onScroll);
+      document.removeEventListener("visibilitychange", onHide);
+      window.removeEventListener("pagehide", flush);
+    };
   }, [pathname]);
 
   return null;
