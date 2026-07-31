@@ -8,10 +8,10 @@ import { useRouteProgress } from "@/components/RouteProgress";
 
 const navLinks = [
   { href: "/about", label: "센터 소개" },
+  { href: "/method", label: "미소 운동법" },
   { href: "/programs", label: "프로그램" },
   { href: "/blog", label: "칼럼" },
   { href: "/check", label: "몸 상태 체크" },
-  { href: "/class/breathing", label: "바디 리셋 세션" },
 ];
 
 export default function Header() {

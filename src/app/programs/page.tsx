@@ -151,15 +151,36 @@ export default function ProgramsPage() {
           </div>
         </section>
 
-        {/* 프로그램 빠른 이동 */}
+        {/* 두 갈래 분기 — 1:1 정규 세션 / 바디 리셋 세션 */}
         <section className="py-10 px-4 border-b border-gray-100">
-          <div className="max-w-3xl mx-auto flex flex-col sm:flex-row gap-3 justify-center">
-            {programs.map((p) => (
-              <a key={p.id} href={`#${p.id}`}
-                className="flex-1 text-center border border-[#7B2D8B] text-[#7B2D8B] font-semibold py-3 px-4 rounded-full text-sm md:text-base lg:text-lg hover:bg-[#7B2D8B] hover:text-white transition-colors">
-                {p.title}
-              </a>
-            ))}
+          <div className="max-w-3xl mx-auto">
+            <p className="text-center text-gray-500 text-sm md:text-base mb-6">저희는 두 가지 방식으로 진행합니다</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* 1:1 정규 세션 — 기존 3종 앵커를 그대로 품는다 */}
+              <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm flex flex-col">
+                <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-1">1:1 정규 세션</h2>
+                <p className="text-sm text-gray-500 mb-5">개인 맞춤</p>
+                <div className="flex flex-col gap-2 mb-2">
+                  {programs.map((p) => (
+                    <a key={p.id} href={`#${p.id}`}
+                      className="text-center border border-[#7B2D8B] text-[#7B2D8B] font-semibold py-2.5 px-4 rounded-full text-sm hover:bg-[#7B2D8B] hover:text-white transition-colors">
+                      {p.title}
+                    </a>
+                  ))}
+                </div>
+                <p className="text-xs text-gray-400 mt-auto pt-3">→ 아래에서 자세히</p>
+              </div>
+
+              {/* 바디 리셋 세션 — 가격 표기 없이 자세히 보기로만 */}
+              <div className="bg-[#FAF5FB] rounded-2xl p-6 border border-purple-100 flex flex-col">
+                <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-1">바디 리셋 세션</h2>
+                <p className="text-sm text-gray-500 mb-5">4주 과정 · 주 1회</p>
+                <a href="/class/breathing"
+                  className="mt-auto text-center bg-[#7B2D8B] text-white font-semibold py-2.5 px-4 rounded-full text-sm hover:bg-[#6a2578] transition-colors">
+                  자세히 보기
+                </a>
+              </div>
+            </div>
           </div>
         </section>
 
