@@ -77,6 +77,13 @@ export default function PostUtilBlock({
       desc: "AI가 24시간 답해드려요",
       event: "post_util_click_ask",
     },
+    {
+      href: "/method",
+      eyebrow: "미소 운동법",
+      title: "저희가 몸을 보는 순서",
+      desc: "왜 아픈 곳부터 만지지 않는지",
+      event: "post_util_click_method",
+    },
   ];
 
   return (

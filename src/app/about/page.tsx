@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Image from "next/image";
+import Link from "next/link";
 import type { Metadata } from "next";
 import KakaoButton from "@/components/KakaoButton";
 
@@ -145,6 +146,16 @@ export default function AboutPage() {
                 </div>
               ))}
             </div>
+            <p className="text-gray-500 text-sm md:text-base mt-8 text-pretty">
+              <span className="inline-block">이 순서를 어떻게 정하는지 궁금하시다면</span>{" "}
+              <Link
+                href="/method"
+                className="inline-block text-[#7B2D8B] font-semibold underline underline-offset-2 hover:text-[#6a2578]"
+              >
+                저희가 몸을 보는 순서
+              </Link>
+              를 확인해보세요.
+            </p>
           </div>
         </section>
 

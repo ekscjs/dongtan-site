@@ -14,7 +14,20 @@ export const metadata: Metadata = {
   title: TITLE,
   description: DESC,
   alternates: { canonical: `${SITE}/method` },
-  openGraph: { title: TITLE, description: DESC, url: `${SITE}/method`, type: "website", locale: "ko_KR" },
+  openGraph: {
+    title: TITLE,
+    description: DESC,
+    url: `${SITE}/method`,
+    type: "website",
+    locale: "ko_KR",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "내몸에미소 동탄 기능성 운동센터" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESC,
+    images: ["/og-image.png"],
+  },
 };
 
 const articleLd = {
@@ -91,7 +104,7 @@ export default function MethodPage() {
           <div className="max-w-3xl mx-auto text-center">
             <p className="text-[#9B4DAB] font-semibold text-sm mb-4 tracking-widest uppercase">미소 운동법</p>
             <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight text-balance">
-              <span className="block">내몸에미소의 운동은</span>
+              <span className="block">내몸에미소의 운동은</span>{" "}
               <span className="text-[#7B2D8B]">
                 <span className="inline-block">일을 안 하고 있는 자리를 찾아,</span>{" "}
                 <span className="inline-block">다시 일하게 만드는 운동입니다.</span>
@@ -120,10 +133,7 @@ export default function MethodPage() {
               <span className="inline-block">앞쪽에 스트레칭을 주면 진도가 나지 않고,</span>{" "}
               <span className="inline-block">뒤쪽에 스트레칭을 주면 오히려 더 불안정해집니다.</span>
             </p>
-            <div className="bg-white border-2 border-[#7B2D8B] rounded-2xl px-6 py-6">
-              <span className="inline-block bg-[#FAF5FB] text-[#7B2D8B] text-xs font-semibold px-3 py-1 rounded-full mb-3">
-                비공개
-              </span>
+            <div className="bg-white border border-gray-200 border-l-4 border-l-[#7B2D8B] rounded-2xl px-6 py-6">
               <p className="text-gray-900 font-bold text-base md:text-lg leading-relaxed text-pretty">
                 <span className="inline-block">무엇으로 갈랐는지 —</span>{" "}
                 <span className="inline-block">그 판정 기준은 공개하지 않습니다.</span>
@@ -322,7 +332,7 @@ export default function MethodPage() {
               쌓고 있는 기록
             </h2>
             <p className="text-gray-600 leading-relaxed mb-6 text-pretty">
-              회원 {report4050.sampleSize}명 실측 데이터를 익명으로 모아 정리하고 있습니다.
+              40~59세 여성 회원 {report4050.sampleSize}명의 실측 데이터를 익명으로 모아 정리하고 있습니다.
             </p>
             <Link
               href="/research-notes"
