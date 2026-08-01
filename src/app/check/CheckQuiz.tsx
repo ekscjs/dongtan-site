@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import Header from "@/components/Header";
@@ -123,11 +124,21 @@ function save(s: SavedState) {
 }
 
 export default function CheckQuiz() {
+  const router = useRouter();
   const [view, setView] = useState<View>("loading");
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
   const [saved, setSaved] = useState<SavedState | null>(null);
   const [isRetest, setIsRetest] = useState(false);
+  const [inlineAsk, setInlineAsk] = useState("");
+
+  function submitInlineAsk(e: React.FormEvent) {
+    e.preventDefault();
+    const trimmed = inlineAsk.trim();
+    if (!trimmed) return;
+    track("check_inline_ask_submit", { query: trimmed });
+    router.push(`/ask?q=${encodeURIComponent(trimmed)}`);
+  }
 
   useEffect(() => {
     const s = load();
@@ -238,6 +249,31 @@ export default function CheckQuiz() {
         <Header />
         <main className="min-h-screen bg-[#FAF5FB] pt-8 pb-12 md:pt-12 md:pb-20 px-4">
           <div className="max-w-xl mx-auto">
+            <div className="mb-8">
+              <p className="text-sm font-semibold text-[#9B4DAB] uppercase tracking-widest mb-3">빠른 질문</p>
+              <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-3">어디가 불편하세요?</h2>
+              <form
+                onSubmit={submitInlineAsk}
+                className="flex items-center gap-2 bg-white rounded-full pl-5 pr-1.5 py-1.5 shadow-sm border border-gray-100 focus-within:border-[#7B2D8B] transition-colors"
+              >
+                <MessageSquareIcon className="text-[#9B4DAB] shrink-0" size={18} />
+                <input
+                  type="text"
+                  value={inlineAsk}
+                  onChange={(e) => setInlineAsk(e.target.value)}
+                  placeholder="예: 무릎이 시큰거려요"
+                  className="flex-1 min-w-0 border-0 focus:outline-none text-sm md:text-base text-gray-800 placeholder:text-gray-400 bg-transparent"
+                />
+                <button
+                  type="submit"
+                  disabled={!inlineAsk.trim()}
+                  className="shrink-0 bg-[#7B2D8B] text-white text-sm font-semibold px-4 py-2.5 rounded-full hover:bg-[#6a2578] transition-colors disabled:opacity-40"
+                >
+                  물어보기
+                </button>
+              </form>
+            </div>
+
             <p className="text-sm font-semibold text-[#9B4DAB] uppercase tracking-widest mb-3">몸 상태 체크</p>
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
               어떤 방식으로<br />확인해볼까요?

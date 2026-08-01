@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -80,6 +80,17 @@ export default function AskConcierge() {
     setQuery("");
     setError("");
   }
+
+  // ?q= 로 들어온 경우 바로 자동 제출한다.
+  // useSearchParams는 이 사이트에서 SSR 실패 이력이 있어 쓰지 않는다(0726 사고).
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search).get("q");
+    if (q && q.trim()) {
+      setQuery(q);
+      submit(q);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>

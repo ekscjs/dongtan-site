@@ -810,7 +810,7 @@ export default function AnalyticsPage() {
           {!events ? (
             <p className="text-xs text-gray-400">불러오는 중...</p>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               <div className="bg-[#FAF5FB] rounded-xl p-4 text-center">
                 <p className="text-xs text-gray-500 mb-1">플로팅 버튼 클릭</p>
                 <p className="text-3xl font-bold text-[#7B2D8B]">{events.counts["ask_floating_click"] ?? 0}</p>
@@ -824,6 +824,11 @@ export default function AnalyticsPage() {
               <div className="bg-[#FAF5FB] rounded-xl p-4 text-center">
                 <p className="text-xs text-gray-500 mb-1">질문 제출</p>
                 <p className="text-3xl font-bold text-[#7B2D8B]">{events.counts["ai_ask_submit"] ?? 0}</p>
+                <p className="text-xs text-gray-400 mt-1">회</p>
+              </div>
+              <div className="bg-[#FAF5FB] rounded-xl p-4 text-center">
+                <p className="text-xs text-gray-500 mb-1">진단페이지 입력창 제출</p>
+                <p className="text-3xl font-bold text-[#7B2D8B]">{events.counts["check_inline_ask_submit"] ?? 0}</p>
                 <p className="text-xs text-gray-400 mt-1">회</p>
               </div>
               <div className="bg-[#FAF5FB] rounded-xl p-4 text-center">
