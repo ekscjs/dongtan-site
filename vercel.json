@@ -1,5 +1,6 @@
 {
   "crons": [
-    { "path": "/api/cron/weekly-report", "schedule": "0 22 * * 4" }
+    { "path": "/api/cron/weekly-report", "schedule": "0 22 * * 4" },
+    { "path": "/api/cron/gbp-post", "schedule": "0 1 * * 2" }
   ]
 }

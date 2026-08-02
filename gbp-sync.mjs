@@ -67,7 +67,7 @@ ${post.content}`,
   return (message.content[0]).text.trim();
 }
 
-// TODO: GBP OAuth 인증정보 발급되면 여기에 Business Profile API localPosts.create 호출 추가
+// 설계가 gbp_post_queue 방식으로 바뀌어 미사용. 실제 구현은 src/lib/gbp.ts
 async function postToGoogleBusinessProfile(post, summary) {
   console.log(`\n--- [${post.slug}] ---`);
   console.log(summary);
