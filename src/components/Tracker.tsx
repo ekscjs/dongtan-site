@@ -20,6 +20,10 @@ export default function Tracker() {
     if (document.cookie.split(";").some((c) => c.trim() === "admin_flag=1")) {
       return;
     }
+    // 작업용 브라우저 제외 — 코워크/로컬 Claude Code가 라이브에서 QA할 때 work_flag=1 쿠키를 심어둠
+    if (document.cookie.split(";").some((c) => c.trim() === "work_flag=1")) {
+      return;
+    }
 
     viewIdRef.current = null;
     startRef.current = Date.now();

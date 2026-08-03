@@ -27,6 +27,9 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { page, referrer, visitor_id, session_id, is_new_visitor, event, properties, type } = body;
 
+    // 작업용 브라우저 방어선 — 클라이언트 우회 대비 서버에서도 work_flag 쿠키를 한 번 더 확인
+    const isInternal = req.cookies.get("work_flag")?.value === "1";
+
     // 이벤트 트래킹 분기 (event 필드가 있으면 events 테이블에 저장)
     if (event && typeof event === "string") {
       await supabaseAdmin.from("events").insert({
@@ -78,6 +81,7 @@ export async function POST(req: NextRequest) {
         visitor_id: visitor_id || null,
         session_id: session_id || null,
         is_new_visitor: is_new_visitor ?? true,
+        is_internal: isInternal,
       })
       .select("id")
       .single();

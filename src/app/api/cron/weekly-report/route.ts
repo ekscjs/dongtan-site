@@ -103,6 +103,7 @@ export async function GET(req: NextRequest) {
         supabaseAdmin
           .from("page_views")
           .select("page, source, visitor_id, session_id, duration_ms")
+          .eq("is_internal", false)
           .gte("created_at", fmt(periodStart))
           .lt("created_at", fmt(periodEnd))
       ),
@@ -110,6 +111,7 @@ export async function GET(req: NextRequest) {
         supabaseAdmin
           .from("page_views")
           .select("visitor_id")
+          .eq("is_internal", false)
           .gte("created_at", fmt(prevPeriodStart))
           .lt("created_at", fmt(periodStart))
           .not("visitor_id", "is", null)

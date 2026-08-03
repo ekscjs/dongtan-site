@@ -64,6 +64,7 @@ export async function GET(req: NextRequest) {
         supabaseAdmin
           .from("page_views")
           .select("visitor_id")
+          .eq("is_internal", false)
           .gte("created_at", fmt(todayStart))
           .not("visitor_id", "is", null)
       ),
@@ -73,6 +74,7 @@ export async function GET(req: NextRequest) {
         supabaseAdmin
           .from("page_views")
           .select("visitor_id")
+          .eq("is_internal", false)
           .gte("created_at", fmt(weekStart))
           .not("visitor_id", "is", null)
       ),
@@ -82,6 +84,7 @@ export async function GET(req: NextRequest) {
         supabaseAdmin
           .from("page_views")
           .select("visitor_id")
+          .eq("is_internal", false)
           .gte("created_at", fmt(monthStart))
           .not("visitor_id", "is", null)
       ),
@@ -91,6 +94,7 @@ export async function GET(req: NextRequest) {
         supabaseAdmin
           .from("page_views")
           .select("source")
+          .eq("is_internal", false)
           .gte("created_at", fmt(monthStart))
       ),
 
@@ -99,6 +103,7 @@ export async function GET(req: NextRequest) {
         supabaseAdmin
           .from("page_views")
           .select("page")
+          .eq("is_internal", false)
           .gte("created_at", fmt(monthStart))
           .not("page", "like", "/admin%")
       ),
@@ -108,6 +113,7 @@ export async function GET(req: NextRequest) {
         supabaseAdmin
           .from("page_views")
           .select("page, session_id, created_at")
+          .eq("is_internal", false)
           .gte("created_at", fmt(monthStart))
           .not("page", "like", "/admin%")
           .order("created_at", { ascending: false })
@@ -118,6 +124,7 @@ export async function GET(req: NextRequest) {
         supabaseAdmin
           .from("page_views")
           .select("is_new_visitor, visitor_id")
+          .eq("is_internal", false)
           .gte("created_at", fmt(monthStart))
           .not("visitor_id", "is", null)
       ),
@@ -128,6 +135,7 @@ export async function GET(req: NextRequest) {
       supabaseAdmin
         .from("page_views")
         .select("page, session_id, duration_ms")
+        .eq("is_internal", false)
         .gte("created_at", fmt(monthStart))
         .not("page", "like", "/admin%")
     );
@@ -154,6 +162,7 @@ export async function GET(req: NextRequest) {
       supabaseAdmin
         .from("page_views")
         .select("created_at, visitor_id")
+        .eq("is_internal", false)
         .gte("created_at", fmt(monthStart))
         .order("created_at", { ascending: true })
     );
@@ -163,6 +172,7 @@ export async function GET(req: NextRequest) {
       supabaseAdmin
         .from("page_views")
         .select("created_at, visitor_id")
+        .eq("is_internal", false)
         .order("created_at", { ascending: true })
     );
 
