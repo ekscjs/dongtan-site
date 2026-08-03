@@ -34,7 +34,7 @@ type AnalyticsData = {
 type SearchData = {
   queries: SearchQuery[];
   pages: SearchQuery[];
-  period: { start: string; end: string } | null;
+  period: { start: string; end: string; days?: number } | null;
   error?: string;
 };
 
@@ -276,7 +276,7 @@ export default function AnalyticsPage() {
       const json = await res.json();
       setSearch(json);
     } catch {
-      setSearch({ queries: [], pages: [], period: null, error: "Search Console 미연동" });
+      setSearch({ queries: [], pages: [], period: null, error: "Search Console 데이터를 불러오지 못했습니다" });
     } finally {
       setSearchLoading(false);
     }
@@ -884,8 +884,8 @@ export default function AnalyticsPage() {
           </div>
           {search?.error && !search.queries.length ? (
             <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-sm">
-              <p className="font-semibold text-yellow-700 mb-1">Search Console 미연동</p>
-              <p className="text-yellow-600 text-xs">GOOGLE_SERVICE_ACCOUNT_JSON, SEARCH_CONSOLE_SITE_URL 환경변수를 추가하면 검색어가 표시됩니다.</p>
+              <p className="font-semibold text-yellow-700 mb-1">검색어 데이터 없음</p>
+              <p className="text-yellow-600 text-xs">아직 구글에 잡힌 검색어가 적거나 일시적 오류입니다. 잠시 후 다시 시도해 주세요.</p>
             </div>
           ) : search?.queries.length ? (
             <div className="overflow-x-auto">

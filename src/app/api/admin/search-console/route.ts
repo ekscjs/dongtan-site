@@ -17,11 +17,12 @@ export async function GET(req: NextRequest) {
   try {
     const token = await getGoogleAccessToken("https://www.googleapis.com/auth/webmasters.readonly");
 
-    // 최근 28일 날짜 범위
     const endDate = new Date();
     endDate.setDate(endDate.getDate() - 3); // Search Console는 3일 지연
+    // 기본 90일. ?days=180 처럼 조절 가능 (Search Console 최대 16개월)
+    const days = Math.min(Number(req.nextUrl.searchParams.get("days")) || 90, 480);
     const startDate = new Date(endDate);
-    startDate.setDate(startDate.getDate() - 28);
+    startDate.setDate(startDate.getDate() - days);
 
     const fmt = (d: Date) => d.toISOString().split("T")[0];
 
@@ -38,7 +39,7 @@ export async function GET(req: NextRequest) {
           startDate: fmt(startDate),
           endDate: fmt(endDate),
           dimensions: ["query"],
-          rowLimit: 20,
+          rowLimit: 100,
           dataState: "final",
         }),
       }
@@ -57,7 +58,7 @@ export async function GET(req: NextRequest) {
           startDate: fmt(startDate),
           endDate: fmt(endDate),
           dimensions: ["page"],
-          rowLimit: 10,
+          rowLimit: 50,
           dataState: "final",
         }),
       }
@@ -71,7 +72,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({
       queries: queryData.rows ?? [],
       pages: pageData.rows ?? [],
-      period: { start: fmt(startDate), end: fmt(endDate) },
+      period: { start: fmt(startDate), end: fmt(endDate), days },
     });
   } catch (err) {
     console.error("[search-console]", err);
