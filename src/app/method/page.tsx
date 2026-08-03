@@ -72,9 +72,9 @@ const PRINCIPLES: string[][] = [
 
 const PROCEDURE_STEPS: { label: string; desc: string[] }[] = [
   { label: "측정", desc: ["체형·움직임·기능 세 가지를", "같이 놓고 봅니다.", "하나만 보면 결론이 뒤집힙니다."] },
-  { label: "감별", desc: ["수치만 보지 않고 시켜봅니다.", "빈 깡통이 어디인지가 판정입니다."] },
+  { label: "감별", desc: ["수치만 보지 않고 시켜봅니다.", "빈 깡통이 어디인지 찾는 게 이 단계입니다."] },
   { label: "토대", desc: ["정렬과 안정성을 먼저 세웁니다."] },
-  { label: "적재", desc: ["토대가 생긴 다음에 무게를 얹습니다."] },
+  { label: "얹기", desc: ["토대가 생긴 다음에 무게를 올립니다."] },
 ];
 
 const BODY_ORDER = ["① 코어", "② 골반", "③ 상체", "④ 말단"];
@@ -88,13 +88,23 @@ const DISCERN_ROWS = [
   { same: "다리가 저림", a: "허리에서 온 것", b: "그 외" },
 ];
 
-const NOT_DOING: { bold?: string; text: string }[] = [
-  { text: "마사지로 시작하지 않습니다" },
-  { text: "정렬이 되기 전에 무게를 얹지 않습니다" },
-  { text: "가동 범위를 넘겨서 시키지 않습니다" },
+const NOT_DOING: { bold?: string; text: string[] }[] = [
+  { text: ["마사지로 시작하지 않습니다"] },
+  { text: ["정렬이 되기 전에 무게를 얹지 않습니다"] },
+  {
+    text: [
+      "가동 범위를 넘겨서 시키지 않습니다.",
+      "내 가동 범위가 아니면 가지 마세요.",
+      "다치는 경우는 두 가지밖에 없습니다.",
+      "너무 무거웠거나, 너무 갔거나.",
+    ],
+  },
   {
     bold: "질환을 판단하지 않습니다.",
-    text: " 가만히 있어도 저리거나 화끈거리는 느낌이 함께 있다면, 저희 선에서 판단하지 않고 병원 검사를 먼저 권해드립니다",
+    text: [
+      "가만히 있어도 저리거나 화끈거리는 느낌이 함께 있다면,",
+      "저희 선에서 보지 않고 병원 검사를 먼저 권해드립니다",
+    ],
   },
 ];
 
@@ -107,13 +117,17 @@ const REJECTED_METHODS: { method: string; result: string[] }[] = [
     method: "아픈 쪽을 집중적으로 운동시킨다",
     result: ["반대쪽을 시켰을 때", "오히려 좋아지는 경우가 반복됐습니다."],
   },
+  {
+    method: "힘센 근육의 톤을 눌러놓고 약한 쪽을 쓰게 한다",
+    result: ["마사지로 아무리 눌러놔도", "힘센 쪽이 계속 힘을 씁니다.", "해봤는데 안 됐습니다."],
+  },
 ];
 
 const REVISIONS = [
-  { version: "v1.0", when: "2026.07", desc: "정의 · 전제 · 용어 · 원칙 · 절차 · 감별 공개", current: true },
-  { version: "v1.1", when: "예정", desc: "평가 기준 — 무엇을 어떤 순서로 보는가", current: false },
-  { version: "v1.2", when: "예정", desc: "증상 → 원인 매핑 확장", current: false },
-  { version: "v2.0", when: "예정", desc: "40~59세 여성 체형 데이터 반영", current: false },
+  { version: "v1.0", when: "2026.07", desc: "첫 공개 — 지금 보고 계신 내용", current: true },
+  { version: "v1.1", when: "예정", desc: "몸을 볼 때 무엇부터 보는지", current: false },
+  { version: "v1.2", when: "예정", desc: "어디가 아플 때 원인이 주로 어디인지", current: false },
+  { version: "v2.0", when: "예정", desc: "40~50대 여성 체형 측정에서 실제로 나온 것", current: false },
 ];
 
 // 의미 단위로 미리 쪼갠 문장을 inline-block으로 묶어 렌더 — 구 단위 줄바꿈 보장
@@ -170,7 +184,8 @@ export default function MethodPage() {
             <p className="text-gray-500 text-sm md:text-base leading-relaxed text-pretty">
               <span className="inline-block">이 문서는 내몸에미소가 몸을 보는 방식을 정리한 것입니다.</span>{" "}
               <span className="inline-block">회원 200여 명, 임상 기록 40여 편에서 반복해서 나타난 판단을 뽑아 이름을 붙였습니다.</span>{" "}
-              <span className="inline-block">새로 만든 것이 아니라, 이미 하고 있던 것을 적었습니다.</span>
+              <span className="inline-block">새로 만든 건 없습니다.</span>{" "}
+              <span className="inline-block">이미 하고 있던 걸 적었습니다.</span>
             </p>
           </div>
         </section>
@@ -186,8 +201,8 @@ export default function MethodPage() {
             <p className="text-gray-600 leading-relaxed mb-6 text-pretty">
               <Chunks
                 parts={[
-                  "무엇은 운동이고 무엇은 아니다,",
-                  "저희는 그렇게 가르지 않습니다.",
+                  "이건 운동이고 저건 아니고,",
+                  "저희는 그렇게 나누지 않습니다.",
                   "걷는 것도, 무게를 드는 것도,",
                   "필라테스도 다 운동입니다.",
                 ]}
@@ -198,7 +213,7 @@ export default function MethodPage() {
               <Chunks parts={["다만 운동은 제대로 하면", "몸을 낫게 하고,", "잘못하면 독이 됩니다."]} />
             </p>
             <p className="text-gray-600 leading-relaxed mb-3 text-pretty">
-              <Chunks parts={["이건 운동의 부작용이 아니라", "운동의 성질입니다."]} />
+              <Chunks parts={["부작용이 아닙니다.", "운동이 원래 그런 겁니다."]} />
             </p>
             <p className="text-gray-600 leading-relaxed mb-3 text-pretty">
               <Chunks parts={["같은 동작이 어떤 몸에는 약이 되고", "어떤 몸에는 해가 됩니다."]} />
@@ -218,7 +233,7 @@ export default function MethodPage() {
             <p className="text-gray-600 leading-relaxed mb-3 text-pretty">
               <span className="inline-block">깨우지 않은 채로 움직이면</span>{" "}
               <strong className="inline-block text-gray-900">이미 일하고 있는 자리가</strong>{" "}
-              <strong className="inline-block text-gray-900">그 일까지 더 하게 됩니다.</strong>
+              <strong className="inline-block text-gray-900">그 일까지 떠맡습니다.</strong>
             </p>
             <p className="text-gray-600 leading-relaxed mb-6 text-pretty">
               <Chunks parts={["운동을 열심히 할수록", "한 군데만 더 아파지는", "경우가 여기서 나옵니다."]} />
@@ -232,10 +247,9 @@ export default function MethodPage() {
             </p>
 
             <p className="text-gray-600 leading-relaxed text-pretty">
-              <span className="inline-block">한 회차의 성과도 그래서 다릅니다.</span>{" "}
-              <span className="inline-block">몇 킬로, 몇 회가 아니라</span>{" "}
-              <strong className="inline-block text-gray-900">그 자리에 힘이 들어오는 것</strong>
-              <span className="inline-block">이 그날의 목표입니다.</span>
+              <span className="inline-block">한 회차의 목표도 그래서 다릅니다.</span>{" "}
+              <span className="inline-block">몇 킬로를 들었는지, 몇 회를 했는지는 세지 않습니다.</span>{" "}
+              <strong className="inline-block text-gray-900">그 자리에 힘이 들어오면 그날은 된 겁니다.</strong>
             </p>
           </div>
         </section>
@@ -246,9 +260,8 @@ export default function MethodPage() {
             <SectionHeading n="2" title="전제 — 이 방법이 서 있는 세 가지" />
             <div className="space-y-8">
               <div>
-                <h3 className="font-bold text-gray-900 mb-2 text-base md:text-lg">전제 1. 몸은 부위가 아니라 사슬이다</h3>
+                <h3 className="font-bold text-gray-900 mb-2 text-base md:text-lg">전제 1. 몸은 부위별로 따로 놀지 않는다</h3>
                 <p className="text-gray-600 leading-relaxed text-pretty">
-                  <span className="inline-block">몸은 부위별로 따로 놀지 않습니다.</span>{" "}
                   <span className="inline-block">한 곳이 제 역할을 못 하면 몸은 그 일을 옆이나 위아래로 떠넘깁니다.</span>
                 </p>
               </div>
@@ -259,9 +272,10 @@ export default function MethodPage() {
                   <span className="inline-block">결국 거기가 먼저 비명을 지릅니다.</span>{" "}
                   <span className="inline-block">그게 통증입니다.</span>
                 </p>
-                <blockquote className="border-l-4 border-gray-200 pl-4 text-gray-500 text-sm leading-relaxed mb-3 text-pretty">
-                  마사지하는 그 근육은 계속 피해자예요. 원인은 따로 있는데 걔만 자꾸 눌러댄다고 돌아오지 않아요.
-                </blockquote>
+                <p className="text-gray-600 leading-relaxed mb-3 text-pretty">
+                  <span className="inline-block">마사지하는 그 근육은 계속 피해자입니다.</span>{" "}
+                  <span className="inline-block">원인은 따로 있는데 거기만 자꾸 눌러댄다고 돌아오지 않습니다.</span>
+                </p>
                 <p className="text-gray-600 leading-relaxed text-pretty">
                   그래서 통증이 있는 자리와 문제가 시작된 자리는 대개 다릅니다.
                 </p>
@@ -269,13 +283,13 @@ export default function MethodPage() {
               <div>
                 <h3 className="font-bold text-gray-900 mb-2 text-base md:text-lg">전제 3. 뻣뻣한 게 아니라 못 버티는 것이다</h3>
                 <p className="text-gray-600 leading-relaxed mb-3 text-pretty">
-                  <strong className="inline-block text-gray-900">여기가 이 방법의 중심축입니다.</strong>{" "}
-                  <span className="inline-block">임상 기록 30편 중 22편에 같은 판단이 반복해서 나옵니다.</span>
+                  <strong className="inline-block text-gray-900">이걸 잘못 보면 뒤에 하는 게 전부 어긋납니다.</strong>{" "}
+                  <span className="inline-block">뻣뻣해 보여서 오시는 분들, 거의 다 여기에 해당합니다.</span>
                 </p>
                 <p className="text-gray-600 leading-relaxed mb-3 text-pretty">
-                  <span className="inline-block">움직이는 범위가 없어서 못 움직이는 게 아니라,</span>{" "}
+                  <span className="inline-block">범위가 없어서 못 움직이는 경우는 생각보다 적습니다.</span>{" "}
                   <span className="inline-block">범위는 있는데 그 안에서 스스로 버텨주지 못하는 경우가 훨씬 많습니다.</span>{" "}
-                  <span className="inline-block">유연성이 부족해 보이는 것의 정체가 사실은 안정성 결핍인 것입니다.</span>
+                  <span className="inline-block">유연성이 부족해 보이는 것의 정체가 사실은 안정성 결핍입니다.</span>
                 </p>
                 <p className="text-gray-600 leading-relaxed text-pretty">
                   <span className="inline-block">이 경우 스트레칭은 도움이 되지 않습니다.</span>{" "}
@@ -299,18 +313,19 @@ export default function MethodPage() {
               <div className="bg-white rounded-2xl border border-gray-200 px-6 py-6">
                 <h3 className="text-lg font-bold text-[#7B2D8B] mb-3">빈 깡통</h3>
                 <p className="text-gray-900 font-bold leading-relaxed mb-3 text-pretty">
-                  <Chunks parts={["자극을 시켜봤을 때", "아무것도 느껴지지 않는 자리."]} />
+                  <Chunks parts={["자극을 줘봤을 때", "아무것도 느껴지지 않는 자리."]} />
                 </p>
                 <p className="text-gray-600 leading-relaxed mb-2 text-pretty">
-                  <span className="inline-block">이 방법에서 가장 중요한 단어입니다.</span>{" "}
-                  <span className="inline-block">각도나 점수가 아니라 이것이 판정 단위입니다.</span>
+                  <span className="inline-block">저희가 제일 많이 쓰는 말입니다.</span>{" "}
+                  <span className="inline-block">센터에서는 “여기는 약간 깡통 느낌이 난다”고 표현합니다.</span>{" "}
+                  <span className="inline-block">각도나 점수보다 이게 먼저입니다.</span>
                 </p>
                 <p className="text-gray-600 leading-relaxed mb-2 text-pretty">
                   <span className="inline-block">“여기 힘 들어오는 게 느껴지세요?” 라고 물었을 때 안 들어온다고 하면,</span>{" "}
                   <span className="inline-block">그 자리가 빈 깡통이고 그게 곧 목표가 됩니다.</span>
                 </p>
                 <p className="text-gray-500 text-sm leading-relaxed text-pretty">
-                  측정 수치는 <strong className="text-gray-700">어디를 의심할지 좁혀주는 도구</strong>일 뿐입니다. 판정은 시켜봐야 나옵니다.
+                  측정 수치는 <strong className="text-gray-700">어디를 의심할지 좁혀주는 도구</strong>일 뿐이고, 어디가 비어 있는지는 시켜봐야 압니다.
                 </p>
               </div>
 
@@ -321,8 +336,9 @@ export default function MethodPage() {
                 </p>
                 <p className="text-gray-600 leading-relaxed text-pretty">
                   <span className="inline-block">근육을 키우는 것과 다릅니다.</span>{" "}
+                  <span className="inline-block">없던 힘을 새로 만드는 일은 아닙니다.</span>{" "}
                   <span className="inline-block">
-                    없던 힘을 만드는 게 아니라 <strong className="text-gray-900">연결이 끊긴 자리를 다시 잇는</strong> 쪽에 가깝습니다.
+                    <strong className="text-gray-900">끊긴 연결을 다시 잇는</strong> 쪽에 가깝습니다.
                   </span>
                 </p>
               </div>
@@ -339,12 +355,12 @@ export default function MethodPage() {
               </div>
 
               <div className="bg-white rounded-2xl border border-gray-200 px-6 py-6">
-                <h3 className="text-lg font-bold text-[#7B2D8B] mb-3">토대 / 적재</h3>
+                <h3 className="text-lg font-bold text-[#7B2D8B] mb-3">토대 / 얹기</h3>
                 <p className="text-gray-700 leading-relaxed mb-1 text-pretty">
                   <strong className="text-gray-900">토대</strong> — 무게를 얹기 전에 갖춰야 하는 정렬과 안정성.
                 </p>
                 <p className="text-gray-700 leading-relaxed mb-3 text-pretty">
-                  <strong className="text-gray-900">적재</strong> — 그 위에 무게와 부하를 올리는 일.
+                  <strong className="text-gray-900">얹기</strong> — 그 위에 무게와 부하를 올리는 일.
                 </p>
                 <p className="text-gray-600 leading-relaxed text-pretty">
                   <span className="inline-block">기울어진 바닥에 벽돌을 쌓으면 높이 올릴수록 빨리 무너집니다.</span>{" "}
@@ -355,12 +371,11 @@ export default function MethodPage() {
               <div className="bg-white rounded-2xl border border-gray-200 px-6 py-6">
                 <h3 className="text-lg font-bold text-[#7B2D8B] mb-3">게이트</h3>
                 <p className="text-gray-600 leading-relaxed mb-2 text-pretty">
-                  다음 단계로 넘어가도 되는지 판단하는 기준.
+                  다음 단계로 넘어가도 되는지 보는 기준.
                 </p>
                 <p className="text-gray-600 leading-relaxed text-pretty">
-                  <span className="inline-block">저희의 게이트는</span>{" "}
-                  <strong className="inline-block text-gray-900">무게나 횟수가 아니라 인지입니다.</strong>{" "}
-                  <span className="inline-block">그 자리에 힘이 들어오는 것을</span>{" "}
+                  <span className="inline-block">저희는 무게나 횟수로 정하지 않습니다.</span>{" "}
+                  <span className="inline-block">그 자리에 힘이 들어오는 걸</span>{" "}
                   <span className="inline-block">본인이 느끼면 넘어갑니다.</span>
                 </p>
               </div>
@@ -384,17 +399,14 @@ export default function MethodPage() {
             </ul>
             <blockquote className="border-l-4 border-gray-200 pl-4 space-y-1.5">
               <p className="text-gray-700 text-sm font-bold leading-relaxed text-pretty">
-                3번이 흔한 말과 갈리는 지점입니다.
+                3번은 좀 다릅니다.
               </p>
               <p className="text-gray-600 text-sm leading-relaxed text-pretty">
-                <span className="inline-block">“호흡이 먼저다”는 어디서나 하는 말이지만,</span>{" "}
-                <span className="inline-block">
-                  저희 순서는 <strong className="text-gray-900">골반 → 호흡</strong>입니다.
-                </span>
+                <span className="inline-block">“호흡부터”라는 말은 어디서나 합니다.</span>{" "}
+                <span className="inline-block">저희는 골반을 먼저 잡습니다.</span>
               </p>
               <p className="text-gray-600 text-sm leading-relaxed text-pretty">
-                <span className="inline-block">호흡이 1번이 아니라,</span>{" "}
-                <span className="inline-block">호흡이 열리려면 골반이 먼저 잡혀야 합니다.</span>
+                골반이 안 잡히면 호흡이 안 열리거든요.
               </p>
             </blockquote>
           </div>
@@ -445,16 +457,21 @@ export default function MethodPage() {
                 <strong className="inline-block text-gray-900">말단은 따로 잡지 않습니다.</strong>{" "}
                 <span className="inline-block">손목·발목은 위가 정리되면 따라옵니다.</span>
               </p>
-              <p className="text-gray-600 leading-relaxed text-pretty">
+              <p className="text-gray-600 leading-relaxed mb-2 text-pretty">
                 <Chunks
-                  parts={["그래서 저희는 손목·팔꿈치 통증을", "어깨 문제로,", "발목·발바닥 통증을", "무릎·고관절 문제로 취급합니다."]}
+                  parts={["그래서 저희는 손목·팔꿈치 통증을 어깨에서,", "발목·발바닥 통증을 무릎과 고관절에서 봅니다."]}
                 />
+              </p>
+              <p className="text-gray-600 leading-relaxed text-pretty">
+                <span className="inline-block">어깨가 좋아지면 손목도 손가락도 같이 좋아집니다.</span>{" "}
+                <span className="inline-block">발도 똑같습니다.</span>
               </p>
             </div>
 
             <div>
               <h3 className="font-bold text-gray-900 mb-4 text-base md:text-lg">5-3. 깨우는 자리</h3>
               <p className="text-gray-600 leading-relaxed mb-4 text-pretty">
+                <span className="inline-block">깨워야 할 자리는 그렇게 많지 않습니다.</span>{" "}
                 <span className="inline-block">몸 전체를 만지지 않습니다.</span>{" "}
                 <span className="inline-block">실제로 비어 있는 자리는 대개 정해져 있습니다.</span>
               </p>
@@ -486,7 +503,7 @@ export default function MethodPage() {
               <span className="inline-block">해야 할 일이 정반대로 갈리는 자리가 있습니다.</span>
             </p>
             <p className="text-gray-900 font-bold leading-relaxed mb-6 text-pretty">
-              이 방법에서 가장 중요한 단계이고, 여기서 갈리면 나머지가 전부 헛일이 됩니다.
+              여기서 잘못 갈리면 뒤에 하는 게 전부 헛일이 됩니다.
             </p>
 
             <h3 className="font-bold text-gray-900 mb-4 text-base md:text-lg">갈리는 자리들</h3>
@@ -531,24 +548,24 @@ export default function MethodPage() {
             </div>
 
             <p className="text-gray-600 leading-relaxed mb-10 text-pretty">
-              <span className="inline-block">첫 번째 줄을 예로 들면, 같은 0점이라도 앞쪽에는 스트레칭을 주면 진도가 나가지 않고</span>{" "}
+              <span className="inline-block">첫 번째 줄을 예로 들면, 같은 0점이라도 앞쪽에 스트레칭을 주면 진도가 나가지 않고</span>{" "}
               <span className="inline-block">뒤쪽에 스트레칭을 주면 오히려 더 불안정해집니다.</span>
             </p>
 
-            <h3 className="font-bold text-gray-900 mb-4 text-base md:text-lg">공개 범위</h3>
+            <h3 className="font-bold text-gray-900 mb-4 text-base md:text-lg">여기까지만 적습니다</h3>
             <div className="bg-white border border-gray-200 border-l-4 border-l-[#7B2D8B] rounded-2xl px-6 py-6 mb-4">
               <p className="text-gray-900 font-bold text-base md:text-lg leading-relaxed text-pretty">
                 <span className="inline-block">무엇을 보고 갈랐는지,</span>{" "}
-                <span className="inline-block">그 판정 기준은 공개하지 않습니다.</span>
+                <span className="inline-block">그 기준은 적지 않습니다.</span>
               </p>
             </div>
             <p className="text-gray-600 leading-relaxed mb-2 text-pretty">
               <span className="inline-block">원리와 갈래는 적었습니다.</span>{" "}
-              <span className="inline-block">판정 기준선, 실제 동작, 회차 구성은 이 문서에 넣지 않습니다.</span>
+              <span className="inline-block">기준선, 실제 동작, 회차 구성은 이 문서에 넣지 않습니다.</span>
             </p>
             <p className="text-gray-600 leading-relaxed text-pretty">
-              <span className="inline-block">글로 옮길 수 있는 부분까지 적었고,</span>{" "}
-              <span className="inline-block">나머지는 몸으로 확인해야 하는 영역입니다.</span>
+              <span className="inline-block">글로 옮길 수 있는 데까지 적었고,</span>{" "}
+              <span className="inline-block">나머지는 몸으로 확인해야 하는 부분입니다.</span>
             </p>
           </div>
         </section>
@@ -561,23 +578,23 @@ export default function MethodPage() {
             <h3 className="font-bold text-gray-900 mb-4 text-base md:text-lg">7-1. 원칙으로 하지 않는 것</h3>
             <div className="space-y-3 mb-4">
               {NOT_DOING.map((item) => (
-                <div key={item.text} className="flex items-start gap-3 bg-[#FAF5FB] rounded-xl px-5 py-4 border border-purple-100">
+                <div key={item.text[0]} className="flex items-start gap-3 bg-[#FAF5FB] rounded-xl px-5 py-4 border border-purple-100">
                   <span aria-hidden className="text-[#7B2D8B] font-bold shrink-0">✕</span>
                   <p className="text-gray-700 text-sm md:text-base leading-relaxed text-pretty">
-                    {item.bold && <strong className="text-gray-900">{item.bold}</strong>}
-                    {item.text}
+                    {item.bold && (
+                      <>
+                        <strong className="inline-block text-gray-900">{item.bold}</strong>{" "}
+                      </>
+                    )}
+                    <Chunks parts={item.text} />
                   </p>
                 </div>
               ))}
             </div>
-            <blockquote className="border-l-4 border-gray-200 pl-4 text-gray-500 text-sm leading-relaxed mb-10 text-pretty">
-              <span className="inline-block">내 가동 범위가 아니면 가지 마세요.</span>{" "}
-              <span className="inline-block">다치는 경우는 두 가지밖에 없어요 — 너무 무거웠거나, 너무 갔거나.</span>
-            </blockquote>
 
-            <h3 className="font-bold text-gray-900 mb-4 text-base md:text-lg">7-2. 시도했고 기각한 것</h3>
+            <h3 className="font-bold text-gray-900 mb-4 text-base md:text-lg">7-2. 해봤고 남기지 않은 것</h3>
             <p className="text-gray-600 leading-relaxed mb-6 text-pretty">
-              <Chunks parts={["방법을 정하는 과정에서", "실제로 해보고 남기지 않은 것들입니다.", "기록으로 남깁니다."]} />
+              <Chunks parts={["방법을 정하는 과정에서", "실제로 해보고 버린 것들입니다.", "기록으로 남깁니다."]} />
             </p>
             <div className="space-y-4 mb-6">
               {REJECTED_METHODS.map((m) => (
@@ -608,7 +625,7 @@ export default function MethodPage() {
               <Chunks parts={["과하게 보상해서", "오히려 반대로 틀어진 경우도 있습니다."]} />
             </p>
             <p className="text-gray-600 leading-relaxed mb-10 text-pretty">
-              이런 케이스는 아직 저희도 기준이 서지 않았습니다.
+              평가할 때 이런 케이스는 아직 저희도 헷갈립니다.
             </p>
 
             <h3 className="font-bold text-gray-900 mb-4 text-base md:text-lg">8-2. 그래서 이렇게 합니다</h3>
@@ -616,12 +633,13 @@ export default function MethodPage() {
               평가가 틀렸을 가능성을 열어두고 시작합니다.
             </p>
             <p className="text-gray-600 leading-relaxed mb-4 text-pretty">
-              <span className="inline-block">알고 있는 것을 총동원해 시켜보고,</span>{" "}
+              <span className="inline-block">알고 있는 걸 총동원해서 시켜보고,</span>{" "}
               <span className="inline-block">평가가 맞았는지 그 자리에서 확인하고,</span>{" "}
-              <span className="inline-block">틀렸으면 바로 수정합니다.</span>
+              <span className="inline-block">틀렸으면 바로 고칩니다.</span>
             </p>
             <p className="text-gray-900 font-bold leading-relaxed mb-2 text-pretty">
-              이 방법은 완성된 체계가 아니라 계속 고쳐지는 체계입니다.
+              <span className="inline-block">이 방법은 아직 완성되지 않았습니다.</span>{" "}
+              <span className="inline-block">계속 고치고 있습니다.</span>
             </p>
             <p className="text-gray-600 leading-relaxed text-pretty">
               기록이 쌓이는 만큼 8-1의 목록은 줄어듭니다.
@@ -665,7 +683,7 @@ export default function MethodPage() {
               쌓고 있는 기록
             </h2>
             <p className="text-gray-600 leading-relaxed mb-6 text-pretty">
-              40~59세 여성 회원 {report4050.sampleSize}명의 실측 데이터를 익명으로 모아 정리하고 있습니다.
+              40~50대 여성 회원 {report4050.sampleSize}명의 실측 데이터를 익명으로 모아 정리하고 있습니다.
             </p>
             <Link
               href="/research-notes"
