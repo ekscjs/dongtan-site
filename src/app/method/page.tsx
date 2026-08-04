@@ -865,9 +865,19 @@ export default function MethodPage() {
               <span className="inline-block">원리와 갈래는 적었습니다.</span>{" "}
               <span className="inline-block">기준선, 실제 동작, 회차 구성은 이 문서에 넣지 않습니다.</span>
             </p>
-            <p className="text-gray-600 leading-relaxed text-pretty">
+            <p className="text-gray-600 leading-relaxed mb-2 text-pretty">
               <span className="inline-block">글로 옮길 수 있는 데까지 적었고,</span>{" "}
               <span className="inline-block">나머지는 몸으로 확인해야 하는 부분입니다.</span>
+            </p>
+            <p className="text-gray-600 leading-relaxed text-pretty">
+              <span className="inline-block">증상별로 저희가 먼저 보는 곳을 정리한 목록은</span>{" "}
+              <Link
+                href="/method/pain-origin"
+                className="inline-block text-[#7B2D8B] font-semibold underline underline-offset-2 hover:text-[#6a2578]"
+              >
+                아픈 곳과 원인이 다른 자리들
+              </Link>
+              <span className="inline-block">에 있습니다.</span>
             </p>
           </div>
         </section>
