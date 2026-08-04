@@ -7,11 +7,11 @@ import { CheckIcon } from "@/components/Icons";
 export const metadata: Metadata = {
   title: "바디 리셋 세션 · 4주 1:1 프로그램 | 내몸에미소 동탄",
   description:
-    "프로 선수, 현업 트레이너, 원인 불명 통증에 시달리는 분들을 위한 4주 1:1 프로그램. 긴장된 곳은 풀고 약화된 곳은 강화해 몸을 원래 자리로 되돌립니다. 한 번 배우면 평생 쓰는 기술. 동탄 내몸에미소.",
+    "원인 불명 통증, 현업 트레이너, 프로 선수에 시달리는 분들을 위한 4주 1:1 프로그램. 긴장된 곳은 풀고 약화된 곳은 강화해 몸을 원래 자리로 되돌립니다. 한 번 배우면 평생 쓰는 기술. 동탄 내몸에미소.",
   alternates: { canonical: "https://www.bodymiso.com/class/breathing" },
   openGraph: {
     title: "바디 리셋 세션 · 4주 1:1 프로그램 | 내몸에미소 동탄",
-    description: "프로 선수, 현업 트레이너, 원인 불명 통증에 시달리는 분들을 위한 4주 1:1 프로그램. 몸을 원래 자리로 되돌리는 기술을 배웁니다.",
+    description: "원인 불명 통증, 현업 트레이너, 프로 선수에 시달리는 분들을 위한 4주 1:1 프로그램. 몸을 원래 자리로 되돌리는 기술을 배웁니다.",
     url: "https://www.bodymiso.com/class/breathing",
     type: "website",
     locale: "ko_KR",
@@ -20,16 +20,26 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "바디 리셋 세션 · 4주 1:1 프로그램 | 내몸에미소 동탄",
-    description: "프로 선수, 현업 트레이너, 원인 불명 통증에 시달리는 분들을 위한 4주 1:1 프로그램. 몸을 원래 자리로 되돌리는 기술을 배웁니다.",
+    description: "원인 불명 통증, 현업 트레이너, 프로 선수에 시달리는 분들을 위한 4주 1:1 프로그램. 몸을 원래 자리로 되돌리는 기술을 배웁니다.",
     images: ["/og/class-breathing.png"],
   },
 };
 
-const FOR_YOU = [
-  "병원에 가도 원인을 알 수 없는 통증에 시달리는 분",
-  "이것저것 다 해봐도 늘 그대로이신 분",
-  "현업에서 운동을 가르치는 트레이너·강사",
-  "프로 선수, 혹은 운동선수를 준비 중인 분",
+const FOR_YOU_GROUPS = [
+  {
+    label: "내 몸을 고치려고 오시는 분",
+    items: [
+      "병원에 가도 원인을 알 수 없는 통증에 시달리는 분",
+      "이것저것 다 해봐도 늘 그대로이신 분",
+    ],
+  },
+  {
+    label: "가르치기 위해 오시는 분",
+    items: [
+      "현업에서 운동을 가르치는 트레이너·강사",
+      "프로 선수, 혹은 운동선수를 준비 중인 분",
+    ],
+  },
 ];
 
 const FLOW = [
@@ -106,14 +116,26 @@ export default function BodyResetSessionPage() {
             <p className="text-sm md:text-base lg:text-lg text-gray-500 text-center mb-8">
               가볍게 한번 해보려는 분보다는, 지금 상태가 정말 답답하신 분들을 위한 과정입니다.
             </p>
-            <div className="space-y-3">
-              {FOR_YOU.map((t) => (
-                <div key={t} className="flex items-start gap-3 bg-[#FAF5FB] rounded-xl px-5 py-4">
-                  <CheckIcon className="text-[#7B2D8B] shrink-0 mt-0.5" size={16} />
-                  <p className="text-gray-700 text-sm md:text-base lg:text-lg">{t}</p>
+            <div className="space-y-6">
+              {FOR_YOU_GROUPS.map((group) => (
+                <div key={group.label}>
+                  <p className="text-sm font-semibold text-[#9B4DAB] mb-2">{group.label}</p>
+                  <div className="space-y-3">
+                    {group.items.map((t) => (
+                      <div key={t} className="flex items-start gap-3 bg-[#FAF5FB] rounded-xl px-5 py-4">
+                        <CheckIcon className="text-[#7B2D8B] shrink-0 mt-0.5" size={16} />
+                        <p className="text-gray-700 text-sm md:text-base lg:text-lg">{t}</p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               ))}
             </div>
+            <p className="text-sm md:text-base text-gray-500 text-center mt-6 text-pretty">
+              <span className="inline-block">과정은 같습니다.</span>{" "}
+              <span className="inline-block">4주 동안 같은 순서를 밟고,</span>{" "}
+              <span className="inline-block">도착지가 다릅니다.</span>
+            </p>
           </div>
         </section>
 

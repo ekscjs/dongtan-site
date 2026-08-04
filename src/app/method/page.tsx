@@ -6,9 +6,9 @@ import { BarChartIcon } from "@/components/Icons";
 import { report4050 } from "@/app/research-notes/data";
 
 const SITE = "https://www.bodymiso.com";
-const TITLE = "미소 운동법 v1.0 — 내몸에미소가 몸을 보는 방식 | 동탄";
+const TITLE = "미소 운동법 v1.1 — 내몸에미소가 몸을 보는 방식 | 동탄";
 const DESC =
-  "아픈 곳은 대개 범인이 아니다. 빈 깡통을 찾아 깨우는 순서 — 내몸에미소가 회원 200여 명의 기록에서 정리한 운동 방법론 v1.0.";
+  "아픈 곳은 대개 범인이 아니다. 정렬부터 알아차리기까지 다섯 단계로 몸을 되돌리는 순서 — 내몸에미소가 회원 200여 명의 기록에서 정리한 운동 방법론 v1.1.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
 const articleLd = {
   "@context": "https://schema.org",
   "@type": "Article",
-  headline: "미소 운동법 v1.0 — 내몸에미소가 몸을 보는 방식",
+  headline: "미소 운동법 v1.1 — 내몸에미소가 몸을 보는 방식",
   description: DESC,
   url: `${SITE}/method`,
   mainEntityOfPage: `${SITE}/method`,
@@ -44,6 +44,7 @@ const articleLd = {
     name: "내몸에미소",
     logo: { "@type": "ImageObject", url: `${SITE}/logo.png` },
   },
+  dateModified: "2026-08-04",
 };
 
 // 부속: 부위별 기록 — 감별 카드 확정 전까지는 빈 배열. 채워지면 아래 렌더 로직 그대로 동작한다.
@@ -66,15 +67,62 @@ const PRINCIPLES: string[][] = [
   ["몸이 그 동작을 감당할 준비가 됐는지", "먼저 본다"],
   ["통증이 사라진 것과 회복은 다른 일이다"],
   ["숫자가 좋아지는 것보다", "무너지지 않는 게 먼저다"],
-  ["같은 증상이라도 사람마다 순서가 다르다"],
+  ["부위가 어디든", "밟는 순서는 하나다"],
   ["우리가 하지 않는 일을 분명히 한다"],
 ];
 
 const PROCEDURE_STEPS: { label: string; desc: string[] }[] = [
-  { label: "측정", desc: ["체형·움직임·기능 세 가지를", "같이 놓고 봅니다.", "하나만 보면 결론이 뒤집힙니다."] },
-  { label: "감별", desc: ["수치만 보지 않고 시켜봅니다.", "빈 깡통이 어디인지 찾는 게 이 단계입니다."] },
-  { label: "토대", desc: ["정렬과 안정성을 먼저 세웁니다."] },
-  { label: "얹기", desc: ["토대가 생긴 다음에 무게를 올립니다."] },
+  {
+    label: "정렬",
+    desc: [
+      "운동을 시작하기 전에",
+      "골반과 흉곽을 제자리에 놓습니다.",
+      "교정이라는 말과는 좀 다릅니다.",
+      "몸은 습관 때문에 계속 그 자리에 틀어져 있고,",
+      "그 상태로 움직이면 찝힙니다.",
+      "골반이 돌아간 분에게 엉덩이 운동을 그대로 시키면",
+      "바로 찝히는 느낌이 옵니다.",
+      "그래서 조금이라도 돌려놓고,",
+      "한쪽이 힘을 더 쓰지 않게 막아놓고 시작합니다.",
+      "불편한 쪽이 오히려 힘을 더 쓰는 경우가 많습니다.",
+    ],
+  },
+  {
+    label: "깨우기",
+    desc: [
+      "빈 깡통을 찾아 그 자리를 깨웁니다.",
+      "무게는 쓰지 않습니다.",
+      "무게 없이 힘들게 만드는 방법을 총동원합니다.",
+      "근육을 키우는 건 이 단계의 목표가 아닙니다.",
+      "불균형이 있는 채로 키우면 불균형만 커집니다.",
+    ],
+  },
+  {
+    label: "알려주기",
+    desc: [
+      "움직임을 알려주고,",
+      "지금 어디를 쓰고 있는지 하나하나 짚어줍니다.",
+      "거북목과 라운드숄더가 있는 분은",
+      "가슴을 펴는 게 안 됩니다.",
+      "흉곽이 안 움직이니까요.",
+      "그런 분에게는",
+      "“팔이 움직이고 있는 것 같지만",
+      "지금 움직이는 건 흉추다”까지 말로 짚어주고,",
+      "손을 대서 그 자리를 느끼게 합니다.",
+    ],
+  },
+  {
+    label: "저항",
+    desc: ["여기까지 되면 저항 운동이 들어갑니다.", "무게는 중요하지 않습니다.", "이 단계가 목적지도 아닙니다."],
+  },
+  {
+    label: "알아차리기",
+    desc: [
+      "본인이 스스로 눈치채고 고치는 단계입니다.",
+      "생활 습관까지 여기에 들어갑니다.",
+      "이게 되면 저희 없이도 굴러갑니다.",
+    ],
+  },
 ];
 
 const BODY_ORDER = ["① 코어", "② 골반", "③ 상체", "④ 말단"];
@@ -85,6 +133,7 @@ const DISCERN_ROWS = [
   { same: "오버헤드 스쿼트 0점", a: "애초에 그 높이까지 올라가지 않음", b: "올라가지만 버티지 못함" },
   { same: "무릎이 안쪽으로 쏠림", a: "위에서 내려온 원인 (고관절)", b: "아래에서 올라온 원인 (발)" },
   { same: "유연해 보임", a: "실제로 가동성이 좋음", b: "못 버텨서 범위가 넓어 보임" },
+  { same: "가동 범위는 좋은데 아픔", a: "자기 범위 안에서 못 버팀", b: "자기 범위를 넘겨서 씀" },
   { same: "다리가 저림", a: "허리에서 온 것", b: "그 외" },
 ];
 
@@ -121,13 +170,41 @@ const REJECTED_METHODS: { method: string; result: string[] }[] = [
     method: "힘센 근육의 톤을 눌러놓고 약한 쪽을 쓰게 한다",
     result: ["마사지로 아무리 눌러놔도", "힘센 쪽이 계속 힘을 씁니다.", "해봤는데 안 됐습니다."],
   },
+  {
+    method: "약해 보이는 근육만 골라 강화한다",
+    result: [
+      "어깨가 아플 때 회전근개가 약한 탓으로 보고",
+      "그 자리만 강화해봤습니다.",
+      "더 아팠습니다.",
+      "몸이 틀어진 상태에서 한 자리만 강화하면",
+      "틀어진 채로 더 굳습니다.",
+      "그 순간에는 시원합니다.",
+      "잠깐 좋아진 것 같다가 돌아갑니다.",
+    ],
+  },
+  {
+    method: "힘을 쓰지 않는 스트레칭으로 범위를 늘린다",
+    result: [
+      "힘 없이 쭉 늘리면",
+      "몸이 위험하다고 느끼고 오히려 더 줄어듭니다.",
+      "늘리려면 힘을 실어서,",
+      "근력 운동처럼 조금씩 늘려야 합니다.",
+      "그냥 늘린 날은 금방 돌아오고,",
+      "힘을 쓰면서 한 날은 이틀이고 삼일이고 유지됩니다.",
+    ],
+  },
 ];
 
-const REVISIONS = [
-  { version: "v1.0", when: "2026.07", desc: "첫 공개 — 지금 보고 계신 내용", current: true },
-  { version: "v1.1", when: "예정", desc: "몸을 볼 때 무엇부터 보는지", current: false },
-  { version: "v1.2", when: "예정", desc: "어디가 아플 때 원인이 주로 어디인지", current: false },
-  { version: "v2.0", when: "예정", desc: "40~50대 여성 체형 측정에서 실제로 나온 것", current: false },
+const REVISIONS: { version: string; when: string; desc: string[]; current: boolean }[] = [
+  { version: "v1.0", when: "2026.07", desc: ["첫 공개"], current: false },
+  {
+    version: "v1.1",
+    when: "2026.08",
+    desc: ["무엇을 만들려고 하는지", "절차 다섯 단계", "알아차리기", "어디서 왔는가"],
+    current: true,
+  },
+  { version: "v1.2", when: "예정", desc: ["어디가 아플 때 원인이 주로 어디인지"], current: false },
+  { version: "v2.0", when: "예정", desc: ["40~50대 여성 체형 측정에서 실제로 나온 것"], current: false },
 ];
 
 // 의미 단위로 미리 쪼갠 문장을 inline-block으로 묶어 렌더 — 구 단위 줄바꿈 보장
@@ -156,6 +233,26 @@ function SectionHeading({ n, title }: { n: string; title: string }) {
   );
 }
 
+// 단계 화살표 — 데스크톱은 가로, 모바일은 세로로 떨어지게 (→를 90도 회전)
+function StepArrows({ labels }: { labels: string[] }) {
+  return (
+    <div className="flex flex-col md:flex-row md:flex-wrap items-center gap-2 mb-6">
+      {labels.map((label, i) => (
+        <div key={label} className="flex flex-col md:flex-row items-center gap-2">
+          <span className="bg-[#7B2D8B] text-white font-bold text-sm md:text-base px-5 py-2.5 rounded-full">
+            {label}
+          </span>
+          {i < labels.length - 1 && (
+            <span aria-hidden className="text-gray-300 text-xl rotate-90 md:rotate-0">
+              →
+            </span>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function MethodPage() {
   return (
     <>
@@ -170,7 +267,7 @@ export default function MethodPage() {
         <section className="bg-[#FAF5FB] pt-10 pb-12 md:pt-14 md:pb-16 px-4">
           <div className="max-w-3xl mx-auto">
             <p className="text-[#9B4DAB] font-semibold text-sm mb-2 tracking-widest uppercase">미소 운동법</p>
-            <p className="text-gray-400 text-xs font-semibold mb-6">Ver 1.0 · 2026년 7월</p>
+            <p className="text-gray-400 text-xs font-semibold mb-6">Ver 1.1 · 2026년 8월</p>
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 leading-snug mb-6 text-balance">
               <span className="block">바른 자세라는 건 없습니다.</span>{" "}
               <span className="block">
@@ -183,15 +280,72 @@ export default function MethodPage() {
             </p>
             <p className="text-gray-500 text-sm md:text-base leading-relaxed text-pretty">
               <span className="inline-block">이 문서는 내몸에미소가 몸을 보는 방식을 정리한 것입니다.</span>{" "}
-              <span className="inline-block">회원 200여 명, 임상 기록 40여 편에서 반복해서 나타난 판단을 뽑아 이름을 붙였습니다.</span>{" "}
+              <span className="inline-block">회원 200여 명, 임상 기록 40여 편에서 반복해서 나온 판단을 뽑아 이름을 붙였습니다.</span>{" "}
               <span className="inline-block">새로 만든 건 없습니다.</span>{" "}
               <span className="inline-block">이미 하고 있던 걸 적었습니다.</span>
             </p>
           </div>
         </section>
 
-        {/* 1. 정의 */}
+        {/* 0. 무엇을 만들려고 하는가 */}
         <section className="py-12 md:py-16 px-4">
+          <div className="max-w-3xl mx-auto">
+            <SectionHeading n="0" title="무엇을 만들려고 하는가" />
+
+            <p className="text-gray-900 font-bold text-base md:text-lg leading-relaxed mb-6 text-pretty">
+              <Chunks
+                parts={[
+                  "저희가 목표로 하는 상태는,",
+                  "회원이 저희 없이도",
+                  "자기 몸을 수정할 수 있게 되는 것입니다.",
+                ]}
+              />
+            </p>
+
+            <p className="text-gray-600 leading-relaxed mb-6 text-pretty">
+              <span className="inline-block">통증이 0이 되는 것도, 무게를 얼마나 드는 것도,</span>{" "}
+              <span className="inline-block">각도가 정상 범위에 들어오는 것도 아닙니다.</span>{" "}
+              <span className="inline-block">그것들은 지나가는 자리입니다.</span>{" "}
+              <span className="inline-block">저희가 “이제 됐다”고 보는 순간은 다릅니다.</span>
+            </p>
+
+            <p className="text-gray-600 leading-relaxed mb-4 text-pretty">
+              <span className="inline-block">허리로 오래 고생하다 오신 분이 있습니다.</span>{" "}
+              <span className="inline-block">처음엔 앞으로 숙이는 동작이 전혀 안 됐고,</span>{" "}
+              <span className="inline-block">골반이 심하게 꺾인 채로 굳어 있었습니다.</span>{" "}
+              <span className="inline-block">지금은 숙이는 게 됩니다.</span>{" "}
+              <span className="inline-block">그런데 원장이 “됐다”고 말한 근거는 그게 아니었습니다.</span>
+            </p>
+
+            <p className="text-gray-600 leading-relaxed mb-4 text-pretty">
+              <span className="inline-block">이분이 어느 날 이렇게 말했습니다.</span>{" "}
+              <strong className="inline-block text-gray-900">“선생님, 이거 집에서 이렇게 하면 되겠네.”</strong>
+            </p>
+
+            <p className="text-gray-600 leading-relaxed mb-4 text-pretty">
+              <span className="inline-block">그전까지는 호흡 운동 정도만 하시라고,</span>{" "}
+              <span className="inline-block">다른 건 하지 마시라고 말렸습니다.</span>{" "}
+              <span className="inline-block">지금은 혼자 하셔도 걱정이 되지 않습니다.</span>{" "}
+              <span className="inline-block">자기 몸이 어디로 틀어졌는지 알아차리고,</span>{" "}
+              <span className="inline-block">뭐가 잘못됐는지 먼저 말하고,</span>{" "}
+              <span className="inline-block">스스로 고쳐서 움직입니다.</span>
+            </p>
+
+            <p className="text-gray-900 font-bold leading-relaxed mb-6 text-pretty">
+              <span className="inline-block">여기까지 오면 저희가 없어도 됩니다.</span>{" "}
+              <span className="inline-block">다른 곳에 가서도 자기 몸을 아니까 거기에 맞춰 움직입니다.</span>
+            </p>
+
+            <p className="text-gray-600 leading-relaxed text-pretty">
+              <span className="inline-block">그래서 이 문서의 절차는 무게를 얹는 데서 끝나지 않습니다.</span>{" "}
+              <span className="inline-block">마지막 단계는 사람을 내보내는 일입니다.</span>{" "}
+              <span className="inline-block">5장 절차의 다섯 번째가 그것입니다.</span>
+            </p>
+          </div>
+        </section>
+
+        {/* 1. 정의 */}
+        <section className="py-12 md:py-16 px-4 bg-[#FAF5FB]">
           <div className="max-w-3xl mx-auto">
             <SectionHeading n="1" title="정의 — 운동, 그리고 그 앞의 순서" />
 
@@ -255,7 +409,7 @@ export default function MethodPage() {
         </section>
 
         {/* 2. 전제 */}
-        <section className="py-12 md:py-16 px-4 bg-[#FAF5FB]">
+        <section className="py-12 md:py-16 px-4">
           <div className="max-w-3xl mx-auto">
             <SectionHeading n="2" title="전제 — 이 방법이 서 있는 세 가지" />
             <div className="space-y-8">
@@ -301,7 +455,7 @@ export default function MethodPage() {
         </section>
 
         {/* 3. 용어 */}
-        <section className="py-12 md:py-16 px-4">
+        <section className="py-12 md:py-16 px-4 bg-[#FAF5FB]">
           <div className="max-w-3xl mx-auto">
             <SectionHeading n="3" title="용어" />
             <p className="text-gray-600 leading-relaxed mb-8 text-pretty">
@@ -340,6 +494,41 @@ export default function MethodPage() {
                   <span className="inline-block">
                     <strong className="text-gray-900">끊긴 연결을 다시 잇는</strong> 쪽에 가깝습니다.
                   </span>
+                </p>
+              </div>
+
+              <div className="bg-white rounded-2xl border border-gray-200 px-6 py-6">
+                <h3 className="text-lg font-bold text-[#7B2D8B] mb-3">알아차리기</h3>
+                <p className="text-gray-900 font-bold leading-relaxed mb-3 text-pretty">
+                  <Chunks
+                    parts={[
+                      "자기 몸이 지금 어떻게 움직이고 있는지를",
+                      "스스로 눈치채고,",
+                      "그 자리에서 고치는 것.",
+                    ]}
+                  />
+                </p>
+                <p className="text-gray-600 leading-relaxed mb-2 text-pretty">
+                  <span className="inline-block">허리를 잔뜩 구부리고 앉아 있다가</span>{" "}
+                  <span className="inline-block">“아, 이렇게 앉지 말라고 했지” 하고 다시 앉습니다.</span>{" "}
+                  <span className="inline-block">걷다가 오른쪽 무릎이 불편해지면</span>{" "}
+                  <span className="inline-block">“이렇게 걷지 말라고 했지” 하고 걸음을 고칩니다.</span>{" "}
+                  <span className="inline-block">큰 힘을 쓰는 일이 아닙니다.</span>{" "}
+                  <span className="inline-block">이게 알아차리기입니다.</span>
+                </p>
+                <p className="text-gray-600 leading-relaxed mb-2 text-pretty">
+                  <strong className="inline-block text-gray-900">이게 되는 분과 안 되는 분의 차이가 가장 큽니다.</strong>{" "}
+                  <span className="inline-block">되는 분은 배우는 속도가 빨라지고,</span>{" "}
+                  <span className="inline-block">안 되는 분은 아무리 해도 매번 원점으로 돌아갑니다.</span>{" "}
+                  <span className="inline-block">센터에서 잘 됐다고 해서</span>{" "}
+                  <span className="inline-block">집에 가서도 되는 건 아니기 때문입니다.</span>
+                </p>
+                <p className="text-gray-600 leading-relaxed text-pretty">
+                  <span className="inline-block">무릎이 불편하다던 분이</span>{" "}
+                  <span className="inline-block">걸으면서 계속 이걸 의식하기 시작했습니다.</span>{" "}
+                  <span className="inline-block">대단한 운동을 한 게 아닌데도</span>{" "}
+                  <span className="inline-block">불편함이 줄고 걸음이 수정되는 게</span>{" "}
+                  <span className="inline-block">느껴진다고 하셨습니다.</span>
                 </p>
               </div>
 
@@ -384,12 +573,12 @@ export default function MethodPage() {
         </section>
 
         {/* 4. 원칙 */}
-        <section className="py-12 md:py-16 px-4 bg-[#FAF5FB]">
+        <section className="py-12 md:py-16 px-4">
           <div className="max-w-3xl mx-auto">
             <SectionHeading n="4" title="원칙" />
             <ul className="space-y-3 mb-6">
               {PRINCIPLES.map((p, i) => (
-                <li key={p.join("")} className="flex gap-3 bg-white rounded-xl border border-gray-100 px-5 py-4">
+                <li key={p.join("")} className="flex gap-3 bg-[#FAF5FB] rounded-xl border border-gray-100 px-5 py-4">
                   <span className="shrink-0 font-bold text-[#7B2D8B]">{i + 1}</span>
                   <p className="text-gray-700 leading-relaxed text-pretty">
                     <Chunks parts={p} />
@@ -413,26 +602,17 @@ export default function MethodPage() {
         </section>
 
         {/* 5. 절차 */}
-        <section className="py-12 md:py-16 px-4">
+        <section className="py-12 md:py-16 px-4 bg-[#FAF5FB]">
           <div className="max-w-3xl mx-auto">
             <SectionHeading n="5" title="절차" />
 
             <div className="mb-10">
               <h3 className="font-bold text-gray-900 mb-4 text-base md:text-lg">5-1. 큰 순서</h3>
-              <div className="flex flex-wrap items-center gap-2 mb-6">
-                {PROCEDURE_STEPS.map((s, i) => (
-                  <div key={s.label} className="flex items-center gap-2">
-                    <span className="bg-[#7B2D8B] text-white font-bold text-sm md:text-base px-5 py-2.5 rounded-full">
-                      {s.label}
-                    </span>
-                    {i < PROCEDURE_STEPS.length - 1 && <span aria-hidden className="text-gray-300 text-xl">→</span>}
-                  </div>
-                ))}
-              </div>
-              <div className="space-y-3">
+              <StepArrows labels={PROCEDURE_STEPS.map((s) => s.label)} />
+              <div className="space-y-4">
                 {PROCEDURE_STEPS.map((s) => (
                   <div key={s.label} className="flex gap-4">
-                    <span className="shrink-0 font-bold text-[#7B2D8B] w-14">{s.label}</span>
+                    <span className="shrink-0 font-bold text-[#7B2D8B] w-28">{s.label}</span>
                     <p className="text-gray-600 leading-relaxed text-pretty">
                       <Chunks parts={s.desc} />
                     </p>
@@ -442,17 +622,21 @@ export default function MethodPage() {
             </div>
 
             <div className="mb-10">
-              <h3 className="font-bold text-gray-900 mb-4 text-base md:text-lg">5-2. 몸을 잡는 순서</h3>
-              <div className="flex flex-wrap items-center gap-2 mb-5">
-                {BODY_ORDER.map((s, i) => (
-                  <div key={s} className="flex items-center gap-2">
-                    <span className="bg-[#7B2D8B] text-white font-bold text-sm md:text-base px-4 py-2 rounded-full">
-                      {s}
-                    </span>
-                    {i < BODY_ORDER.length - 1 && <span aria-hidden className="text-gray-300 text-xl">→</span>}
-                  </div>
-                ))}
-              </div>
+              <h3 className="font-bold text-gray-900 mb-4 text-base md:text-lg">5-2. 매 회차 앞에 다시 놓는 것</h3>
+              <p className="text-gray-600 leading-relaxed mb-2 text-pretty">
+                <strong className="inline-block text-gray-900">②는 한 번 하고 끝나지 않습니다.</strong>{" "}
+                <span className="inline-block">한 번 됐던 자리도 다시 잊습니다.</span>
+              </p>
+              <p className="text-gray-600 leading-relaxed text-pretty">
+                <span className="inline-block">그래서 운동을 시작하기 전에</span>{" "}
+                <span className="inline-block">매번 다시 깨우고 들어갑니다.</span>{" "}
+                <span className="inline-block">경력자든 아니든 똑같습니다.</span>
+              </p>
+            </div>
+
+            <div className="mb-10">
+              <h3 className="font-bold text-gray-900 mb-4 text-base md:text-lg">5-3. 몸을 잡는 순서</h3>
+              <StepArrows labels={BODY_ORDER} />
               <p className="text-gray-600 leading-relaxed mb-2 text-pretty">
                 <strong className="inline-block text-gray-900">말단은 따로 잡지 않습니다.</strong>{" "}
                 <span className="inline-block">손목·발목은 위가 정리되면 따라옵니다.</span>
@@ -468,14 +652,14 @@ export default function MethodPage() {
               </p>
             </div>
 
-            <div>
-              <h3 className="font-bold text-gray-900 mb-4 text-base md:text-lg">5-3. 깨우는 자리</h3>
+            <div className="mb-10">
+              <h3 className="font-bold text-gray-900 mb-4 text-base md:text-lg">5-4. 깨우는 자리</h3>
               <p className="text-gray-600 leading-relaxed mb-4 text-pretty">
                 <span className="inline-block">깨워야 할 자리는 그렇게 많지 않습니다.</span>{" "}
                 <span className="inline-block">몸 전체를 만지지 않습니다.</span>{" "}
                 <span className="inline-block">실제로 비어 있는 자리는 대개 정해져 있습니다.</span>
               </p>
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-2 bg-[#FAF5FB] rounded-2xl px-5 py-5 mb-4">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-2 bg-white rounded-2xl px-5 py-5 mb-4">
                 {AWAKEN_SPOTS.map((spot, i) => (
                   <span key={spot} className="flex items-center gap-3">
                     <span className="whitespace-nowrap font-bold text-[#7B2D8B]">{spot}</span>
@@ -486,27 +670,96 @@ export default function MethodPage() {
               <p className="text-gray-600 leading-relaxed mb-2 text-pretty">
                 대부분 이 중 최소 두 곳이 빈 깡통입니다.
               </p>
-              <p className="text-gray-600 leading-relaxed text-pretty">
+              <p className="text-gray-600 leading-relaxed mb-2 text-pretty">
                 <span className="inline-block">특히 하복부는 — 지금까지 처음부터 그 자리를 느끼신 분이</span>{" "}
                 <strong className="inline-block text-gray-900">한 분도 없었습니다.</strong>
+              </p>
+              <p className="text-gray-600 leading-relaxed text-pretty">
+                <span className="inline-block">이 자리들은 따로 떨어져 있지 않습니다.</span>{" "}
+                <span className="inline-block">옆구리가 빈 분은 전거근도 골반도 하복부도 같이 못 느낍니다.</span>
+              </p>
+            </div>
+
+            <div className="mb-10">
+              <h3 className="font-bold text-gray-900 mb-4 text-base md:text-lg">5-5. 비어 있으면 무엇이 생기는가</h3>
+              <p className="text-gray-600 leading-relaxed mb-3 text-pretty">
+                <span className="inline-block">비어 있는 자리가 있으면 그날 당장 무슨 동작이 안 되는 건 아닙니다.</span>{" "}
+                <span className="inline-block">당장은 아무 일도 일어나지 않습니다.</span>
+              </p>
+              <p className="text-gray-600 leading-relaxed mb-3 text-pretty">
+                <strong className="inline-block text-gray-900">대신 힘이 센 쪽으로만 계속 움직입니다.</strong>{" "}
+                <strong className="inline-block text-gray-900">그러면 불균형이 생깁니다.</strong>{" "}
+                <span className="inline-block">코어와 허벅지가 잡아주지 못하면 골반이 돌아가고,</span>{" "}
+                <span className="inline-block">상체도 따라 돌아갑니다.</span>{" "}
+                <span className="inline-block">그게 쌓입니다.</span>{" "}
+                <span className="inline-block">세월이 지나 어느 날부터 불편해지는 분이 있고,</span>{" "}
+                <span className="inline-block">끝까지 안 불편한 분도 있습니다.</span>
+              </p>
+              <p className="text-gray-900 font-bold leading-relaxed mb-3 text-pretty">
+                문제는 그 상태로 운동을 시작할 때 생깁니다.
+              </p>
+              <p className="text-gray-600 leading-relaxed text-pretty">
+                <span className="inline-block">운동은 강화하는 일입니다.</span>{" "}
+                <span className="inline-block">틀어진 상태에서 강화하면 틀어진 채로 굳습니다.</span>{" "}
+                <span className="inline-block">반듯한 몸에 붙여놓으면 좋은 몸이 되지만,</span>{" "}
+                <span className="inline-block">틀어진 몸에 그대로 붙여놓으면 문제가 됩니다.</span>
+              </p>
+            </div>
+
+            <div>
+              <h3 className="font-bold text-gray-900 mb-4 text-base md:text-lg">5-6. 운동이 됐는지 확인하는 방법</h3>
+              <p className="text-gray-600 leading-relaxed mb-3 text-pretty">
+                저희는 이렇게 확인합니다.
+              </p>
+              <p className="text-gray-600 leading-relaxed mb-3 text-pretty">
+                <strong className="inline-block text-gray-900">운동 전에 그분이 아프다고 한 자리를 먼저 눌러봅니다.</strong>{" "}
+                <strong className="inline-block text-gray-900">운동이 끝나고 같은 자리를 다시 눌러봅니다.</strong>{" "}
+                <span className="inline-block">통증이 없어졌으면 그 자리에 운동이 된 겁니다.</span>{" "}
+                <span className="inline-block">다음 주에도 같은 자리를 봅니다.</span>{" "}
+                <span className="inline-block">계속 봅니다.</span>
+              </p>
+              <p className="text-gray-600 leading-relaxed text-pretty">
+                <span className="inline-block">누르는 건 확인하는 일입니다.</span>{" "}
+                <span className="inline-block">눌러서 낫게 하는 게 아닙니다.</span>{" "}
+                <span className="inline-block">계속 눌러줘도 그것만으로는 해결되지 않습니다.</span>
               </p>
             </div>
           </div>
         </section>
 
         {/* 6. 감별 */}
-        <section className="py-12 md:py-16 px-4 bg-[#FAF5FB]">
+        <section className="py-12 md:py-16 px-4">
           <div className="max-w-3xl mx-auto">
             <SectionHeading n="6" title="감별" />
-            <p className="text-gray-600 leading-relaxed mb-2 text-pretty">
-              <span className="inline-block">같은 증상, 같은 점수라도</span>{" "}
-              <span className="inline-block">해야 할 일이 정반대로 갈리는 자리가 있습니다.</span>
-            </p>
-            <p className="text-gray-900 font-bold leading-relaxed mb-6 text-pretty">
-              여기서 잘못 갈리면 뒤에 하는 게 전부 헛일이 됩니다.
+            <p className="text-gray-600 leading-relaxed mb-8 text-pretty">
+              여기가 v1.0에서 가장 많이 바뀐 자리입니다.
             </p>
 
-            <h3 className="font-bold text-gray-900 mb-4 text-base md:text-lg">갈리는 자리들</h3>
+            <h3 className="font-bold text-gray-900 mb-4 text-base md:text-lg">순서는 하나, 판단은 갈립니다</h3>
+            <p className="text-gray-600 leading-relaxed mb-3 text-pretty">
+              <span className="inline-block">어깨가 아파서 오셔도, 무릎이 아파서 오셔도,</span>{" "}
+              <span className="inline-block">골반이 아파서 오셔도</span>{" "}
+              <strong className="inline-block text-gray-900">밟는 순서는 크게 다르지 않습니다.</strong>
+            </p>
+            <p className="text-gray-600 leading-relaxed mb-3 text-pretty">
+              <span className="inline-block">운동의 기초가 없는 상태라서 몸이 아픈 것이고,</span>{" "}
+              <span className="inline-block">그 기초를 세우는 일은 같습니다.</span>{" "}
+              <span className="inline-block">호흡을 열고, 하복부를 깨우고,</span>{" "}
+              <span className="inline-block">옆구리를 깨우고, 견갑 주변을 깨웁니다.</span>{" "}
+              <span className="inline-block">누구든 거기서 반응합니다.</span>{" "}
+              <span className="inline-block">그리고 돌아간 골반을 제자리에 놓고 움직입니다.</span>
+            </p>
+            <p className="text-gray-600 leading-relaxed mb-6 text-pretty">
+              <span className="inline-block">골반이 앞으로 꺾였든 뒤로 꺾였든 같은 기전으로 봅니다.</span>{" "}
+              <span className="inline-block">꺾인 건 꺾인 겁니다.</span>{" "}
+              <span className="inline-block">그걸 둘로 나눠서 다른 운동을 시키지 않습니다.</span>
+            </p>
+            <p className="text-gray-900 font-bold leading-relaxed mb-10 text-pretty">
+              <span className="inline-block">그래서 저희가 감별하는 건 무엇을 시킬지가 아닙니다.</span>{" "}
+              <span className="inline-block">어디를 원인으로 볼지입니다.</span>
+            </p>
+
+            <h3 className="font-bold text-gray-900 mb-4 text-base md:text-lg">판단이 갈리는 자리들</h3>
 
             {/* 데스크톱: 표 */}
             <div className="hidden md:block overflow-x-auto mb-4">
@@ -520,10 +773,16 @@ export default function MethodPage() {
                 </thead>
                 <tbody>
                   {DISCERN_ROWS.map((r) => (
-                    <tr key={r.same} className="border-b border-gray-100 bg-white">
-                      <td className="py-3 px-3 font-semibold text-gray-900">{r.same}</td>
-                      <td className="py-3 px-3 text-gray-600">{r.a}</td>
-                      <td className="py-3 px-3 text-gray-600">{r.b}</td>
+                    <tr key={r.same} className="border-b border-gray-100 bg-[#FAF5FB]">
+                      <td className="py-3 px-3 font-semibold text-gray-900">
+                        <span className="inline-block">{r.same}</span>
+                      </td>
+                      <td className="py-3 px-3 text-gray-600">
+                        <span className="inline-block">{r.a}</span>
+                      </td>
+                      <td className="py-3 px-3 text-gray-600">
+                        <span className="inline-block">{r.b}</span>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -533,27 +792,70 @@ export default function MethodPage() {
             {/* 모바일: 세로 카드 (375px에서 가로 스크롤 대신) */}
             <div className="md:hidden space-y-3 mb-4">
               {DISCERN_ROWS.map((r) => (
-                <div key={r.same} className="bg-white rounded-xl border border-gray-200 p-4">
+                <div key={r.same} className="bg-[#FAF5FB] rounded-xl border border-gray-200 p-4">
                   <p className="font-semibold text-gray-900 mb-2 text-pretty">{r.same}</p>
                   <div className="space-y-1.5 text-sm">
                     <p className="text-gray-600 text-pretty">
-                      <span className="text-[#7B2D8B] font-semibold">A</span> {r.a}
+                      <span className="text-[#7B2D8B] font-semibold">A</span>{" "}
+                      <span className="inline-block">{r.a}</span>
                     </p>
                     <p className="text-gray-600 text-pretty">
-                      <span className="text-[#7B2D8B] font-semibold">B</span> {r.b}
+                      <span className="text-[#7B2D8B] font-semibold">B</span>{" "}
+                      <span className="inline-block">{r.b}</span>
                     </p>
                   </div>
                 </div>
               ))}
             </div>
 
+            <p className="text-gray-600 leading-relaxed mb-2 text-pretty">
+              네 번째 줄이 이번에 추가된 것입니다.
+            </p>
             <p className="text-gray-600 leading-relaxed mb-10 text-pretty">
-              <span className="inline-block">첫 번째 줄을 예로 들면, 같은 0점이라도 앞쪽에 스트레칭을 주면 진도가 나가지 않고</span>{" "}
-              <span className="inline-block">뒤쪽에 스트레칭을 주면 오히려 더 불안정해집니다.</span>
+              <span className="inline-block">바른 자세를 만들려고 등을 과하게 펴고 계신 분들이 많습니다.</span>{" "}
+              <span className="inline-block">그게 좋지 않습니다.</span>{" "}
+              <span className="inline-block">자기 범위 이상으로 넘어가면 견갑이 뜨고,</span>{" "}
+              <span className="inline-block">어깨에서 충돌이 옵니다.</span>{" "}
+              <span className="inline-block">범위가 부족해서 아픈 게 아니라,</span>{" "}
+              <span className="inline-block">범위를 넘겨 쓰다가 아파진 경우입니다.</span>{" "}
+              <span className="inline-block">운동을 열심히 하시는 분,</span>{" "}
+              <span className="inline-block">골프처럼 한쪽으로 크게 쓰는 운동을 하시는 분에게서 자주 봅니다.</span>
+            </p>
+
+            <h3 className="font-bold text-gray-900 mb-4 text-base md:text-lg">느꼈다고 하는데 아닌 경우</h3>
+            <p className="text-gray-600 leading-relaxed mb-3 text-pretty">
+              <span className="inline-block">빈 깡통이 잡히지 않는 분이 있습니다.</span>{" "}
+              <span className="inline-block">두 가지 경우가 있습니다.</span>
+            </p>
+            <p className="text-gray-600 leading-relaxed mb-3 text-pretty">
+              <span className="inline-block">하나는 그 자리가 너무 오래 늘어나 있어서,</span>{" "}
+              <span className="inline-block">손을 대서 도와주면 조금 느끼지만</span>{" "}
+              <span className="inline-block">혼자서는 못 느끼는 경우입니다.</span>{" "}
+              <span className="inline-block">저희에게도 아직 안 풀린 숙제로 남아 있습니다.</span>
+            </p>
+            <p className="text-gray-600 leading-relaxed mb-3 text-pretty">
+              <span className="inline-block">다른 하나는 감각 자체가 무딘 경우입니다.</span>{" "}
+              <span className="inline-block">팔을 양옆으로 올려보라고 하면</span>{" "}
+              <span className="inline-block">한쪽이 덜 올라가 있는데도 다 올렸다고 말합니다.</span>{" "}
+              <span className="inline-block">자기 팔이 어디까지 올라가 있는지를 모릅니다.</span>{" "}
+              <span className="inline-block">다른 곳에서도 아무 느낌이 없다고만 하셨던 분들입니다.</span>{" "}
+              <span className="inline-block">저희는 느낄 때까지 시킵니다.</span>
+            </p>
+            <p className="text-gray-900 font-bold leading-relaxed mb-3 text-pretty">
+              <span className="inline-block">여기서 하나 더 있습니다.</span>{" "}
+              <span className="inline-block">느꼈다고 말씀하시는데 실제로는 아닌 경우입니다.</span>
+            </p>
+            <p className="text-gray-600 leading-relaxed mb-10 text-pretty">
+              <span className="inline-block">하복부가 느껴진다고 하시는데 같은 자리가 계속 불편하다고 합니다.</span>{" "}
+              <span className="inline-block">그러면 저희는 이렇게 봅니다.</span>{" "}
+              <strong className="inline-block text-gray-900">제대로 느꼈다면 그 증상이 남아 있을 이유가 없습니다.</strong>{" "}
+              <span className="inline-block">다시 해보시라고 말씀드리면,</span>{" "}
+              <span className="inline-block">나중에는 아닌 것 같다고 하십니다.</span>{" "}
+              <span className="inline-block">느꼈다는 말과 증상이 어긋날 때는 증상을 믿습니다.</span>
             </p>
 
             <h3 className="font-bold text-gray-900 mb-4 text-base md:text-lg">여기까지만 적습니다</h3>
-            <div className="bg-white border border-gray-200 border-l-4 border-l-[#7B2D8B] rounded-2xl px-6 py-6 mb-4">
+            <div className="bg-[#FAF5FB] border border-gray-200 border-l-4 border-l-[#7B2D8B] rounded-2xl px-6 py-6 mb-4">
               <p className="text-gray-900 font-bold text-base md:text-lg leading-relaxed text-pretty">
                 <span className="inline-block">무엇을 보고 갈랐는지,</span>{" "}
                 <span className="inline-block">그 기준은 적지 않습니다.</span>
@@ -570,12 +872,94 @@ export default function MethodPage() {
           </div>
         </section>
 
-        {/* 7. 하지 않는 것 */}
+        {/* 7. 어디서 왔는가 */}
+        <section className="py-12 md:py-16 px-4 bg-[#FAF5FB]">
+          <div className="max-w-3xl mx-auto">
+            <SectionHeading n="7" title="어디서 왔는가" />
+
+            <h3 className="font-bold text-gray-900 mb-3 text-base md:text-lg">원장 자신의 몸입니다</h3>
+            <p className="text-gray-600 leading-relaxed mb-3 text-pretty">
+              <span className="inline-block">이 방법은 어느 유파에서 배워 온 것이 아닙니다.</span>{" "}
+              <span className="inline-block">원장 본인의 몸에서 나왔습니다.</span>
+            </p>
+            <p className="text-gray-600 leading-relaxed mb-3 text-pretty">
+              <span className="inline-block">원장은 자기 몸에 먼저 해보지 않은 운동을 회원에게 적용하지 않습니다.</span>{" "}
+              <span className="inline-block">직접 느껴보고 “이게 이래서 문제가 되겠구나”를 확인한 다음에 씁니다.</span>
+            </p>
+            <p className="text-gray-600 leading-relaxed mb-3 text-pretty">
+              <span className="inline-block">오른쪽 엉덩이가 찝혀서 엉덩이 운동을 못 하던 시기가 있었습니다.</span>{" "}
+              <span className="inline-block">엉덩이가 뒤로 빠져 있는 상태에서 그 운동을 하면,</span>{" "}
+              <span className="inline-block">이미 조여 있는 자리를 더 조이게 됩니다.</span>{" "}
+              <span className="inline-block">그래서 찝히지 않게 하면서 할 수 있는 방법을 만들었습니다.</span>{" "}
+              <span className="inline-block">왼쪽 어깨가 걸릴 때는 걸리지 않는 움직임을 찾았습니다.</span>
+            </p>
+            <p className="text-gray-600 leading-relaxed mb-3 text-pretty">
+              <span className="inline-block">누구나 아는 동작도 같습니다.</span>{" "}
+              <span className="inline-block">클램셸은 어디서나 하지만,</span>{" "}
+              <span className="inline-block">잘못하면 엉덩이가 찝히고 이상근 통증이 옵니다.</span>{" "}
+              <span className="inline-block">그걸 막으면서 하는 방법이 필요합니다.</span>
+            </p>
+            <p className="text-gray-600 leading-relaxed mb-8 text-pretty">
+              <strong className="inline-block text-gray-900">자기 몸에서 문제가 생긴 방식은 다른 사람에게도 똑같이 생깁니다.</strong>{" "}
+              <span className="inline-block">그래서 자기 몸에서 걸린 자리는 전부 회원에게도 걸리는 자리로 봅니다.</span>
+            </p>
+
+            <h3 className="font-bold text-gray-900 mb-3 text-base md:text-lg">과거의 자신에게서 버린 것</h3>
+            <p className="text-gray-600 leading-relaxed mb-3 text-pretty">
+              가장 크게 바뀐 건 남의 방식이 아니라 자기 방식입니다.
+            </p>
+            <p className="text-gray-600 leading-relaxed mb-3 text-pretty">
+              <span className="inline-block">예전에도 코어 운동을 시켰습니다.</span>{" "}
+              <span className="inline-block">시킨다고 시켰지만, 원장 본인이 그걸 못 느꼈습니다.</span>{" "}
+              <span className="inline-block">그게 이렇게까지 문제가 될 거라고 생각하지 못한 채로</span>{" "}
+              <span className="inline-block">계속 운동을 했습니다.</span>
+            </p>
+            <p className="text-gray-600 leading-relaxed mb-8 text-pretty">
+              <span className="inline-block">지금 하는 것은 그걸 극복하는 방법입니다.</span>{" "}
+              <span className="inline-block">그때 못 느꼈던 부분을 어떻게 하면 느낄 수 있는지,</span>{" "}
+              <span className="inline-block">그 방법을 연구한 결과입니다.</span>
+            </p>
+
+            <h3 className="font-bold text-gray-900 mb-3 text-base md:text-lg">다른 길로 같은 자리에 왔습니다</h3>
+            <p className="text-gray-600 leading-relaxed mb-3 text-pretty">
+              <span className="inline-block">몸의 감각을 다시 세우는 데서 출발하는 계열이 있습니다.</span>{" "}
+              <span className="inline-block">자기 몸이 지금 어떻게 움직이는지를</span>{" "}
+              <span className="inline-block">사람이 정확히 모른다는 전제에서 시작하는 접근들입니다.</span>
+            </p>
+            <p className="text-gray-600 leading-relaxed mb-3 text-pretty">
+              <span className="inline-block">저희가 그쪽에서 배워 온 것은 아닙니다.</span>{" "}
+              <strong className="inline-block text-gray-900">다른 길로 걸어와서 같은 자리에 도착했습니다.</strong>{" "}
+              <span className="inline-block">빈 깡통과 알아차리기가 그 자리입니다.</span>
+            </p>
+            <p className="text-gray-600 leading-relaxed mb-8 text-pretty">
+              <span className="inline-block">그리고 갈라지는 지점도 분명합니다.</span>{" "}
+              <span className="inline-block">그 계열은 측정을 하지 않고, 버티는 힘을 중심에 두지 않습니다.</span>{" "}
+              <span className="inline-block">저희는 측정을 하고, 안정성을 축으로 놓습니다.</span>{" "}
+              <span className="inline-block">감각을 되살린 다음에</span>{" "}
+              <strong className="inline-block text-gray-900">버틸 수 있게 만드는 데까지</strong>{" "}
+              <span className="inline-block">갑니다.</span>
+            </p>
+
+            <h3 className="font-bold text-gray-900 mb-3 text-base md:text-lg">측정은 판단을 대신하지 않습니다</h3>
+            <p className="text-gray-600 leading-relaxed mb-3 text-pretty">
+              <span className="inline-block">측정을 시작한 뒤로 달라진 건 속도입니다.</span>{" "}
+              <span className="inline-block">예전에는 만져보고 시켜보면서 유추했고,</span>{" "}
+              <span className="inline-block">지금은 문제가 될 자리를 더 빨리 압니다.</span>
+            </p>
+            <p className="text-gray-600 leading-relaxed text-pretty">
+              <span className="inline-block">다만 측정은 어디를 의심할지 좁혀주는 도구입니다.</span>{" "}
+              <span className="inline-block">어디가 비어 있는지는 여전히 시켜봐야 압니다.</span>{" "}
+              <span className="inline-block">3장 「빈 깡통」의 그 순서는 바뀌지 않았습니다.</span>
+            </p>
+          </div>
+        </section>
+
+        {/* 8. 하지 않는 것 */}
         <section className="py-12 md:py-16 px-4">
           <div className="max-w-3xl mx-auto">
-            <SectionHeading n="7" title="하지 않는 것" />
+            <SectionHeading n="8" title="하지 않는 것" />
 
-            <h3 className="font-bold text-gray-900 mb-4 text-base md:text-lg">7-1. 원칙으로 하지 않는 것</h3>
+            <h3 className="font-bold text-gray-900 mb-4 text-base md:text-lg">8-1. 원칙으로 하지 않는 것</h3>
             <div className="space-y-3 mb-4">
               {NOT_DOING.map((item) => (
                 <div key={item.text[0]} className="flex items-start gap-3 bg-[#FAF5FB] rounded-xl px-5 py-4 border border-purple-100">
@@ -592,7 +976,7 @@ export default function MethodPage() {
               ))}
             </div>
 
-            <h3 className="font-bold text-gray-900 mb-4 text-base md:text-lg">7-2. 해봤고 남기지 않은 것</h3>
+            <h3 className="font-bold text-gray-900 mb-4 text-base md:text-lg">8-2. 해봤고 남기지 않은 것</h3>
             <p className="text-gray-600 leading-relaxed mb-6 text-pretty">
               <Chunks parts={["방법을 정하는 과정에서", "실제로 해보고 버린 것들입니다.", "기록으로 남깁니다."]} />
             </p>
@@ -612,23 +996,61 @@ export default function MethodPage() {
           </div>
         </section>
 
-        {/* 8. 한계 */}
+        {/* 9. 한계 */}
         <section className="py-12 md:py-16 px-4 bg-[#FAF5FB]">
           <div className="max-w-3xl mx-auto">
-            <SectionHeading n="8" title="한계" />
+            <SectionHeading n="9" title="한계" />
 
-            <h3 className="font-bold text-gray-900 mb-4 text-base md:text-lg">8-1. 아직 기준이 서지 않은 것</h3>
+            <h3 className="font-bold text-gray-900 mb-4 text-base md:text-lg">9-1. 아직 기준이 서지 않은 것</h3>
+            <div className="space-y-4 mb-10">
+              <p className="text-gray-600 leading-relaxed text-pretty">
+                <strong className="inline-block text-gray-900">발과 골반의 방향이 어긋나는 경우.</strong>{" "}
+                <span className="inline-block">발이 도는 방향과 골반이 도는 방향이</span>{" "}
+                <span className="inline-block">서로 맞지 않을 때가 있습니다.</span>{" "}
+                <span className="inline-block">과하게 보상해서 반대로 틀어진 경우도 있습니다.</span>{" "}
+                <span className="inline-block">이런 케이스는 아직 저희도 헷갈립니다.</span>
+              </p>
+              <p className="text-gray-600 leading-relaxed text-pretty">
+                <strong className="inline-block text-gray-900">상체 판단.</strong>{" "}
+                <span className="inline-block">하체보다 상체가 더 어렵습니다.</span>{" "}
+                <span className="inline-block">아직 헷갈리는 자리가 남아 있습니다.</span>{" "}
+                <span className="inline-block">견갑이 잘 움직여야 한다는 것과</span>{" "}
+                <span className="inline-block">흉추의 움직임이 중요하다는 것은 분명하지만,</span>{" "}
+                <span className="inline-block">그 앞단의 판단에서</span>{" "}
+                <span className="inline-block">아직 확신이 서지 않는 부분이 있습니다.</span>
+              </p>
+              <p className="text-gray-600 leading-relaxed text-pretty">
+                <strong className="inline-block text-gray-900">상체와 하체를 잇는 연결.</strong>{" "}
+                <span className="inline-block">위아래를 연결하는 사슬을 더 봐야 합니다.</span>{" "}
+                <span className="inline-block">공부하고 있는 중입니다.</span>
+              </p>
+              <p className="text-gray-600 leading-relaxed text-pretty">
+                <strong className="inline-block text-gray-900">깨운 것이 풀리는 문제.</strong>{" "}
+                <span className="inline-block">깨워놓은 자리가 시간이 지나면 다시 풀립니다.</span>{" "}
+                <span className="inline-block">매일 관리해도 풀립니다.</span>{" "}
+                <span className="inline-block">원장 본인의 몸에서도 아직 진행 중인 숙제입니다.</span>
+              </p>
+            </div>
+
+            <h3 className="font-bold text-gray-900 mb-4 text-base md:text-lg">9-2. 지금 시도하고 있는 것</h3>
             <p className="text-gray-600 leading-relaxed mb-3 text-pretty">
-              <Chunks parts={["발이 도는 방향과 골반이 도는 방향이", "서로 어긋나는 경우가 있습니다."]} />
+              <span className="inline-block">지금 저희 방식은 한 자리씩 따로 깨우는 방식입니다.</span>{" "}
+              <span className="inline-block">하복부면 하복부, 광배면 광배.</span>
             </p>
             <p className="text-gray-600 leading-relaxed mb-3 text-pretty">
-              <Chunks parts={["과하게 보상해서", "오히려 반대로 틀어진 경우도 있습니다."]} />
+              <strong className="inline-block text-gray-900">여러 자리를 한 번에 연결해서 움직이는 방식으로</strong>{" "}
+              <strong className="inline-block text-gray-900">가보려 하고 있습니다.</strong>{" "}
+              <span className="inline-block">대각선으로 이어지는 연결을 한 동작에서 같이 쓰는 쪽입니다.</span>
             </p>
             <p className="text-gray-600 leading-relaxed mb-10 text-pretty">
-              평가할 때 이런 케이스는 아직 저희도 헷갈립니다.
+              <span className="inline-block">시켜봤더니 다들 힘들어하십니다.</span>{" "}
+              <span className="inline-block">한 자리 느끼는 데도 집중이 필요한데</span>{" "}
+              <span className="inline-block">여러 자리를 동시에 느껴보라고 하니 어려워하십니다.</span>{" "}
+              <span className="inline-block">이제 막 시작한 단계입니다.</span>{" "}
+              <span className="inline-block">되는지 안 되는지는 해보고 적겠습니다.</span>
             </p>
 
-            <h3 className="font-bold text-gray-900 mb-4 text-base md:text-lg">8-2. 그래서 이렇게 합니다</h3>
+            <h3 className="font-bold text-gray-900 mb-4 text-base md:text-lg">9-3. 그래서 이렇게 합니다</h3>
             <p className="text-gray-600 leading-relaxed mb-3 text-pretty">
               평가가 틀렸을 가능성을 열어두고 시작합니다.
             </p>
@@ -641,17 +1063,70 @@ export default function MethodPage() {
               <span className="inline-block">이 방법은 아직 완성되지 않았습니다.</span>{" "}
               <span className="inline-block">계속 고치고 있습니다.</span>
             </p>
+            <p className="text-gray-600 leading-relaxed mb-4 text-pretty">
+              기록이 쌓이는 만큼 9-1의 목록은 줄어듭니다.
+            </p>
             <p className="text-gray-600 leading-relaxed text-pretty">
-              기록이 쌓이는 만큼 8-1의 목록은 줄어듭니다.
+              <span className="inline-block">원장은 이렇게 말합니다.</span>{" "}
+              <strong className="inline-block text-gray-900">무조건이라는 건 없습니다.</strong>{" "}
+              <span className="inline-block">더 나은 방법이 있으면 그걸 받아들이는 게 맞습니다.</span>{" "}
+              <span className="inline-block">앞으로도 계속 바뀔 겁니다.</span>
             </p>
           </div>
         </section>
 
-        {/* 9. 개정 이력 */}
+        {/* 10. 이 방법을 쓰려는 분께 */}
         <section className="py-12 md:py-16 px-4">
           <div className="max-w-3xl mx-auto">
-            <SectionHeading n="9" title="개정 이력" />
-            <div className="overflow-x-auto">
+            <SectionHeading n="10" title="이 방법을 쓰려는 분께" />
+
+            <p className="text-gray-600 leading-relaxed mb-4 text-pretty">
+              <span className="inline-block">이 문서를 읽고 자기 회원에게 써보려는 분이 있을 수 있습니다.</span>{" "}
+              <span className="inline-block">그래서 미리 적어둡니다.</span>{" "}
+              <strong className="inline-block text-gray-900">문서만 읽고는 안 됩니다.</strong>
+            </p>
+
+            <p className="text-gray-600 leading-relaxed mb-4 text-pretty">
+              <span className="inline-block">레시피를 그대로 줘도 요리가 되는 사람과 안 되는 사람이 있습니다.</span>{" "}
+              <span className="inline-block">움직임을 보고 알아차리는 눈이 필요하고,</span>{" "}
+              <span className="inline-block">그건 문장으로 넘어가지 않습니다.</span>
+            </p>
+
+            <p className="text-gray-600 leading-relaxed mb-4 text-pretty">
+              <strong className="inline-block text-gray-900">먼저 자기 몸에서 겪어봐야 합니다.</strong>{" "}
+              <span className="inline-block">보고 있으면 “저 자리가 느껴지겠구나” 하는 짐작은 됩니다.</span>{" "}
+              <span className="inline-block">그런데 그게 어떤 느낌인지는 겪어보지 않으면 모릅니다.</span>
+            </p>
+
+            <p className="text-gray-600 leading-relaxed mb-6 text-pretty">
+              <span className="inline-block">저희도 이 일을 하면서 못 느끼는 자리가 있었습니다.</span>{" "}
+              <span className="inline-block">전문가라는 사람이 못 느끼는데,</span>{" "}
+              <span className="inline-block">처음 오신 분은 얼마나 더 못 느끼겠습니까.</span>{" "}
+              <span className="inline-block">그래서 저희가 계속 찾는 건 하나입니다.</span>{" "}
+              <span className="inline-block">어떻게 하면 더 쉽게 전달될까.</span>{" "}
+              <span className="inline-block">단계를 더 낮춰서라도 그렇게 갑니다.</span>
+            </p>
+
+            <p className="text-gray-600 leading-relaxed text-pretty">
+              <span className="inline-block">직접 몸으로 겪어보시려면</span>{" "}
+              <Link
+                href="/class/breathing"
+                className="inline-block text-[#7B2D8B] font-semibold underline underline-offset-2 hover:text-[#6a2578]"
+              >
+                바디 리셋 세션
+              </Link>
+              <span className="inline-block">이 그 과정입니다.</span>{" "}
+              <span className="inline-block">4주 동안 1:1로 진행하고,</span>{" "}
+              <span className="inline-block">트레이너·강사분들도 같은 과정으로 오십니다.</span>
+            </p>
+          </div>
+        </section>
+
+        {/* 11. 개정 이력 */}
+        <section className="py-12 md:py-16 px-4 bg-[#FAF5FB]">
+          <div className="max-w-3xl mx-auto">
+            <SectionHeading n="11" title="개정 이력" />
+            <div className="overflow-x-auto mb-8">
               <table className="w-full text-sm border-collapse">
                 <thead>
                   <tr className="border-b border-gray-200">
@@ -663,21 +1138,39 @@ export default function MethodPage() {
                 <tbody>
                   {REVISIONS.map((r) => (
                     <tr key={r.version} className="border-b border-gray-100">
-                      <td className={`py-3 px-3 font-bold whitespace-nowrap ${r.current ? "text-[#7B2D8B]" : "text-gray-500"}`}>
+                      <td className={`py-3 px-3 font-bold whitespace-nowrap align-top ${r.current ? "text-[#7B2D8B]" : "text-gray-500"}`}>
                         {r.version}
                       </td>
-                      <td className="py-3 px-3 text-gray-500 whitespace-nowrap">{r.when}</td>
-                      <td className="py-3 px-3 text-gray-600">{r.desc}</td>
+                      <td className="py-3 px-3 text-gray-500 whitespace-nowrap align-top">{r.when}</td>
+                      <td className="py-3 px-3 text-gray-600">
+                        <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                          {r.desc.map((d, i) => (
+                            <span key={d} className="flex items-center gap-2">
+                              <span className="whitespace-nowrap">{d}</span>
+                              {i < r.desc.length - 1 && <span aria-hidden className="text-gray-300">·</span>}
+                            </span>
+                          ))}
+                        </div>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
+            <p className="text-gray-600 leading-relaxed mb-2 text-pretty">
+              v1.1에서 고친 것 중 가장 큰 것을 적어둡니다.
+            </p>
+            <p className="text-gray-600 leading-relaxed text-pretty">
+              <span className="inline-block">v1.0은 절차의 마지막을 무게 얹기로 적었습니다.</span>{" "}
+              <span className="inline-block">그건 저희가 실제로 하는 일이 아니었습니다.</span>{" "}
+              <span className="inline-block">회원이 저희 없이 자기 몸을 수정할 수 있게 되는 것이 마지막입니다.</span>{" "}
+              <span className="inline-block">그걸 고쳤습니다.</span>
+            </p>
           </div>
         </section>
 
         {/* 부속: 쌓고 있는 기록 (연구노트) */}
-        <section className="py-12 md:py-16 px-4 bg-[#FAF5FB]">
+        <section className="py-12 md:py-16 px-4">
           <div className="max-w-3xl mx-auto">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 text-balance">
               쌓고 있는 기록
@@ -687,10 +1180,10 @@ export default function MethodPage() {
             </p>
             <Link
               href="/research-notes"
-              className="block bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:border-[#7B2D8B] transition-colors group"
+              className="block bg-[#FAF5FB] rounded-2xl p-6 shadow-sm border border-gray-100 hover:border-[#7B2D8B] transition-colors group"
             >
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl bg-[#FAF5FB] flex items-center justify-center shrink-0 group-hover:bg-[#7B2D8B] transition-colors">
+                <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center shrink-0 group-hover:bg-[#7B2D8B] transition-colors">
                   <BarChartIcon className="text-[#7B2D8B] group-hover:text-white" size={24} />
                 </div>
                 <div className="flex-1">
