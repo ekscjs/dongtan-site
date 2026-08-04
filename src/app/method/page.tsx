@@ -889,11 +889,12 @@ export default function MethodPage() {
 
             <h3 className="font-bold text-gray-900 mb-3 text-base md:text-lg">원장 자신의 몸입니다</h3>
             <p className="text-gray-600 leading-relaxed mb-3 text-pretty">
-              <span className="inline-block">이 방법은 어느 유파에서 배워 온 것이 아닙니다.</span>{" "}
-              <span className="inline-block">원장 본인의 몸에서 나왔습니다.</span>
+              <span className="inline-block">이 방법은 책이나 자격증에서 가져온 게 아닙니다.</span>{" "}
+              <span className="inline-block">원장이 회원들 몸을 보면서,</span>{" "}
+              <span className="inline-block">자기 몸에 먼저 적용해보고 확인한 것들을 모은 것입니다.</span>
             </p>
             <p className="text-gray-600 leading-relaxed mb-3 text-pretty">
-              <span className="inline-block">원장은 자기 몸에 먼저 해보지 않은 운동을 회원에게 적용하지 않습니다.</span>{" "}
+              <span className="inline-block">자기 몸에 먼저 해보지 않은 운동은 회원에게 쓰지 않습니다.</span>{" "}
               <span className="inline-block">직접 느껴보고 “이게 이래서 문제가 되겠구나”를 확인한 다음에 씁니다.</span>
             </p>
             <p className="text-gray-600 leading-relaxed mb-3 text-pretty">
