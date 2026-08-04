@@ -314,7 +314,7 @@ export default function MethodPage() {
               <span className="inline-block">처음엔 앞으로 숙이는 동작이 전혀 안 됐고,</span>{" "}
               <span className="inline-block">골반이 심하게 꺾인 채로 굳어 있었습니다.</span>{" "}
               <span className="inline-block">지금은 숙이는 게 됩니다.</span>{" "}
-              <span className="inline-block">그런데 원장이 “됐다”고 말한 근거는 그게 아니었습니다.</span>
+              <span className="inline-block">그런데 저희가 “됐다”고 본 건 그게 아니었습니다.</span>
             </p>
 
             <p className="text-gray-600 leading-relaxed mb-4 text-pretty">
