@@ -35,7 +35,7 @@ export const metadata: Metadata = {
       "naver-site-verification": ["5e06b796594228b9fb997bc7d893fd881350d5d0"],
     },
   },
-  title: "동탄 허리·무릎·어깨 통증 운동 | 내몸에미소",
+  title: "동탄 허리 무릎 어깨 통증 운동 | 내몸에미소",
   description:
     "동탄에서 허리·무릎·어깨 통증, 체형교정, 재활 운동을 1:1로. 증상이 아닌 원인부터 찾아 해결하는 동탄 운동센터 내몸에미소입니다. 누적 200명·재등록률 90%.",
   keywords: [
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     "동탄 운동센터",
   ],
   openGraph: {
-    title: "내몸에미소 — 동탄 허리·무릎·어깨 통증 운동",
+    title: "내몸에미소 — 동탄 허리 무릎 어깨 통증 운동",
     description: "허리, 무릎, 어깨가 불편하신가요? 동탄에서 몸의 불편함을 원인부터 해결합니다.",
     locale: "ko_KR",
     type: "website",
