@@ -25,7 +25,7 @@ export function buildBlogTitle(cat: Category, page: number): string {
       ? "임상노트 — 실제 회원 몸의 변화 기록"
       : cat === "몸 이야기"
         ? "몸 이야기 — 통증·체형 운동 가이드"
-        : "허리·무릎·어깨 통증 운동 이야기";
+        : "허리 무릎 어깨 통증 운동 이야기";
   const suffix = page > 1 ? ` (${page}페이지)` : "";
   return `${base}${suffix} | 내몸에미소`;
 }

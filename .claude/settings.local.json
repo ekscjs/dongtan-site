@@ -20,7 +20,20 @@
       "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\('version:', d.get\\('version'\\)\\); print\\('deps:', list\\(d.get\\('dependencies',{}\\).keys\\(\\)\\)\\)\")",
       "Bash(node *)",
       "Bash(vercel env *)",
-      "PowerShell(cd \"C:\\\\Users\\\\송경천\\\\Documents\\\\Claude\\\\Projects\\\\naemiso-brand\\\\dongtan-site\"; $v = Get-Command vercel -ErrorAction SilentlyContinue; if \\($v\\) { $v.Source } else { \"not found\" }; npx vercel --version)"
+      "PowerShell(cd \"C:\\\\Users\\\\송경천\\\\Documents\\\\Claude\\\\Projects\\\\naemiso-brand\\\\dongtan-site\"; $v = Get-Command vercel -ErrorAction SilentlyContinue; if \\($v\\) { $v.Source } else { \"not found\" }; npx vercel --version)",
+      "Read(//usr/share/fonts/opentype/**)",
+      "Read(//c/Windows/Fonts/**)",
+      "Read(//c/Users/송경천/Documents/Claude/Projects/naemiso-brand/blog-drafts/**)",
+      "Read(//c/Users/송경천/Documents/Claude/Projects/naemiso-brand/blog-drafts/images/**)",
+      "Read(//c/Users/송경천/Documents/Claude/Projects/naemiso-brand/blog-images/**)",
+      "Bash(curl -s \"http://localhost:3000/blog?cat=%EC%9E%84%EC%83%81%EB%85%B8%ED%8A%B8&page=2\" -o /tmp/blogcat2.html)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" \"http://localhost:3000/blog?cat=%EC%9E%84%EC%83%81%EB%85%B8%ED%8A%B8&page=2\")",
+      "Read(//tmp/**)",
+      "Bash(curl -s \"http://localhost:3000/blog/pain-gone-not-fully-recovered-function\" -o /tmp/realslug.html)",
+      "Bash(curl -s \"http://localhost:3000/blog/this-slug-does-not-exist-zzz\" -o /tmp/404page.html)",
+      "Bash(curl -s \"http://localhost:3000/blog/pain-gone-not-fully-recovered-function\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" \"http://localhost:3000/blog/pain-gone-not-fully-recovered-function\")",
+      "Bash(netstat -ano)"
     ]
   }
 }
